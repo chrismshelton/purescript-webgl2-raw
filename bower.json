@@ -1,0 +1,21 @@
+{
+  "name": "purescript-webgl2-raw",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "dependencies": {
+    "purescript-prelude": "^4.0.1",
+    "purescript-effect": "^2.0.0",
+    "purescript-arraybuffer-types": "^2.0.0",
+    "purescript-nullable": "^4.0.0",
+    "purescript-maybe": "^4.0.0",
+    "purescript-unsafe-coerce": "^4.0.0",
+    "purescript-web-html": "^1.0.0"
+  },
+  "devDependencies": {
+    "purescript-psci-support": "^4.0.0"
+  }
+}
