@@ -16,6 +16,13 @@ import Data.Nullable ( Nullable
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn2
+                        , EffectFn3
+                        , EffectFn4
+                        , runEffectFn2
+                        , runEffectFn3
+                        , runEffectFn4
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -53,13 +60,10 @@ fenceSync gl condition flags
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_fenceSync gl0 condition flags
+        res <- runEffectFn3 js_fenceSync gl0 condition flags
         pure (toMaybe res)
 
-foreign import js_fenceSync :: WebGL2RenderingContext
-                            -> GLenum
-                            -> GLbitfield
-                            -> Effect (Nullable WebGLSync)
+foreign import js_fenceSync :: EffectFn3 WebGL2RenderingContext GLenum GLbitfield (Nullable WebGLSync)
 
 
 
@@ -82,11 +86,9 @@ isSync gl sync
       gl0 = toWebGL2RenderingContext gl
       sync0 = toNullable sync
     in
-      js_isSync gl0 sync0
+      runEffectFn2 js_isSync gl0 sync0
 
-foreign import js_isSync :: WebGL2RenderingContext
-                         -> Nullable WebGLSync
-                         -> Effect GLboolean
+foreign import js_isSync :: EffectFn2 WebGL2RenderingContext (Nullable WebGLSync) GLboolean
 
 
 
@@ -109,11 +111,9 @@ deleteSync gl sync
       gl0 = toWebGL2RenderingContext gl
       sync0 = toNullable sync
     in
-      js_deleteSync gl0 sync0
+      runEffectFn2 js_deleteSync gl0 sync0
 
-foreign import js_deleteSync :: WebGL2RenderingContext
-                             -> Nullable WebGLSync
-                             -> Effect Unit
+foreign import js_deleteSync :: EffectFn2 WebGL2RenderingContext (Nullable WebGLSync) Unit
 
 
 
@@ -138,13 +138,9 @@ clientWaitSync gl sync flags timeout
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_clientWaitSync gl0 sync flags timeout
+      runEffectFn4 js_clientWaitSync gl0 sync flags timeout
 
-foreign import js_clientWaitSync :: WebGL2RenderingContext
-                                 -> WebGLSync
-                                 -> GLbitfield
-                                 -> GLuint64
-                                 -> Effect GLenum
+foreign import js_clientWaitSync :: EffectFn4 WebGL2RenderingContext WebGLSync GLbitfield GLuint64 GLenum
 
 
 
@@ -168,13 +164,9 @@ waitSync gl sync flags timeout
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_waitSync gl0 sync flags timeout
+      runEffectFn4 js_waitSync gl0 sync flags timeout
 
-foreign import js_waitSync :: WebGL2RenderingContext
-                           -> WebGLSync
-                           -> GLbitfield
-                           -> GLint64
-                           -> Effect Unit
+foreign import js_waitSync :: EffectFn4 WebGL2RenderingContext WebGLSync GLbitfield GLint64 Unit
 
 
 
@@ -190,6 +182,10 @@ foreign import js_waitSync :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.14](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.14)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getSyncParameterGLbitfield :: forall c
                            .  IsWebGL2RenderingContext c
                            => c
@@ -201,13 +197,10 @@ getSyncParameterGLbitfield gl sync pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getSyncParameterGLbitfield gl0 sync pname
+        res <- runEffectFn3 js_getSyncParameterGLbitfield gl0 sync pname
         pure (toMaybe res)
 
-foreign import js_getSyncParameterGLbitfield :: WebGL2RenderingContext
-                                             -> WebGLSync
-                                             -> GLenum
-                                             -> Effect (Nullable GLbitfield)
+foreign import js_getSyncParameterGLbitfield :: EffectFn3 WebGL2RenderingContext WebGLSync GLenum (Nullable GLbitfield)
 
 
 
@@ -225,6 +218,10 @@ foreign import js_getSyncParameterGLbitfield :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.14](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.14)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getSyncParameterGLenum :: forall c
                        .  IsWebGL2RenderingContext c
                        => c
@@ -236,11 +233,8 @@ getSyncParameterGLenum gl sync pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getSyncParameterGLenum gl0 sync pname
+        res <- runEffectFn3 js_getSyncParameterGLenum gl0 sync pname
         pure (toMaybe res)
 
-foreign import js_getSyncParameterGLenum :: WebGL2RenderingContext
-                                         -> WebGLSync
-                                         -> GLenum
-                                         -> Effect (Nullable GLenum)
+foreign import js_getSyncParameterGLenum :: EffectFn3 WebGL2RenderingContext WebGLSync GLenum (Nullable GLenum)
 

@@ -20,6 +20,13 @@ import Data.Nullable ( Nullable
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , EffectFn2
+                        , EffectFn3
+                        , runEffectFn1
+                        , runEffectFn2
+                        , runEffectFn3
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -54,11 +61,9 @@ compileShader gl shader
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_compileShader gl0 shader
+      runEffectFn2 js_compileShader gl0 shader
 
-foreign import js_compileShader :: WebGLRenderingContext
-                                -> WebGLShader
-                                -> Effect Unit
+foreign import js_compileShader :: EffectFn2 WebGLRenderingContext WebGLShader Unit
 
 
 
@@ -80,11 +85,10 @@ createProgram gl
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_createProgram gl0
+        res <- runEffectFn1 js_createProgram gl0
         pure (toMaybe res)
 
-foreign import js_createProgram :: WebGLRenderingContext
-                                -> Effect (Nullable WebGLProgram)
+foreign import js_createProgram :: EffectFn1 WebGLRenderingContext (Nullable WebGLProgram)
 
 
 
@@ -107,12 +111,10 @@ createShader gl type0
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_createShader gl0 type0
+        res <- runEffectFn2 js_createShader gl0 type0
         pure (toMaybe res)
 
-foreign import js_createShader :: WebGLRenderingContext
-                               -> GLenum
-                               -> Effect (Nullable WebGLShader)
+foreign import js_createShader :: EffectFn2 WebGLRenderingContext GLenum (Nullable WebGLShader)
 
 
 
@@ -135,11 +137,9 @@ deleteShader gl shader
       gl0 = toWebGLRenderingContext gl
       shader0 = toNullable shader
     in
-      js_deleteShader gl0 shader0
+      runEffectFn2 js_deleteShader gl0 shader0
 
-foreign import js_deleteShader :: WebGLRenderingContext
-                               -> Nullable WebGLShader
-                               -> Effect Unit
+foreign import js_deleteShader :: EffectFn2 WebGLRenderingContext (Nullable WebGLShader) Unit
 
 
 
@@ -156,6 +156,10 @@ foreign import js_deleteShader :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.9](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.9)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getShaderParameterGLboolean :: forall c
                             .  IsWebGLRenderingContext c
                             => c
@@ -167,13 +171,10 @@ getShaderParameterGLboolean gl shader pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getShaderParameterGLboolean gl0 shader pname
+        res <- runEffectFn3 js_getShaderParameterGLboolean gl0 shader pname
         pure (toMaybe res)
 
-foreign import js_getShaderParameterGLboolean :: WebGLRenderingContext
-                                              -> WebGLShader
-                                              -> GLenum
-                                              -> Effect (Nullable GLboolean)
+foreign import js_getShaderParameterGLboolean :: EffectFn3 WebGLRenderingContext WebGLShader GLenum (Nullable GLboolean)
 
 
 
@@ -189,6 +190,10 @@ foreign import js_getShaderParameterGLboolean :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.9](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.9)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getShaderParameterGLenum :: forall c
                          .  IsWebGLRenderingContext c
                          => c
@@ -200,13 +205,10 @@ getShaderParameterGLenum gl shader pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getShaderParameterGLenum gl0 shader pname
+        res <- runEffectFn3 js_getShaderParameterGLenum gl0 shader pname
         pure (toMaybe res)
 
-foreign import js_getShaderParameterGLenum :: WebGLRenderingContext
-                                           -> WebGLShader
-                                           -> GLenum
-                                           -> Effect (Nullable GLenum)
+foreign import js_getShaderParameterGLenum :: EffectFn3 WebGLRenderingContext WebGLShader GLenum (Nullable GLenum)
 
 
 
@@ -231,13 +233,10 @@ getShaderPrecisionFormat gl shadertype precisiontype
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getShaderPrecisionFormat gl0 shadertype precisiontype
+        res <- runEffectFn3 js_getShaderPrecisionFormat gl0 shadertype precisiontype
         pure (toMaybe res)
 
-foreign import js_getShaderPrecisionFormat :: WebGLRenderingContext
-                                           -> GLenum
-                                           -> GLenum
-                                           -> Effect (Nullable WebGLShaderPrecisionFormat)
+foreign import js_getShaderPrecisionFormat :: EffectFn3 WebGLRenderingContext GLenum GLenum (Nullable WebGLShaderPrecisionFormat)
 
 
 
@@ -260,12 +259,10 @@ getShaderInfoLog gl shader
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getShaderInfoLog gl0 shader
+        res <- runEffectFn2 js_getShaderInfoLog gl0 shader
         pure (toMaybe res)
 
-foreign import js_getShaderInfoLog :: WebGLRenderingContext
-                                   -> WebGLShader
-                                   -> Effect (Nullable String)
+foreign import js_getShaderInfoLog :: EffectFn2 WebGLRenderingContext WebGLShader (Nullable String)
 
 
 
@@ -288,12 +285,10 @@ getShaderSource gl shader
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getShaderSource gl0 shader
+        res <- runEffectFn2 js_getShaderSource gl0 shader
         pure (toMaybe res)
 
-foreign import js_getShaderSource :: WebGLRenderingContext
-                                  -> WebGLShader
-                                  -> Effect (Nullable String)
+foreign import js_getShaderSource :: EffectFn2 WebGLRenderingContext WebGLShader (Nullable String)
 
 
 
@@ -316,11 +311,9 @@ isShader gl shader
       gl0 = toWebGLRenderingContext gl
       shader0 = toNullable shader
     in
-      js_isShader gl0 shader0
+      runEffectFn2 js_isShader gl0 shader0
 
-foreign import js_isShader :: WebGLRenderingContext
-                           -> Nullable WebGLShader
-                           -> Effect GLboolean
+foreign import js_isShader :: EffectFn2 WebGLRenderingContext (Nullable WebGLShader) GLboolean
 
 
 
@@ -343,10 +336,7 @@ shaderSource gl shader source
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_shaderSource gl0 shader source
+      runEffectFn3 js_shaderSource gl0 shader source
 
-foreign import js_shaderSource :: WebGLRenderingContext
-                               -> WebGLShader
-                               -> String
-                               -> Effect Unit
+foreign import js_shaderSource :: EffectFn3 WebGLRenderingContext WebGLShader String Unit
 

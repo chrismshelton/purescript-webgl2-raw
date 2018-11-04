@@ -14,6 +14,11 @@ import Data.Nullable ( Nullable
                      , toMaybe
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn4
+                        , EffectFn6
+                        , runEffectFn4
+                        , runEffectFn6
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -51,6 +56,10 @@ import WebGL.Raw.WebGL1.WebGLRenderbuffer ( bindRenderbuffer
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.5](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.5)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getInternalformatParameterInt32Array :: forall c
                                      .  IsWebGL2RenderingContext c
                                      => c
@@ -63,14 +72,10 @@ getInternalformatParameterInt32Array gl target internalformat pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getInternalformatParameterInt32Array gl0 target internalformat pname
+        res <- runEffectFn4 js_getInternalformatParameterInt32Array gl0 target internalformat pname
         pure (toMaybe res)
 
-foreign import js_getInternalformatParameterInt32Array :: WebGL2RenderingContext
-                                                       -> GLenum
-                                                       -> GLenum
-                                                       -> GLenum
-                                                       -> Effect (Nullable (ArrayView Int32))
+foreign import js_getInternalformatParameterInt32Array :: EffectFn4 WebGL2RenderingContext GLenum GLenum GLenum (Nullable (ArrayView Int32))
 
 
 
@@ -102,13 +107,7 @@ renderbufferStorageMultisample gl target samples internalformat width height
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_renderbufferStorageMultisample gl0 target samples internalformat width height
+      runEffectFn6 js_renderbufferStorageMultisample gl0 target samples internalformat width height
 
-foreign import js_renderbufferStorageMultisample :: WebGL2RenderingContext
-                                                 -> GLenum
-                                                 -> GLsizei
-                                                 -> GLenum
-                                                 -> GLsizei
-                                                 -> GLsizei
-                                                 -> Effect Unit
+foreign import js_renderbufferStorageMultisample :: EffectFn6 WebGL2RenderingContext GLenum GLsizei GLenum GLsizei GLsizei Unit
 

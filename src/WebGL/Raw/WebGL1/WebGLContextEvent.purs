@@ -5,6 +5,9 @@ module WebGL.Raw.WebGL1.WebGLContextEvent
 
 
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , runEffectFn1
+                        )
 import WebGL.Raw.Types (WebGLContextEvent)
 import WebGL.Raw.Types (WebGLContextEvent) as WebGLContextEventType
 
@@ -13,7 +16,8 @@ import WebGL.Raw.Types (WebGLContextEvent) as WebGLContextEventType
 -- | Usage: `getStatusMessage webglcontextevent`
 -- |
 getStatusMessage :: WebGLContextEvent -> Effect String
-getStatusMessage webglcontextevent = js_getStatusMessage webglcontextevent
+getStatusMessage webglcontextevent
+  = runEffectFn1 js_getStatusMessage webglcontextevent
 
-foreign import js_getStatusMessage :: WebGLContextEvent -> Effect String
+foreign import js_getStatusMessage :: EffectFn1 WebGLContextEvent String
 

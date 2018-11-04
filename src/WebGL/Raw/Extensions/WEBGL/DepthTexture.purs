@@ -10,6 +10,9 @@ import Data.Nullable ( Nullable
                      , toMaybe
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , runEffectFn1
+                        )
 import Prelude ( bind
                , pure
                )
@@ -20,10 +23,13 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
                        )
 
 
+-- |
+-- | Documentation: [WEBGL_depth_texture extension](https://www.khronos.org/registry/webgl/extensions/WEBGL_depth_texture/)
+-- |
 foreign import data WEBGL_depth_texture :: Type
 
 gl_UNSIGNED_INT_24_8_WEBGL :: GLenum
-gl_UNSIGNED_INT_24_8_WEBGL = 34042
+gl_UNSIGNED_INT_24_8_WEBGL = 34042.0
 
 -- |
 -- | Usage: `getExtensionWEBGL_depth_texture gl`
@@ -37,9 +43,8 @@ getExtensionWEBGL_depth_texture gl
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getExtensionWEBGL_depth_texture gl0
+        res <- runEffectFn1 js_getExtensionWEBGL_depth_texture gl0
         pure (toMaybe res)
 
-foreign import js_getExtensionWEBGL_depth_texture :: WebGLRenderingContext
-                                                  -> Effect (Nullable WEBGL_depth_texture)
+foreign import js_getExtensionWEBGL_depth_texture :: EffectFn1 WebGLRenderingContext (Nullable WEBGL_depth_texture)
 

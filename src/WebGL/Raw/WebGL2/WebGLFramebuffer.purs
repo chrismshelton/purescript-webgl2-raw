@@ -9,11 +9,25 @@ module WebGL.Raw.WebGL2.WebGLFramebuffer
   ) where
 
 
+import Data.Function.Uncurried ( Fn1
+                               , runFn1
+                               )
 import Data.Maybe (Maybe)
 import Data.Nullable ( Nullable
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn10
+                        , EffectFn2
+                        , EffectFn3
+                        , EffectFn6
+                        , EffectFn7
+                        , runEffectFn10
+                        , runEffectFn2
+                        , runEffectFn3
+                        , runEffectFn6
+                        , runEffectFn7
+                        )
 import Prelude (Unit)
 import WebGL.Raw.Types ( class IsWebGL2RenderingContext
                        , GLbitfield
@@ -77,20 +91,9 @@ blitFramebuffer gl srcX0 srcY0 srcX1 srcY1 dstX0 dstY0 dstX1 dstY1 mask filter
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_blitFramebuffer gl0 srcX0 srcY0 srcX1 srcY1 dstX0 dstY0 dstX1 dstY1 mask filter
+      runEffectFn10 (runFn1 js_blitFramebuffer gl0) srcX0 srcY0 srcX1 srcY1 dstX0 dstY0 dstX1 dstY1 mask filter
 
-foreign import js_blitFramebuffer :: WebGL2RenderingContext
-                                  -> GLint
-                                  -> GLint
-                                  -> GLint
-                                  -> GLint
-                                  -> GLint
-                                  -> GLint
-                                  -> GLint
-                                  -> GLint
-                                  -> GLbitfield
-                                  -> GLenum
-                                  -> Effect Unit
+foreign import js_blitFramebuffer :: Fn1 WebGL2RenderingContext (EffectFn10 GLint GLint GLint GLint GLint GLint GLint GLint GLbitfield GLenum Unit)
 
 
 
@@ -123,15 +126,9 @@ framebufferTextureLayer gl target attachment texture level layer
       gl0 = toWebGL2RenderingContext gl
       texture0 = toNullable texture
     in
-      js_framebufferTextureLayer gl0 target attachment texture0 level layer
+      runEffectFn6 js_framebufferTextureLayer gl0 target attachment texture0 level layer
 
-foreign import js_framebufferTextureLayer :: WebGL2RenderingContext
-                                          -> GLenum
-                                          -> GLenum
-                                          -> Nullable WebGLTexture
-                                          -> GLint
-                                          -> GLint
-                                          -> Effect Unit
+foreign import js_framebufferTextureLayer :: EffectFn6 WebGL2RenderingContext GLenum GLenum (Nullable WebGLTexture) GLint GLint Unit
 
 
 
@@ -155,12 +152,9 @@ invalidateFramebuffer gl target attachments
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_invalidateFramebuffer gl0 target attachments
+      runEffectFn3 js_invalidateFramebuffer gl0 target attachments
 
-foreign import js_invalidateFramebuffer :: WebGL2RenderingContext
-                                        -> GLenum
-                                        -> Array GLenum
-                                        -> Effect Unit
+foreign import js_invalidateFramebuffer :: EffectFn3 WebGL2RenderingContext GLenum (Array GLenum) Unit
 
 
 
@@ -194,16 +188,9 @@ invalidateSubFramebuffer gl target attachments x y width height
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_invalidateSubFramebuffer gl0 target attachments x y width height
+      runEffectFn7 js_invalidateSubFramebuffer gl0 target attachments x y width height
 
-foreign import js_invalidateSubFramebuffer :: WebGL2RenderingContext
-                                           -> GLenum
-                                           -> Array GLenum
-                                           -> GLint
-                                           -> GLint
-                                           -> GLsizei
-                                           -> GLsizei
-                                           -> Effect Unit
+foreign import js_invalidateSubFramebuffer :: EffectFn7 WebGL2RenderingContext GLenum (Array GLenum) GLint GLint GLsizei GLsizei Unit
 
 
 
@@ -225,7 +212,7 @@ readBuffer gl src
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_readBuffer gl0 src
+      runEffectFn2 js_readBuffer gl0 src
 
-foreign import js_readBuffer :: WebGL2RenderingContext -> GLenum -> Effect Unit
+foreign import js_readBuffer :: EffectFn2 WebGL2RenderingContext GLenum Unit
 

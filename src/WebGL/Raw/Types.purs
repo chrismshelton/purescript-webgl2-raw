@@ -90,7 +90,7 @@ import Web.HTML.HTMLImageElement (HTMLImageElement)
 import Web.HTML.HTMLVideoElement (HTMLVideoElement)
 
 
-type GLenum = Int
+type GLenum = Number
 
 type GLboolean = Boolean
 
@@ -417,6 +417,9 @@ instance isWebGL2RenderingContextWebGL_Raw_Types_WebGL2RenderingContext
     where
   toWebGL2RenderingContext c = c
 
+-- |
+-- | Documentation: [EXT_disjoint_timer_query extension](https://www.khronos.org/registry/webgl/extensions/EXT_disjoint_timer_query/)
+-- |
 type GLuint64EXT = Number
 
 foreign import data BufferSource :: Type

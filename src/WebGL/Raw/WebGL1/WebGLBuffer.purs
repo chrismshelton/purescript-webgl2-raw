@@ -18,6 +18,15 @@ import Data.Nullable ( Nullable
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , EffectFn2
+                        , EffectFn3
+                        , EffectFn4
+                        , runEffectFn1
+                        , runEffectFn2
+                        , runEffectFn3
+                        , runEffectFn4
+                        )
 import Prelude ( bind
                , map
                , pure
@@ -59,12 +68,9 @@ bindBuffer gl target buffer
       gl0 = toWebGLRenderingContext gl
       buffer0 = toNullable buffer
     in
-      js_bindBuffer gl0 target buffer0
+      runEffectFn3 js_bindBuffer gl0 target buffer0
 
-foreign import js_bindBuffer :: WebGLRenderingContext
-                             -> GLenum
-                             -> Nullable WebGLBuffer
-                             -> Effect Unit
+foreign import js_bindBuffer :: EffectFn3 WebGLRenderingContext GLenum (Nullable WebGLBuffer) Unit
 
 
 
@@ -88,13 +94,9 @@ bufferDataSetSize gl target size usage
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_bufferDataSetSize gl0 target size usage
+      runEffectFn4 js_bufferDataSetSize gl0 target size usage
 
-foreign import js_bufferDataSetSize :: WebGLRenderingContext
-                                    -> GLenum
-                                    -> GLsizeiptr
-                                    -> GLenum
-                                    -> Effect Unit
+foreign import js_bufferDataSetSize :: EffectFn4 WebGLRenderingContext GLenum GLsizeiptr GLenum Unit
 
 
 
@@ -112,8 +114,8 @@ foreign import js_bufferDataSetSize :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.5](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.5)
 -- |
 bufferData :: forall b c
-           .  IsBufferSource b
-           => IsWebGLRenderingContext c
+           .  IsWebGLRenderingContext c
+           => IsBufferSource b
            => c
            -> GLenum
            -> Maybe b
@@ -125,13 +127,9 @@ bufferData gl target data0 usage
       data00 = map toBufferSource data0
       data01 = toNullable data00
     in
-      js_bufferData gl0 target data01 usage
+      runEffectFn4 js_bufferData gl0 target data01 usage
 
-foreign import js_bufferData :: WebGLRenderingContext
-                             -> GLenum
-                             -> Nullable BufferSource
-                             -> GLenum
-                             -> Effect Unit
+foreign import js_bufferData :: EffectFn4 WebGLRenderingContext GLenum (Nullable BufferSource) GLenum Unit
 
 
 
@@ -149,8 +147,8 @@ foreign import js_bufferData :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.5](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.5)
 -- |
 bufferSubData :: forall b c
-              .  IsBufferSource b
-              => IsWebGLRenderingContext c
+              .  IsWebGLRenderingContext c
+              => IsBufferSource b
               => c
               -> GLenum
               -> GLintptr
@@ -161,13 +159,9 @@ bufferSubData gl target offset data0
       gl0 = toWebGLRenderingContext gl
       data00 = toBufferSource data0
     in
-      js_bufferSubData gl0 target offset data00
+      runEffectFn4 js_bufferSubData gl0 target offset data00
 
-foreign import js_bufferSubData :: WebGLRenderingContext
-                                -> GLenum
-                                -> GLintptr
-                                -> BufferSource
-                                -> Effect Unit
+foreign import js_bufferSubData :: EffectFn4 WebGLRenderingContext GLenum GLintptr BufferSource Unit
 
 
 
@@ -189,11 +183,10 @@ createBuffer gl
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_createBuffer gl0
+        res <- runEffectFn1 js_createBuffer gl0
         pure (toMaybe res)
 
-foreign import js_createBuffer :: WebGLRenderingContext
-                               -> Effect (Nullable WebGLBuffer)
+foreign import js_createBuffer :: EffectFn1 WebGLRenderingContext (Nullable WebGLBuffer)
 
 
 
@@ -216,11 +209,9 @@ deleteBuffer gl buffer
       gl0 = toWebGLRenderingContext gl
       buffer0 = toNullable buffer
     in
-      js_deleteBuffer gl0 buffer0
+      runEffectFn2 js_deleteBuffer gl0 buffer0
 
-foreign import js_deleteBuffer :: WebGLRenderingContext
-                               -> Nullable WebGLBuffer
-                               -> Effect Unit
+foreign import js_deleteBuffer :: EffectFn2 WebGLRenderingContext (Nullable WebGLBuffer) Unit
 
 
 
@@ -236,6 +227,10 @@ foreign import js_deleteBuffer :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.5](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.5)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getBufferParameterGLenum :: forall c
                          .  IsWebGLRenderingContext c
                          => c
@@ -247,13 +242,10 @@ getBufferParameterGLenum gl target pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getBufferParameterGLenum gl0 target pname
+        res <- runEffectFn3 js_getBufferParameterGLenum gl0 target pname
         pure (toMaybe res)
 
-foreign import js_getBufferParameterGLenum :: WebGLRenderingContext
-                                           -> GLenum
-                                           -> GLenum
-                                           -> Effect (Nullable GLenum)
+foreign import js_getBufferParameterGLenum :: EffectFn3 WebGLRenderingContext GLenum GLenum (Nullable GLenum)
 
 
 
@@ -269,6 +261,10 @@ foreign import js_getBufferParameterGLenum :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.5](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.5)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getBufferParameterGLint :: forall c
                         .  IsWebGLRenderingContext c
                         => c
@@ -280,13 +276,10 @@ getBufferParameterGLint gl target pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getBufferParameterGLint gl0 target pname
+        res <- runEffectFn3 js_getBufferParameterGLint gl0 target pname
         pure (toMaybe res)
 
-foreign import js_getBufferParameterGLint :: WebGLRenderingContext
-                                          -> GLenum
-                                          -> GLenum
-                                          -> Effect (Nullable GLint)
+foreign import js_getBufferParameterGLint :: EffectFn3 WebGLRenderingContext GLenum GLenum (Nullable GLint)
 
 
 
@@ -309,9 +302,7 @@ isBuffer gl buffer
       gl0 = toWebGLRenderingContext gl
       buffer0 = toNullable buffer
     in
-      js_isBuffer gl0 buffer0
+      runEffectFn2 js_isBuffer gl0 buffer0
 
-foreign import js_isBuffer :: WebGLRenderingContext
-                           -> Nullable WebGLBuffer
-                           -> Effect GLboolean
+foreign import js_isBuffer :: EffectFn2 WebGLRenderingContext (Nullable WebGLBuffer) GLboolean
 

@@ -19,6 +19,15 @@ import Data.Nullable ( Nullable
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , EffectFn2
+                        , EffectFn3
+                        , EffectFn4
+                        , runEffectFn1
+                        , runEffectFn2
+                        , runEffectFn3
+                        , runEffectFn4
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -54,11 +63,10 @@ createTransformFeedback gl
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_createTransformFeedback gl0
+        res <- runEffectFn1 js_createTransformFeedback gl0
         pure (toMaybe res)
 
-foreign import js_createTransformFeedback :: WebGL2RenderingContext
-                                          -> Effect (Nullable WebGLTransformFeedback)
+foreign import js_createTransformFeedback :: EffectFn1 WebGL2RenderingContext (Nullable WebGLTransformFeedback)
 
 
 
@@ -81,11 +89,9 @@ deleteTransformFeedback gl tf
       gl0 = toWebGL2RenderingContext gl
       tf0 = toNullable tf
     in
-      js_deleteTransformFeedback gl0 tf0
+      runEffectFn2 js_deleteTransformFeedback gl0 tf0
 
-foreign import js_deleteTransformFeedback :: WebGL2RenderingContext
-                                          -> Nullable WebGLTransformFeedback
-                                          -> Effect Unit
+foreign import js_deleteTransformFeedback :: EffectFn2 WebGL2RenderingContext (Nullable WebGLTransformFeedback) Unit
 
 
 
@@ -109,11 +115,9 @@ isTransformFeedback gl tf
       gl0 = toWebGL2RenderingContext gl
       tf0 = toNullable tf
     in
-      js_isTransformFeedback gl0 tf0
+      runEffectFn2 js_isTransformFeedback gl0 tf0
 
-foreign import js_isTransformFeedback :: WebGL2RenderingContext
-                                      -> Nullable WebGLTransformFeedback
-                                      -> Effect GLboolean
+foreign import js_isTransformFeedback :: EffectFn2 WebGL2RenderingContext (Nullable WebGLTransformFeedback) GLboolean
 
 
 
@@ -138,12 +142,9 @@ bindTransformFeedback gl target tf
       gl0 = toWebGL2RenderingContext gl
       tf0 = toNullable tf
     in
-      js_bindTransformFeedback gl0 target tf0
+      runEffectFn3 js_bindTransformFeedback gl0 target tf0
 
-foreign import js_bindTransformFeedback :: WebGL2RenderingContext
-                                        -> GLenum
-                                        -> Nullable WebGLTransformFeedback
-                                        -> Effect Unit
+foreign import js_bindTransformFeedback :: EffectFn3 WebGL2RenderingContext GLenum (Nullable WebGLTransformFeedback) Unit
 
 
 
@@ -165,11 +166,9 @@ beginTransformFeedback gl primitiveMode
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_beginTransformFeedback gl0 primitiveMode
+      runEffectFn2 js_beginTransformFeedback gl0 primitiveMode
 
-foreign import js_beginTransformFeedback :: WebGL2RenderingContext
-                                         -> GLenum
-                                         -> Effect Unit
+foreign import js_beginTransformFeedback :: EffectFn2 WebGL2RenderingContext GLenum Unit
 
 
 
@@ -190,9 +189,9 @@ endTransformFeedback gl
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_endTransformFeedback gl0
+      runEffectFn1 js_endTransformFeedback gl0
 
-foreign import js_endTransformFeedback :: WebGL2RenderingContext -> Effect Unit
+foreign import js_endTransformFeedback :: EffectFn1 WebGL2RenderingContext Unit
 
 
 
@@ -220,13 +219,9 @@ transformFeedbackVaryings gl program varyings bufferMode
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_transformFeedbackVaryings gl0 program varyings bufferMode
+      runEffectFn4 js_transformFeedbackVaryings gl0 program varyings bufferMode
 
-foreign import js_transformFeedbackVaryings :: WebGL2RenderingContext
-                                            -> WebGLProgram
-                                            -> Array String
-                                            -> GLenum
-                                            -> Effect Unit
+foreign import js_transformFeedbackVaryings :: EffectFn4 WebGL2RenderingContext WebGLProgram (Array String) GLenum Unit
 
 
 
@@ -251,13 +246,10 @@ getTransformFeedbackVarying gl program index
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getTransformFeedbackVarying gl0 program index
+        res <- runEffectFn3 js_getTransformFeedbackVarying gl0 program index
         pure (toMaybe res)
 
-foreign import js_getTransformFeedbackVarying :: WebGL2RenderingContext
-                                              -> WebGLProgram
-                                              -> GLuint
-                                              -> Effect (Nullable WebGLActiveInfo)
+foreign import js_getTransformFeedbackVarying :: EffectFn3 WebGL2RenderingContext WebGLProgram GLuint (Nullable WebGLActiveInfo)
 
 
 
@@ -278,10 +270,9 @@ pauseTransformFeedback gl
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_pauseTransformFeedback gl0
+      runEffectFn1 js_pauseTransformFeedback gl0
 
-foreign import js_pauseTransformFeedback :: WebGL2RenderingContext
-                                         -> Effect Unit
+foreign import js_pauseTransformFeedback :: EffectFn1 WebGL2RenderingContext Unit
 
 
 
@@ -302,8 +293,7 @@ resumeTransformFeedback gl
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_resumeTransformFeedback gl0
+      runEffectFn1 js_resumeTransformFeedback gl0
 
-foreign import js_resumeTransformFeedback :: WebGL2RenderingContext
-                                          -> Effect Unit
+foreign import js_resumeTransformFeedback :: EffectFn1 WebGL2RenderingContext Unit
 

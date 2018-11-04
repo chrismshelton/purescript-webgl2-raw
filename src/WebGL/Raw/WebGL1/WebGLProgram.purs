@@ -21,6 +21,13 @@ import Data.Nullable ( Nullable
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn2
+                        , EffectFn3
+                        , EffectFn4
+                        , runEffectFn2
+                        , runEffectFn3
+                        , runEffectFn4
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -57,12 +64,9 @@ attachShader gl program shader
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_attachShader gl0 program shader
+      runEffectFn3 js_attachShader gl0 program shader
 
-foreign import js_attachShader :: WebGLRenderingContext
-                               -> WebGLProgram
-                               -> WebGLShader
-                               -> Effect Unit
+foreign import js_attachShader :: EffectFn3 WebGLRenderingContext WebGLProgram WebGLShader Unit
 
 
 
@@ -90,13 +94,9 @@ bindAttribLocation gl program index name
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_bindAttribLocation gl0 program index name
+      runEffectFn4 js_bindAttribLocation gl0 program index name
 
-foreign import js_bindAttribLocation :: WebGLRenderingContext
-                                     -> WebGLProgram
-                                     -> GLuint
-                                     -> String
-                                     -> Effect Unit
+foreign import js_bindAttribLocation :: EffectFn4 WebGLRenderingContext WebGLProgram GLuint String Unit
 
 
 
@@ -119,11 +119,9 @@ deleteProgram gl program
       gl0 = toWebGLRenderingContext gl
       program0 = toNullable program
     in
-      js_deleteProgram gl0 program0
+      runEffectFn2 js_deleteProgram gl0 program0
 
-foreign import js_deleteProgram :: WebGLRenderingContext
-                                -> Nullable WebGLProgram
-                                -> Effect Unit
+foreign import js_deleteProgram :: EffectFn2 WebGLRenderingContext (Nullable WebGLProgram) Unit
 
 
 
@@ -146,12 +144,9 @@ detachShader gl program shader
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_detachShader gl0 program shader
+      runEffectFn3 js_detachShader gl0 program shader
 
-foreign import js_detachShader :: WebGLRenderingContext
-                               -> WebGLProgram
-                               -> WebGLShader
-                               -> Effect Unit
+foreign import js_detachShader :: EffectFn3 WebGLRenderingContext WebGLProgram WebGLShader Unit
 
 
 
@@ -174,12 +169,10 @@ getAttachedShaders gl program
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getAttachedShaders gl0 program
+        res <- runEffectFn2 js_getAttachedShaders gl0 program
         pure (toMaybe res)
 
-foreign import js_getAttachedShaders :: WebGLRenderingContext
-                                     -> WebGLProgram
-                                     -> Effect (Nullable (Array WebGLShader))
+foreign import js_getAttachedShaders :: EffectFn2 WebGLRenderingContext WebGLProgram (Nullable (Array WebGLShader))
 
 
 
@@ -197,6 +190,10 @@ foreign import js_getAttachedShaders :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.9](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.9)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getProgramParameterGLboolean :: forall c
                              .  IsWebGLRenderingContext c
                              => c
@@ -208,13 +205,10 @@ getProgramParameterGLboolean gl program pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getProgramParameterGLboolean gl0 program pname
+        res <- runEffectFn3 js_getProgramParameterGLboolean gl0 program pname
         pure (toMaybe res)
 
-foreign import js_getProgramParameterGLboolean :: WebGLRenderingContext
-                                               -> WebGLProgram
-                                               -> GLenum
-                                               -> Effect (Nullable GLboolean)
+foreign import js_getProgramParameterGLboolean :: EffectFn3 WebGLRenderingContext WebGLProgram GLenum (Nullable GLboolean)
 
 
 
@@ -234,6 +228,10 @@ foreign import js_getProgramParameterGLboolean :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.9](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.9)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getProgramParameterGLint :: forall c
                          .  IsWebGLRenderingContext c
                          => c
@@ -245,13 +243,10 @@ getProgramParameterGLint gl program pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getProgramParameterGLint gl0 program pname
+        res <- runEffectFn3 js_getProgramParameterGLint gl0 program pname
         pure (toMaybe res)
 
-foreign import js_getProgramParameterGLint :: WebGLRenderingContext
-                                           -> WebGLProgram
-                                           -> GLenum
-                                           -> Effect (Nullable GLint)
+foreign import js_getProgramParameterGLint :: EffectFn3 WebGLRenderingContext WebGLProgram GLenum (Nullable GLint)
 
 
 
@@ -274,12 +269,10 @@ getProgramInfoLog gl program
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getProgramInfoLog gl0 program
+        res <- runEffectFn2 js_getProgramInfoLog gl0 program
         pure (toMaybe res)
 
-foreign import js_getProgramInfoLog :: WebGLRenderingContext
-                                    -> WebGLProgram
-                                    -> Effect (Nullable String)
+foreign import js_getProgramInfoLog :: EffectFn2 WebGLRenderingContext WebGLProgram (Nullable String)
 
 
 
@@ -302,11 +295,9 @@ isProgram gl program
       gl0 = toWebGLRenderingContext gl
       program0 = toNullable program
     in
-      js_isProgram gl0 program0
+      runEffectFn2 js_isProgram gl0 program0
 
-foreign import js_isProgram :: WebGLRenderingContext
-                            -> Nullable WebGLProgram
-                            -> Effect GLboolean
+foreign import js_isProgram :: EffectFn2 WebGLRenderingContext (Nullable WebGLProgram) GLboolean
 
 
 
@@ -328,11 +319,9 @@ linkProgram gl program
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_linkProgram gl0 program
+      runEffectFn2 js_linkProgram gl0 program
 
-foreign import js_linkProgram :: WebGLRenderingContext
-                              -> WebGLProgram
-                              -> Effect Unit
+foreign import js_linkProgram :: EffectFn2 WebGLRenderingContext WebGLProgram Unit
 
 
 
@@ -355,11 +344,9 @@ useProgram gl program
       gl0 = toWebGLRenderingContext gl
       program0 = toNullable program
     in
-      js_useProgram gl0 program0
+      runEffectFn2 js_useProgram gl0 program0
 
-foreign import js_useProgram :: WebGLRenderingContext
-                             -> Nullable WebGLProgram
-                             -> Effect Unit
+foreign import js_useProgram :: EffectFn2 WebGLRenderingContext (Nullable WebGLProgram) Unit
 
 
 
@@ -381,9 +368,7 @@ validateProgram gl program
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_validateProgram gl0 program
+      runEffectFn2 js_validateProgram gl0 program
 
-foreign import js_validateProgram :: WebGLRenderingContext
-                                  -> WebGLProgram
-                                  -> Effect Unit
+foreign import js_validateProgram :: EffectFn2 WebGLRenderingContext WebGLProgram Unit
 

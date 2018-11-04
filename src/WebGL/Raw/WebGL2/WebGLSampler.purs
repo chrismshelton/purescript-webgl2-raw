@@ -17,6 +17,15 @@ import Data.Nullable ( Nullable
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , EffectFn2
+                        , EffectFn3
+                        , EffectFn4
+                        , runEffectFn1
+                        , runEffectFn2
+                        , runEffectFn3
+                        , runEffectFn4
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -52,11 +61,10 @@ createSampler gl
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_createSampler gl0
+        res <- runEffectFn1 js_createSampler gl0
         pure (toMaybe res)
 
-foreign import js_createSampler :: WebGL2RenderingContext
-                                -> Effect (Nullable WebGLSampler)
+foreign import js_createSampler :: EffectFn1 WebGL2RenderingContext (Nullable WebGLSampler)
 
 
 
@@ -79,11 +87,9 @@ deleteSampler gl sampler
       gl0 = toWebGL2RenderingContext gl
       sampler0 = toNullable sampler
     in
-      js_deleteSampler gl0 sampler0
+      runEffectFn2 js_deleteSampler gl0 sampler0
 
-foreign import js_deleteSampler :: WebGL2RenderingContext
-                                -> Nullable WebGLSampler
-                                -> Effect Unit
+foreign import js_deleteSampler :: EffectFn2 WebGL2RenderingContext (Nullable WebGLSampler) Unit
 
 
 
@@ -106,11 +112,9 @@ isSampler gl sampler
       gl0 = toWebGL2RenderingContext gl
       sampler0 = toNullable sampler
     in
-      js_isSampler gl0 sampler0
+      runEffectFn2 js_isSampler gl0 sampler0
 
-foreign import js_isSampler :: WebGL2RenderingContext
-                            -> Nullable WebGLSampler
-                            -> Effect GLboolean
+foreign import js_isSampler :: EffectFn2 WebGL2RenderingContext (Nullable WebGLSampler) GLboolean
 
 
 
@@ -134,12 +138,9 @@ bindSampler gl unit sampler
       gl0 = toWebGL2RenderingContext gl
       sampler0 = toNullable sampler
     in
-      js_bindSampler gl0 unit sampler0
+      runEffectFn3 js_bindSampler gl0 unit sampler0
 
-foreign import js_bindSampler :: WebGL2RenderingContext
-                              -> GLuint
-                              -> Nullable WebGLSampler
-                              -> Effect Unit
+foreign import js_bindSampler :: EffectFn3 WebGL2RenderingContext GLuint (Nullable WebGLSampler) Unit
 
 
 
@@ -164,13 +165,9 @@ samplerParameteri gl sampler pname param
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_samplerParameteri gl0 sampler pname param
+      runEffectFn4 js_samplerParameteri gl0 sampler pname param
 
-foreign import js_samplerParameteri :: WebGL2RenderingContext
-                                    -> WebGLSampler
-                                    -> GLenum
-                                    -> GLint
-                                    -> Effect Unit
+foreign import js_samplerParameteri :: EffectFn4 WebGL2RenderingContext WebGLSampler GLenum GLint Unit
 
 
 
@@ -195,13 +192,9 @@ samplerParameterf gl sampler pname param
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_samplerParameterf gl0 sampler pname param
+      runEffectFn4 js_samplerParameterf gl0 sampler pname param
 
-foreign import js_samplerParameterf :: WebGL2RenderingContext
-                                    -> WebGLSampler
-                                    -> GLenum
-                                    -> GLfloat
-                                    -> Effect Unit
+foreign import js_samplerParameterf :: EffectFn4 WebGL2RenderingContext WebGLSampler GLenum GLfloat Unit
 
 
 
@@ -223,6 +216,10 @@ foreign import js_samplerParameterf :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.13](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.13)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getSamplerParameterGLenum :: forall c
                           .  IsWebGL2RenderingContext c
                           => c
@@ -234,13 +231,10 @@ getSamplerParameterGLenum gl sampler pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getSamplerParameterGLenum gl0 sampler pname
+        res <- runEffectFn3 js_getSamplerParameterGLenum gl0 sampler pname
         pure (toMaybe res)
 
-foreign import js_getSamplerParameterGLenum :: WebGL2RenderingContext
-                                            -> WebGLSampler
-                                            -> GLenum
-                                            -> Effect (Nullable GLenum)
+foreign import js_getSamplerParameterGLenum :: EffectFn3 WebGL2RenderingContext WebGLSampler GLenum (Nullable GLenum)
 
 
 
@@ -257,6 +251,10 @@ foreign import js_getSamplerParameterGLenum :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.13](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.13)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getSamplerParameterGLfloat :: forall c
                            .  IsWebGL2RenderingContext c
                            => c
@@ -268,11 +266,8 @@ getSamplerParameterGLfloat gl sampler pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getSamplerParameterGLfloat gl0 sampler pname
+        res <- runEffectFn3 js_getSamplerParameterGLfloat gl0 sampler pname
         pure (toMaybe res)
 
-foreign import js_getSamplerParameterGLfloat :: WebGL2RenderingContext
-                                             -> WebGLSampler
-                                             -> GLenum
-                                             -> Effect (Nullable GLfloat)
+foreign import js_getSamplerParameterGLfloat :: EffectFn3 WebGL2RenderingContext WebGLSampler GLenum (Nullable GLfloat)
 

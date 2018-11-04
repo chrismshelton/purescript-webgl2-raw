@@ -8,7 +8,14 @@ module WebGL.Raw.WebGL2.WebGLBuffer
   ) where
 
 
+import Data.Maybe (Maybe)
+import Data.Nullable ( Nullable
+                     , toNullable
+                     )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn6
+                        , runEffectFn6
+                        )
 import Prelude (Unit)
 import WebGL.Raw.Types ( class IsArrayBufferView
                        , class IsWebGL2RenderingContext
@@ -48,29 +55,24 @@ import WebGL.Raw.WebGL1.WebGLBuffer ( bindBuffer
 -- | Documentation: [WebGL 2.0 spec, section 3.7.3](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.3)
 -- |
 bufferData :: forall a c
-           .  IsArrayBufferView a
-           => IsWebGL2RenderingContext c
+           .  IsWebGL2RenderingContext c
+           => IsArrayBufferView a
            => c
            -> GLenum
            -> a
            -> GLenum
            -> GLuint
-           -> GLuint
+           -> Maybe GLuint
            -> Effect Unit
 bufferData gl target srcData usage srcOffset length
   = let
       gl0 = toWebGL2RenderingContext gl
       srcData0 = toArrayBufferView srcData
+      length0 = toNullable length
     in
-      js_bufferData gl0 target srcData0 usage srcOffset length
+      runEffectFn6 js_bufferData gl0 target srcData0 usage srcOffset length0
 
-foreign import js_bufferData :: WebGL2RenderingContext
-                             -> GLenum
-                             -> ArrayBufferView
-                             -> GLenum
-                             -> GLuint
-                             -> GLuint
-                             -> Effect Unit
+foreign import js_bufferData :: EffectFn6 WebGL2RenderingContext GLenum ArrayBufferView GLenum GLuint (Nullable GLuint) Unit
 
 
 
@@ -90,29 +92,24 @@ foreign import js_bufferData :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.3](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.3)
 -- |
 bufferSubData :: forall a c
-              .  IsArrayBufferView a
-              => IsWebGL2RenderingContext c
+              .  IsWebGL2RenderingContext c
+              => IsArrayBufferView a
               => c
               -> GLenum
               -> GLintptr
               -> a
               -> GLuint
-              -> GLuint
+              -> Maybe GLuint
               -> Effect Unit
 bufferSubData gl target dstByteOffset srcData srcOffset length
   = let
       gl0 = toWebGL2RenderingContext gl
       srcData0 = toArrayBufferView srcData
+      length0 = toNullable length
     in
-      js_bufferSubData gl0 target dstByteOffset srcData0 srcOffset length
+      runEffectFn6 js_bufferSubData gl0 target dstByteOffset srcData0 srcOffset length0
 
-foreign import js_bufferSubData :: WebGL2RenderingContext
-                                -> GLenum
-                                -> GLintptr
-                                -> ArrayBufferView
-                                -> GLuint
-                                -> GLuint
-                                -> Effect Unit
+foreign import js_bufferSubData :: EffectFn6 WebGL2RenderingContext GLenum GLintptr ArrayBufferView GLuint (Nullable GLuint) Unit
 
 
 
@@ -144,15 +141,9 @@ copyBufferSubData gl readTarget writeTarget readOffset writeOffset size
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_copyBufferSubData gl0 readTarget writeTarget readOffset writeOffset size
+      runEffectFn6 js_copyBufferSubData gl0 readTarget writeTarget readOffset writeOffset size
 
-foreign import js_copyBufferSubData :: WebGL2RenderingContext
-                                    -> GLenum
-                                    -> GLenum
-                                    -> GLintptr
-                                    -> GLintptr
-                                    -> GLsizeiptr
-                                    -> Effect Unit
+foreign import js_copyBufferSubData :: EffectFn6 WebGL2RenderingContext GLenum GLenum GLintptr GLintptr GLsizeiptr Unit
 
 
 
@@ -172,27 +163,23 @@ foreign import js_copyBufferSubData :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.3](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.3)
 -- |
 getBufferSubData :: forall a c
-                 .  IsArrayBufferView a
-                 => IsWebGL2RenderingContext c
+                 .  IsWebGL2RenderingContext c
+                 => IsArrayBufferView a
                  => c
                  -> GLenum
                  -> GLintptr
                  -> a
-                 -> GLuint
-                 -> GLuint
+                 -> Maybe GLuint
+                 -> Maybe GLuint
                  -> Effect Unit
 getBufferSubData gl target srcByteOffset dstBuffer dstOffset length
   = let
       gl0 = toWebGL2RenderingContext gl
       dstBuffer0 = toArrayBufferView dstBuffer
+      dstOffset0 = toNullable dstOffset
+      length0 = toNullable length
     in
-      js_getBufferSubData gl0 target srcByteOffset dstBuffer0 dstOffset length
+      runEffectFn6 js_getBufferSubData gl0 target srcByteOffset dstBuffer0 dstOffset0 length0
 
-foreign import js_getBufferSubData :: WebGL2RenderingContext
-                                   -> GLenum
-                                   -> GLintptr
-                                   -> ArrayBufferView
-                                   -> GLuint
-                                   -> GLuint
-                                   -> Effect Unit
+foreign import js_getBufferSubData :: EffectFn6 WebGL2RenderingContext GLenum GLintptr ArrayBufferView (Nullable GLuint) (Nullable GLuint) Unit
 

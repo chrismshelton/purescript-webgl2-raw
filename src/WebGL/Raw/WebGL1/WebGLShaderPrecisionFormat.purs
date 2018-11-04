@@ -7,6 +7,9 @@ module WebGL.Raw.WebGL1.WebGLShaderPrecisionFormat
 
 
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , runEffectFn1
+                        )
 import WebGL.Raw.Types ( GLint
                        , WebGLShaderPrecisionFormat
                        )
@@ -20,9 +23,9 @@ import WebGL.Raw.Types (WebGLShaderPrecisionFormat) as WebGLShaderPrecisionForma
 -- |
 getRangeMin :: WebGLShaderPrecisionFormat -> Effect GLint
 getRangeMin webglshaderprecisionformat
-  = js_getRangeMin webglshaderprecisionformat
+  = runEffectFn1 js_getRangeMin webglshaderprecisionformat
 
-foreign import js_getRangeMin :: WebGLShaderPrecisionFormat -> Effect GLint
+foreign import js_getRangeMin :: EffectFn1 WebGLShaderPrecisionFormat GLint
 
 
 
@@ -33,9 +36,9 @@ foreign import js_getRangeMin :: WebGLShaderPrecisionFormat -> Effect GLint
 -- |
 getRangeMax :: WebGLShaderPrecisionFormat -> Effect GLint
 getRangeMax webglshaderprecisionformat
-  = js_getRangeMax webglshaderprecisionformat
+  = runEffectFn1 js_getRangeMax webglshaderprecisionformat
 
-foreign import js_getRangeMax :: WebGLShaderPrecisionFormat -> Effect GLint
+foreign import js_getRangeMax :: EffectFn1 WebGLShaderPrecisionFormat GLint
 
 
 
@@ -46,7 +49,7 @@ foreign import js_getRangeMax :: WebGLShaderPrecisionFormat -> Effect GLint
 -- |
 getPrecision :: WebGLShaderPrecisionFormat -> Effect GLint
 getPrecision webglshaderprecisionformat
-  = js_getPrecision webglshaderprecisionformat
+  = runEffectFn1 js_getPrecision webglshaderprecisionformat
 
-foreign import js_getPrecision :: WebGLShaderPrecisionFormat -> Effect GLint
+foreign import js_getPrecision :: EffectFn1 WebGLShaderPrecisionFormat GLint
 

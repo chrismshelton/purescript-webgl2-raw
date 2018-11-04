@@ -39,6 +39,15 @@ import Data.Nullable ( Nullable
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn3
+                        , EffectFn4
+                        , EffectFn5
+                        , EffectFn6
+                        , runEffectFn3
+                        , runEffectFn4
+                        , runEffectFn5
+                        , runEffectFn6
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -83,13 +92,10 @@ getActiveUniform gl program index
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getActiveUniform gl0 program index
+        res <- runEffectFn3 js_getActiveUniform gl0 program index
         pure (toMaybe res)
 
-foreign import js_getActiveUniform :: WebGLRenderingContext
-                                   -> WebGLProgram
-                                   -> GLuint
-                                   -> Effect (Nullable WebGLActiveInfo)
+foreign import js_getActiveUniform :: EffectFn3 WebGLRenderingContext WebGLProgram GLuint (Nullable WebGLActiveInfo)
 
 
 
@@ -105,6 +111,10 @@ foreign import js_getActiveUniform :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getUniformGLboolean :: forall c
                     .  IsWebGLRenderingContext c
                     => c
@@ -116,13 +126,10 @@ getUniformGLboolean gl program location
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getUniformGLboolean gl0 program location
+        res <- runEffectFn3 js_getUniformGLboolean gl0 program location
         pure (toMaybe res)
 
-foreign import js_getUniformGLboolean :: WebGLRenderingContext
-                                      -> WebGLProgram
-                                      -> WebGLUniformLocation
-                                      -> Effect (Nullable GLboolean)
+foreign import js_getUniformGLboolean :: EffectFn3 WebGLRenderingContext WebGLProgram WebGLUniformLocation (Nullable GLboolean)
 
 
 
@@ -138,6 +145,10 @@ foreign import js_getUniformGLboolean :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getUniformGLfloat :: forall c
                   .  IsWebGLRenderingContext c
                   => c
@@ -149,13 +160,10 @@ getUniformGLfloat gl program location
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getUniformGLfloat gl0 program location
+        res <- runEffectFn3 js_getUniformGLfloat gl0 program location
         pure (toMaybe res)
 
-foreign import js_getUniformGLfloat :: WebGLRenderingContext
-                                    -> WebGLProgram
-                                    -> WebGLUniformLocation
-                                    -> Effect (Nullable GLfloat)
+foreign import js_getUniformGLfloat :: EffectFn3 WebGLRenderingContext WebGLProgram WebGLUniformLocation (Nullable GLfloat)
 
 
 
@@ -174,6 +182,10 @@ foreign import js_getUniformGLfloat :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getUniformGLint :: forall c
                 .  IsWebGLRenderingContext c
                 => c
@@ -185,13 +197,10 @@ getUniformGLint gl program location
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getUniformGLint gl0 program location
+        res <- runEffectFn3 js_getUniformGLint gl0 program location
         pure (toMaybe res)
 
-foreign import js_getUniformGLint :: WebGLRenderingContext
-                                  -> WebGLProgram
-                                  -> WebGLUniformLocation
-                                  -> Effect (Nullable GLint)
+foreign import js_getUniformGLint :: EffectFn3 WebGLRenderingContext WebGLProgram WebGLUniformLocation (Nullable GLint)
 
 
 
@@ -209,6 +218,10 @@ foreign import js_getUniformGLint :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getUniformGLbooleanArray :: forall c
                          .  IsWebGLRenderingContext c
                          => c
@@ -220,13 +233,10 @@ getUniformGLbooleanArray gl program location
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getUniformGLbooleanArray gl0 program location
+        res <- runEffectFn3 js_getUniformGLbooleanArray gl0 program location
         pure (toMaybe res)
 
-foreign import js_getUniformGLbooleanArray :: WebGLRenderingContext
-                                           -> WebGLProgram
-                                           -> WebGLUniformLocation
-                                           -> Effect (Nullable (Array GLboolean))
+foreign import js_getUniformGLbooleanArray :: EffectFn3 WebGLRenderingContext WebGLProgram WebGLUniformLocation (Nullable (Array GLboolean))
 
 
 
@@ -244,6 +254,10 @@ foreign import js_getUniformGLbooleanArray :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getUniformInt32Array :: forall c
                      .  IsWebGLRenderingContext c
                      => c
@@ -255,13 +269,10 @@ getUniformInt32Array gl program location
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getUniformInt32Array gl0 program location
+        res <- runEffectFn3 js_getUniformInt32Array gl0 program location
         pure (toMaybe res)
 
-foreign import js_getUniformInt32Array :: WebGLRenderingContext
-                                       -> WebGLProgram
-                                       -> WebGLUniformLocation
-                                       -> Effect (Nullable (ArrayView Int32))
+foreign import js_getUniformInt32Array :: EffectFn3 WebGLRenderingContext WebGLProgram WebGLUniformLocation (Nullable (ArrayView Int32))
 
 
 
@@ -288,6 +299,10 @@ foreign import js_getUniformInt32Array :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getUniformFloat32Array :: forall c
                        .  IsWebGLRenderingContext c
                        => c
@@ -299,13 +314,10 @@ getUniformFloat32Array gl program location
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getUniformFloat32Array gl0 program location
+        res <- runEffectFn3 js_getUniformFloat32Array gl0 program location
         pure (toMaybe res)
 
-foreign import js_getUniformFloat32Array :: WebGLRenderingContext
-                                         -> WebGLProgram
-                                         -> WebGLUniformLocation
-                                         -> Effect (Nullable (ArrayView Float32))
+foreign import js_getUniformFloat32Array :: EffectFn3 WebGLRenderingContext WebGLProgram WebGLUniformLocation (Nullable (ArrayView Float32))
 
 
 
@@ -330,13 +342,10 @@ getUniformLocation gl program name
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getUniformLocation gl0 program name
+        res <- runEffectFn3 js_getUniformLocation gl0 program name
         pure (toMaybe res)
 
-foreign import js_getUniformLocation :: WebGLRenderingContext
-                                     -> WebGLProgram
-                                     -> String
-                                     -> Effect (Nullable WebGLUniformLocation)
+foreign import js_getUniformLocation :: EffectFn3 WebGLRenderingContext WebGLProgram String (Nullable WebGLUniformLocation)
 
 
 
@@ -360,12 +369,9 @@ uniform1f gl location x
       gl0 = toWebGLRenderingContext gl
       location0 = toNullable location
     in
-      js_uniform1f gl0 location0 x
+      runEffectFn3 js_uniform1f gl0 location0 x
 
-foreign import js_uniform1f :: WebGLRenderingContext
-                            -> Nullable WebGLUniformLocation
-                            -> GLfloat
-                            -> Effect Unit
+foreign import js_uniform1f :: EffectFn3 WebGLRenderingContext (Nullable WebGLUniformLocation) GLfloat Unit
 
 
 
@@ -390,13 +396,9 @@ uniform2f gl location x y
       gl0 = toWebGLRenderingContext gl
       location0 = toNullable location
     in
-      js_uniform2f gl0 location0 x y
+      runEffectFn4 js_uniform2f gl0 location0 x y
 
-foreign import js_uniform2f :: WebGLRenderingContext
-                            -> Nullable WebGLUniformLocation
-                            -> GLfloat
-                            -> GLfloat
-                            -> Effect Unit
+foreign import js_uniform2f :: EffectFn4 WebGLRenderingContext (Nullable WebGLUniformLocation) GLfloat GLfloat Unit
 
 
 
@@ -427,14 +429,9 @@ uniform3f gl location x y z
       gl0 = toWebGLRenderingContext gl
       location0 = toNullable location
     in
-      js_uniform3f gl0 location0 x y z
+      runEffectFn5 js_uniform3f gl0 location0 x y z
 
-foreign import js_uniform3f :: WebGLRenderingContext
-                            -> Nullable WebGLUniformLocation
-                            -> GLfloat
-                            -> GLfloat
-                            -> GLfloat
-                            -> Effect Unit
+foreign import js_uniform3f :: EffectFn5 WebGLRenderingContext (Nullable WebGLUniformLocation) GLfloat GLfloat GLfloat Unit
 
 
 
@@ -467,15 +464,9 @@ uniform4f gl location x y z w
       gl0 = toWebGLRenderingContext gl
       location0 = toNullable location
     in
-      js_uniform4f gl0 location0 x y z w
+      runEffectFn6 js_uniform4f gl0 location0 x y z w
 
-foreign import js_uniform4f :: WebGLRenderingContext
-                            -> Nullable WebGLUniformLocation
-                            -> GLfloat
-                            -> GLfloat
-                            -> GLfloat
-                            -> GLfloat
-                            -> Effect Unit
+foreign import js_uniform4f :: EffectFn6 WebGLRenderingContext (Nullable WebGLUniformLocation) GLfloat GLfloat GLfloat GLfloat Unit
 
 
 
@@ -499,12 +490,9 @@ uniform1i gl location x
       gl0 = toWebGLRenderingContext gl
       location0 = toNullable location
     in
-      js_uniform1i gl0 location0 x
+      runEffectFn3 js_uniform1i gl0 location0 x
 
-foreign import js_uniform1i :: WebGLRenderingContext
-                            -> Nullable WebGLUniformLocation
-                            -> GLint
-                            -> Effect Unit
+foreign import js_uniform1i :: EffectFn3 WebGLRenderingContext (Nullable WebGLUniformLocation) GLint Unit
 
 
 
@@ -529,13 +517,9 @@ uniform2i gl location x y
       gl0 = toWebGLRenderingContext gl
       location0 = toNullable location
     in
-      js_uniform2i gl0 location0 x y
+      runEffectFn4 js_uniform2i gl0 location0 x y
 
-foreign import js_uniform2i :: WebGLRenderingContext
-                            -> Nullable WebGLUniformLocation
-                            -> GLint
-                            -> GLint
-                            -> Effect Unit
+foreign import js_uniform2i :: EffectFn4 WebGLRenderingContext (Nullable WebGLUniformLocation) GLint GLint Unit
 
 
 
@@ -562,14 +546,9 @@ uniform3i gl location x y z
       gl0 = toWebGLRenderingContext gl
       location0 = toNullable location
     in
-      js_uniform3i gl0 location0 x y z
+      runEffectFn5 js_uniform3i gl0 location0 x y z
 
-foreign import js_uniform3i :: WebGLRenderingContext
-                            -> Nullable WebGLUniformLocation
-                            -> GLint
-                            -> GLint
-                            -> GLint
-                            -> Effect Unit
+foreign import js_uniform3i :: EffectFn5 WebGLRenderingContext (Nullable WebGLUniformLocation) GLint GLint GLint Unit
 
 
 
@@ -602,15 +581,9 @@ uniform4i gl location x y z w
       gl0 = toWebGLRenderingContext gl
       location0 = toNullable location
     in
-      js_uniform4i gl0 location0 x y z w
+      runEffectFn6 js_uniform4i gl0 location0 x y z w
 
-foreign import js_uniform4i :: WebGLRenderingContext
-                            -> Nullable WebGLUniformLocation
-                            -> GLint
-                            -> GLint
-                            -> GLint
-                            -> GLint
-                            -> Effect Unit
+foreign import js_uniform4i :: EffectFn6 WebGLRenderingContext (Nullable WebGLUniformLocation) GLint GLint GLint GLint Unit
 
 
 
@@ -624,8 +597,8 @@ foreign import js_uniform4i :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
 uniform1fv :: forall c f
-           .  IsFloat32List f
-           => IsWebGLRenderingContext c
+           .  IsWebGLRenderingContext c
+           => IsFloat32List f
            => c
            -> Maybe WebGLUniformLocation
            -> f
@@ -636,12 +609,9 @@ uniform1fv gl location v
       location0 = toNullable location
       v0 = toFloat32List v
     in
-      js_uniform1fv gl0 location0 v0
+      runEffectFn3 js_uniform1fv gl0 location0 v0
 
-foreign import js_uniform1fv :: WebGLRenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Float32List
-                             -> Effect Unit
+foreign import js_uniform1fv :: EffectFn3 WebGLRenderingContext (Nullable WebGLUniformLocation) Float32List Unit
 
 
 
@@ -655,8 +625,8 @@ foreign import js_uniform1fv :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
 uniform2fv :: forall c f
-           .  IsFloat32List f
-           => IsWebGLRenderingContext c
+           .  IsWebGLRenderingContext c
+           => IsFloat32List f
            => c
            -> Maybe WebGLUniformLocation
            -> f
@@ -667,12 +637,9 @@ uniform2fv gl location v
       location0 = toNullable location
       v0 = toFloat32List v
     in
-      js_uniform2fv gl0 location0 v0
+      runEffectFn3 js_uniform2fv gl0 location0 v0
 
-foreign import js_uniform2fv :: WebGLRenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Float32List
-                             -> Effect Unit
+foreign import js_uniform2fv :: EffectFn3 WebGLRenderingContext (Nullable WebGLUniformLocation) Float32List Unit
 
 
 
@@ -686,8 +653,8 @@ foreign import js_uniform2fv :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
 uniform3fv :: forall c f
-           .  IsFloat32List f
-           => IsWebGLRenderingContext c
+           .  IsWebGLRenderingContext c
+           => IsFloat32List f
            => c
            -> Maybe WebGLUniformLocation
            -> f
@@ -698,12 +665,9 @@ uniform3fv gl location v
       location0 = toNullable location
       v0 = toFloat32List v
     in
-      js_uniform3fv gl0 location0 v0
+      runEffectFn3 js_uniform3fv gl0 location0 v0
 
-foreign import js_uniform3fv :: WebGLRenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Float32List
-                             -> Effect Unit
+foreign import js_uniform3fv :: EffectFn3 WebGLRenderingContext (Nullable WebGLUniformLocation) Float32List Unit
 
 
 
@@ -717,8 +681,8 @@ foreign import js_uniform3fv :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
 uniform4fv :: forall c f
-           .  IsFloat32List f
-           => IsWebGLRenderingContext c
+           .  IsWebGLRenderingContext c
+           => IsFloat32List f
            => c
            -> Maybe WebGLUniformLocation
            -> f
@@ -729,12 +693,9 @@ uniform4fv gl location v
       location0 = toNullable location
       v0 = toFloat32List v
     in
-      js_uniform4fv gl0 location0 v0
+      runEffectFn3 js_uniform4fv gl0 location0 v0
 
-foreign import js_uniform4fv :: WebGLRenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Float32List
-                             -> Effect Unit
+foreign import js_uniform4fv :: EffectFn3 WebGLRenderingContext (Nullable WebGLUniformLocation) Float32List Unit
 
 
 
@@ -748,8 +709,8 @@ foreign import js_uniform4fv :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
 uniform1iv :: forall c i
-           .  IsInt32List i
-           => IsWebGLRenderingContext c
+           .  IsWebGLRenderingContext c
+           => IsInt32List i
            => c
            -> Maybe WebGLUniformLocation
            -> i
@@ -760,12 +721,9 @@ uniform1iv gl location v
       location0 = toNullable location
       v0 = toInt32List v
     in
-      js_uniform1iv gl0 location0 v0
+      runEffectFn3 js_uniform1iv gl0 location0 v0
 
-foreign import js_uniform1iv :: WebGLRenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Int32List
-                             -> Effect Unit
+foreign import js_uniform1iv :: EffectFn3 WebGLRenderingContext (Nullable WebGLUniformLocation) Int32List Unit
 
 
 
@@ -779,8 +737,8 @@ foreign import js_uniform1iv :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
 uniform2iv :: forall c i
-           .  IsInt32List i
-           => IsWebGLRenderingContext c
+           .  IsWebGLRenderingContext c
+           => IsInt32List i
            => c
            -> Maybe WebGLUniformLocation
            -> i
@@ -791,12 +749,9 @@ uniform2iv gl location v
       location0 = toNullable location
       v0 = toInt32List v
     in
-      js_uniform2iv gl0 location0 v0
+      runEffectFn3 js_uniform2iv gl0 location0 v0
 
-foreign import js_uniform2iv :: WebGLRenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Int32List
-                             -> Effect Unit
+foreign import js_uniform2iv :: EffectFn3 WebGLRenderingContext (Nullable WebGLUniformLocation) Int32List Unit
 
 
 
@@ -810,8 +765,8 @@ foreign import js_uniform2iv :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
 uniform3iv :: forall c i
-           .  IsInt32List i
-           => IsWebGLRenderingContext c
+           .  IsWebGLRenderingContext c
+           => IsInt32List i
            => c
            -> Maybe WebGLUniformLocation
            -> i
@@ -822,12 +777,9 @@ uniform3iv gl location v
       location0 = toNullable location
       v0 = toInt32List v
     in
-      js_uniform3iv gl0 location0 v0
+      runEffectFn3 js_uniform3iv gl0 location0 v0
 
-foreign import js_uniform3iv :: WebGLRenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Int32List
-                             -> Effect Unit
+foreign import js_uniform3iv :: EffectFn3 WebGLRenderingContext (Nullable WebGLUniformLocation) Int32List Unit
 
 
 
@@ -841,8 +793,8 @@ foreign import js_uniform3iv :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
 uniform4iv :: forall c i
-           .  IsInt32List i
-           => IsWebGLRenderingContext c
+           .  IsWebGLRenderingContext c
+           => IsInt32List i
            => c
            -> Maybe WebGLUniformLocation
            -> i
@@ -853,12 +805,9 @@ uniform4iv gl location v
       location0 = toNullable location
       v0 = toInt32List v
     in
-      js_uniform4iv gl0 location0 v0
+      runEffectFn3 js_uniform4iv gl0 location0 v0
 
-foreign import js_uniform4iv :: WebGLRenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Int32List
-                             -> Effect Unit
+foreign import js_uniform4iv :: EffectFn3 WebGLRenderingContext (Nullable WebGLUniformLocation) Int32List Unit
 
 
 
@@ -876,8 +825,8 @@ foreign import js_uniform4iv :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
 uniformMatrix2fv :: forall c f
-                 .  IsFloat32List f
-                 => IsWebGLRenderingContext c
+                 .  IsWebGLRenderingContext c
+                 => IsFloat32List f
                  => c
                  -> Maybe WebGLUniformLocation
                  -> GLboolean
@@ -889,13 +838,9 @@ uniformMatrix2fv gl location transpose value
       location0 = toNullable location
       value0 = toFloat32List value
     in
-      js_uniformMatrix2fv gl0 location0 transpose value0
+      runEffectFn4 js_uniformMatrix2fv gl0 location0 transpose value0
 
-foreign import js_uniformMatrix2fv :: WebGLRenderingContext
-                                   -> Nullable WebGLUniformLocation
-                                   -> GLboolean
-                                   -> Float32List
-                                   -> Effect Unit
+foreign import js_uniformMatrix2fv :: EffectFn4 WebGLRenderingContext (Nullable WebGLUniformLocation) GLboolean Float32List Unit
 
 
 
@@ -913,8 +858,8 @@ foreign import js_uniformMatrix2fv :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
 uniformMatrix3fv :: forall c f
-                 .  IsFloat32List f
-                 => IsWebGLRenderingContext c
+                 .  IsWebGLRenderingContext c
+                 => IsFloat32List f
                  => c
                  -> Maybe WebGLUniformLocation
                  -> GLboolean
@@ -926,13 +871,9 @@ uniformMatrix3fv gl location transpose value
       location0 = toNullable location
       value0 = toFloat32List value
     in
-      js_uniformMatrix3fv gl0 location0 transpose value0
+      runEffectFn4 js_uniformMatrix3fv gl0 location0 transpose value0
 
-foreign import js_uniformMatrix3fv :: WebGLRenderingContext
-                                   -> Nullable WebGLUniformLocation
-                                   -> GLboolean
-                                   -> Float32List
-                                   -> Effect Unit
+foreign import js_uniformMatrix3fv :: EffectFn4 WebGLRenderingContext (Nullable WebGLUniformLocation) GLboolean Float32List Unit
 
 
 
@@ -950,8 +891,8 @@ foreign import js_uniformMatrix3fv :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
 uniformMatrix4fv :: forall c f
-                 .  IsFloat32List f
-                 => IsWebGLRenderingContext c
+                 .  IsWebGLRenderingContext c
+                 => IsFloat32List f
                  => c
                  -> Maybe WebGLUniformLocation
                  -> GLboolean
@@ -963,11 +904,7 @@ uniformMatrix4fv gl location transpose value
       location0 = toNullable location
       value0 = toFloat32List value
     in
-      js_uniformMatrix4fv gl0 location0 transpose value0
+      runEffectFn4 js_uniformMatrix4fv gl0 location0 transpose value0
 
-foreign import js_uniformMatrix4fv :: WebGLRenderingContext
-                                   -> Nullable WebGLUniformLocation
-                                   -> GLboolean
-                                   -> Float32List
-                                   -> Effect Unit
+foreign import js_uniformMatrix4fv :: EffectFn4 WebGLRenderingContext (Nullable WebGLUniformLocation) GLboolean Float32List Unit
 

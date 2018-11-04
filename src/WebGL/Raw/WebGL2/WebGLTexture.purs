@@ -16,13 +16,13 @@ module WebGL.Raw.WebGL2.WebGLTexture
   , texSubImage3D
   , copyTexSubImage3D
   , compressedTexImage2DUnpackBuffer
-  , compressedTexImage2DOffset
+  , compressedTexImage2D
   , compressedTexImage3DUnpackBuffer
   , compressedTexImage3D
   , compressedTexSubImage2DUnpackBuffer
-  , compressedTexSubImage2DOffset
+  , compressedTexSubImage2D
   , compressedTexSubImage3DUnpackBuffer
-  , compressedTexSubImage3DOffset
+  , compressedTexSubImage3D
   , getTexParameterGLboolean
   , getTexParameterGLfloat
   , getTexParameterGLint
@@ -32,12 +32,30 @@ module WebGL.Raw.WebGL2.WebGLTexture
   ) where
 
 
+import Data.Function.Uncurried ( Fn1
+                               , Fn2
+                               , Fn3
+                               , runFn1
+                               , runFn2
+                               , runFn3
+                               )
 import Data.Maybe (Maybe)
 import Data.Nullable ( Nullable
                      , toMaybe
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn10
+                        , EffectFn3
+                        , EffectFn6
+                        , EffectFn7
+                        , EffectFn9
+                        , runEffectFn10
+                        , runEffectFn3
+                        , runEffectFn6
+                        , runEffectFn7
+                        , runEffectFn9
+                        )
 import Prelude ( bind
                , map
                , pure
@@ -62,8 +80,6 @@ import WebGL.Raw.Types ( class IsArrayBufferView
                        )
 import WebGL.Raw.Types (WebGLTexture) as WebGLTextureType
 import WebGL.Raw.WebGL1.WebGLTexture ( bindTexture
-                                     , compressedTexImage2D
-                                     , compressedTexSubImage2D
                                      , copyTexImage2D
                                      , copyTexSubImage2D
                                      , createTexture
@@ -108,15 +124,9 @@ texStorage2D gl target levels internalformat width height
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_texStorage2D gl0 target levels internalformat width height
+      runEffectFn6 js_texStorage2D gl0 target levels internalformat width height
 
-foreign import js_texStorage2D :: WebGL2RenderingContext
-                               -> GLenum
-                               -> GLsizei
-                               -> GLenum
-                               -> GLsizei
-                               -> GLsizei
-                               -> Effect Unit
+foreign import js_texStorage2D :: EffectFn6 WebGL2RenderingContext GLenum GLsizei GLenum GLsizei GLsizei Unit
 
 
 
@@ -150,16 +160,9 @@ texStorage3D gl target levels internalformat width height depth
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_texStorage3D gl0 target levels internalformat width height depth
+      runEffectFn7 js_texStorage3D gl0 target levels internalformat width height depth
 
-foreign import js_texStorage3D :: WebGL2RenderingContext
-                               -> GLenum
-                               -> GLsizei
-                               -> GLenum
-                               -> GLsizei
-                               -> GLsizei
-                               -> GLsizei
-                               -> Effect Unit
+foreign import js_texStorage3D :: EffectFn7 WebGL2RenderingContext GLenum GLsizei GLenum GLsizei GLsizei GLsizei Unit
 
 
 
@@ -199,19 +202,9 @@ texImage2DUnpackBuffer gl target level internalformat width height border format
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_texImage2DUnpackBuffer gl0 target level internalformat width height border format type0 pboOffset
+      runEffectFn10 js_texImage2DUnpackBuffer gl0 target level internalformat width height border format type0 pboOffset
 
-foreign import js_texImage2DUnpackBuffer :: WebGL2RenderingContext
-                                         -> GLenum
-                                         -> GLint
-                                         -> GLint
-                                         -> GLsizei
-                                         -> GLsizei
-                                         -> GLint
-                                         -> GLenum
-                                         -> GLenum
-                                         -> GLintptr
-                                         -> Effect Unit
+foreign import js_texImage2DUnpackBuffer :: EffectFn10 WebGL2RenderingContext GLenum GLint GLint GLsizei GLsizei GLint GLenum GLenum GLintptr Unit
 
 
 
@@ -235,8 +228,8 @@ foreign import js_texImage2DUnpackBuffer :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
 texImage2DImageSourceWithSize :: forall c t
-                              .  IsTexImageSource t
-                              => IsWebGL2RenderingContext c
+                              .  IsWebGL2RenderingContext c
+                              => IsTexImageSource t
                               => c
                               -> GLenum
                               -> GLint
@@ -253,19 +246,9 @@ texImage2DImageSourceWithSize gl target level internalformat width height border
       gl0 = toWebGL2RenderingContext gl
       source0 = toTexImageSource source
     in
-      js_texImage2DImageSourceWithSize gl0 target level internalformat width height border format type0 source0
+      runEffectFn10 js_texImage2DImageSourceWithSize gl0 target level internalformat width height border format type0 source0
 
-foreign import js_texImage2DImageSourceWithSize :: WebGL2RenderingContext
-                                                -> GLenum
-                                                -> GLint
-                                                -> GLint
-                                                -> GLsizei
-                                                -> GLsizei
-                                                -> GLint
-                                                -> GLenum
-                                                -> GLenum
-                                                -> TexImageSource
-                                                -> Effect Unit
+foreign import js_texImage2DImageSourceWithSize :: EffectFn10 WebGL2RenderingContext GLenum GLint GLint GLsizei GLsizei GLint GLenum GLenum TexImageSource Unit
 
 
 
@@ -290,8 +273,8 @@ foreign import js_texImage2DImageSourceWithSize :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
 texImage2DWithSize :: forall a c
-                   .  IsArrayBufferView a
-                   => IsWebGL2RenderingContext c
+                   .  IsWebGL2RenderingContext c
+                   => IsArrayBufferView a
                    => c
                    -> GLenum
                    -> GLint
@@ -309,20 +292,9 @@ texImage2DWithSize gl target level internalformat width height border format typ
       gl0 = toWebGL2RenderingContext gl
       srcData0 = toArrayBufferView srcData
     in
-      js_texImage2DWithSize gl0 target level internalformat width height border format type0 srcData0 srcOffset
+      runEffectFn10 (runFn1 js_texImage2DWithSize gl0) target level internalformat width height border format type0 srcData0 srcOffset
 
-foreign import js_texImage2DWithSize :: WebGL2RenderingContext
-                                     -> GLenum
-                                     -> GLint
-                                     -> GLint
-                                     -> GLsizei
-                                     -> GLsizei
-                                     -> GLint
-                                     -> GLenum
-                                     -> GLenum
-                                     -> ArrayBufferView
-                                     -> GLuint
-                                     -> Effect Unit
+foreign import js_texImage2DWithSize :: Fn1 WebGL2RenderingContext (EffectFn10 GLenum GLint GLint GLsizei GLsizei GLint GLenum GLenum ArrayBufferView GLuint Unit)
 
 
 
@@ -364,20 +336,9 @@ texImage3DUnpackBuffer gl target level internalformat width height depth border 
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_texImage3DUnpackBuffer gl0 target level internalformat width height depth border format type0 pboOffset
+      runEffectFn10 (runFn1 js_texImage3DUnpackBuffer gl0) target level internalformat width height depth border format type0 pboOffset
 
-foreign import js_texImage3DUnpackBuffer :: WebGL2RenderingContext
-                                         -> GLenum
-                                         -> GLint
-                                         -> GLint
-                                         -> GLsizei
-                                         -> GLsizei
-                                         -> GLsizei
-                                         -> GLint
-                                         -> GLenum
-                                         -> GLenum
-                                         -> GLintptr
-                                         -> Effect Unit
+foreign import js_texImage3DUnpackBuffer :: Fn1 WebGL2RenderingContext (EffectFn10 GLenum GLint GLint GLsizei GLsizei GLsizei GLint GLenum GLenum GLintptr Unit)
 
 
 
@@ -402,8 +363,8 @@ foreign import js_texImage3DUnpackBuffer :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
 texImage3DImageSource :: forall c t
-                      .  IsTexImageSource t
-                      => IsWebGL2RenderingContext c
+                      .  IsWebGL2RenderingContext c
+                      => IsTexImageSource t
                       => c
                       -> GLenum
                       -> GLint
@@ -421,20 +382,9 @@ texImage3DImageSource gl target level internalformat width height depth border f
       gl0 = toWebGL2RenderingContext gl
       source0 = toTexImageSource source
     in
-      js_texImage3DImageSource gl0 target level internalformat width height depth border format type0 source0
+      runEffectFn10 (runFn1 js_texImage3DImageSource gl0) target level internalformat width height depth border format type0 source0
 
-foreign import js_texImage3DImageSource :: WebGL2RenderingContext
-                                        -> GLenum
-                                        -> GLint
-                                        -> GLint
-                                        -> GLsizei
-                                        -> GLsizei
-                                        -> GLsizei
-                                        -> GLint
-                                        -> GLenum
-                                        -> GLenum
-                                        -> TexImageSource
-                                        -> Effect Unit
+foreign import js_texImage3DImageSource :: Fn1 WebGL2RenderingContext (EffectFn10 GLenum GLint GLint GLsizei GLsizei GLsizei GLint GLenum GLenum TexImageSource Unit)
 
 
 
@@ -459,8 +409,8 @@ foreign import js_texImage3DImageSource :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
 texImage3D :: forall a c
-           .  IsArrayBufferView a
-           => IsWebGL2RenderingContext c
+           .  IsWebGL2RenderingContext c
+           => IsArrayBufferView a
            => c
            -> GLenum
            -> GLint
@@ -479,20 +429,9 @@ texImage3D gl target level internalformat width height depth border format type0
       srcData0 = map toArrayBufferView srcData
       srcData1 = toNullable srcData0
     in
-      js_texImage3D gl0 target level internalformat width height depth border format type0 srcData1
+      runEffectFn10 (runFn1 js_texImage3D gl0) target level internalformat width height depth border format type0 srcData1
 
-foreign import js_texImage3D :: WebGL2RenderingContext
-                             -> GLenum
-                             -> GLint
-                             -> GLint
-                             -> GLsizei
-                             -> GLsizei
-                             -> GLsizei
-                             -> GLint
-                             -> GLenum
-                             -> GLenum
-                             -> Nullable ArrayBufferView
-                             -> Effect Unit
+foreign import js_texImage3D :: Fn1 WebGL2RenderingContext (EffectFn10 GLenum GLint GLint GLsizei GLsizei GLsizei GLint GLenum GLenum (Nullable ArrayBufferView) Unit)
 
 
 
@@ -518,8 +457,8 @@ foreign import js_texImage3D :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
 texImage3DOffset :: forall a c
-                 .  IsArrayBufferView a
-                 => IsWebGL2RenderingContext c
+                 .  IsWebGL2RenderingContext c
+                 => IsArrayBufferView a
                  => c
                  -> GLenum
                  -> GLint
@@ -538,21 +477,9 @@ texImage3DOffset gl target level internalformat width height depth border format
       gl0 = toWebGL2RenderingContext gl
       srcData0 = toArrayBufferView srcData
     in
-      js_texImage3DOffset gl0 target level internalformat width height depth border format type0 srcData0 srcOffset
+      runEffectFn10 (runFn2 js_texImage3DOffset gl0 target) level internalformat width height depth border format type0 srcData0 srcOffset
 
-foreign import js_texImage3DOffset :: WebGL2RenderingContext
-                                   -> GLenum
-                                   -> GLint
-                                   -> GLint
-                                   -> GLsizei
-                                   -> GLsizei
-                                   -> GLsizei
-                                   -> GLint
-                                   -> GLenum
-                                   -> GLenum
-                                   -> ArrayBufferView
-                                   -> GLuint
-                                   -> Effect Unit
+foreign import js_texImage3DOffset :: Fn2 WebGL2RenderingContext GLenum (EffectFn10 GLint GLint GLsizei GLsizei GLsizei GLint GLenum GLenum ArrayBufferView GLuint Unit)
 
 
 
@@ -592,19 +519,9 @@ texSubImage2DUnpackBuffer gl target level xoffset yoffset width height format ty
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_texSubImage2DUnpackBuffer gl0 target level xoffset yoffset width height format type0 pboOffset
+      runEffectFn10 js_texSubImage2DUnpackBuffer gl0 target level xoffset yoffset width height format type0 pboOffset
 
-foreign import js_texSubImage2DUnpackBuffer :: WebGL2RenderingContext
-                                            -> GLenum
-                                            -> GLint
-                                            -> GLint
-                                            -> GLint
-                                            -> GLsizei
-                                            -> GLsizei
-                                            -> GLenum
-                                            -> GLenum
-                                            -> GLintptr
-                                            -> Effect Unit
+foreign import js_texSubImage2DUnpackBuffer :: EffectFn10 WebGL2RenderingContext GLenum GLint GLint GLint GLsizei GLsizei GLenum GLenum GLintptr Unit
 
 
 
@@ -628,8 +545,8 @@ foreign import js_texSubImage2DUnpackBuffer :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
 texSubImage2DImageSourceWithSize :: forall c t
-                                 .  IsTexImageSource t
-                                 => IsWebGL2RenderingContext c
+                                 .  IsWebGL2RenderingContext c
+                                 => IsTexImageSource t
                                  => c
                                  -> GLenum
                                  -> GLint
@@ -646,19 +563,9 @@ texSubImage2DImageSourceWithSize gl target level xoffset yoffset width height fo
       gl0 = toWebGL2RenderingContext gl
       source0 = toTexImageSource source
     in
-      js_texSubImage2DImageSourceWithSize gl0 target level xoffset yoffset width height format type0 source0
+      runEffectFn10 js_texSubImage2DImageSourceWithSize gl0 target level xoffset yoffset width height format type0 source0
 
-foreign import js_texSubImage2DImageSourceWithSize :: WebGL2RenderingContext
-                                                   -> GLenum
-                                                   -> GLint
-                                                   -> GLint
-                                                   -> GLint
-                                                   -> GLsizei
-                                                   -> GLsizei
-                                                   -> GLenum
-                                                   -> GLenum
-                                                   -> TexImageSource
-                                                   -> Effect Unit
+foreign import js_texSubImage2DImageSourceWithSize :: EffectFn10 WebGL2RenderingContext GLenum GLint GLint GLint GLsizei GLsizei GLenum GLenum TexImageSource Unit
 
 
 
@@ -683,8 +590,8 @@ foreign import js_texSubImage2DImageSourceWithSize :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
 texSubImage2DWithSize :: forall a c
-                      .  IsArrayBufferView a
-                      => IsWebGL2RenderingContext c
+                      .  IsWebGL2RenderingContext c
+                      => IsArrayBufferView a
                       => c
                       -> GLenum
                       -> GLint
@@ -702,20 +609,9 @@ texSubImage2DWithSize gl target level xoffset yoffset width height format type0 
       gl0 = toWebGL2RenderingContext gl
       srcData0 = toArrayBufferView srcData
     in
-      js_texSubImage2DWithSize gl0 target level xoffset yoffset width height format type0 srcData0 srcOffset
+      runEffectFn10 (runFn1 js_texSubImage2DWithSize gl0) target level xoffset yoffset width height format type0 srcData0 srcOffset
 
-foreign import js_texSubImage2DWithSize :: WebGL2RenderingContext
-                                        -> GLenum
-                                        -> GLint
-                                        -> GLint
-                                        -> GLint
-                                        -> GLsizei
-                                        -> GLsizei
-                                        -> GLenum
-                                        -> GLenum
-                                        -> ArrayBufferView
-                                        -> GLuint
-                                        -> Effect Unit
+foreign import js_texSubImage2DWithSize :: Fn1 WebGL2RenderingContext (EffectFn10 GLenum GLint GLint GLint GLsizei GLsizei GLenum GLenum ArrayBufferView GLuint Unit)
 
 
 
@@ -759,21 +655,9 @@ texSubImage3DUnpackBuffer gl target level xoffset yoffset zoffset width height d
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_texSubImage3DUnpackBuffer gl0 target level xoffset yoffset zoffset width height depth format type0 pboOffset
+      runEffectFn10 (runFn2 js_texSubImage3DUnpackBuffer gl0 target) level xoffset yoffset zoffset width height depth format type0 pboOffset
 
-foreign import js_texSubImage3DUnpackBuffer :: WebGL2RenderingContext
-                                            -> GLenum
-                                            -> GLint
-                                            -> GLint
-                                            -> GLint
-                                            -> GLint
-                                            -> GLsizei
-                                            -> GLsizei
-                                            -> GLsizei
-                                            -> GLenum
-                                            -> GLenum
-                                            -> GLintptr
-                                            -> Effect Unit
+foreign import js_texSubImage3DUnpackBuffer :: Fn2 WebGL2RenderingContext GLenum (EffectFn10 GLint GLint GLint GLint GLsizei GLsizei GLsizei GLenum GLenum GLintptr Unit)
 
 
 
@@ -799,8 +683,8 @@ foreign import js_texSubImage3DUnpackBuffer :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
 texSubImage3DImageSource :: forall c t
-                         .  IsTexImageSource t
-                         => IsWebGL2RenderingContext c
+                         .  IsWebGL2RenderingContext c
+                         => IsTexImageSource t
                          => c
                          -> GLenum
                          -> GLint
@@ -819,21 +703,9 @@ texSubImage3DImageSource gl target level xoffset yoffset zoffset width height de
       gl0 = toWebGL2RenderingContext gl
       source0 = toTexImageSource source
     in
-      js_texSubImage3DImageSource gl0 target level xoffset yoffset zoffset width height depth format type0 source0
+      runEffectFn10 (runFn2 js_texSubImage3DImageSource gl0 target) level xoffset yoffset zoffset width height depth format type0 source0
 
-foreign import js_texSubImage3DImageSource :: WebGL2RenderingContext
-                                           -> GLenum
-                                           -> GLint
-                                           -> GLint
-                                           -> GLint
-                                           -> GLint
-                                           -> GLsizei
-                                           -> GLsizei
-                                           -> GLsizei
-                                           -> GLenum
-                                           -> GLenum
-                                           -> TexImageSource
-                                           -> Effect Unit
+foreign import js_texSubImage3DImageSource :: Fn2 WebGL2RenderingContext GLenum (EffectFn10 GLint GLint GLint GLint GLsizei GLsizei GLsizei GLenum GLenum TexImageSource Unit)
 
 
 
@@ -860,8 +732,8 @@ foreign import js_texSubImage3DImageSource :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
 texSubImage3D :: forall a c
-              .  IsArrayBufferView a
-              => IsWebGL2RenderingContext c
+              .  IsWebGL2RenderingContext c
+              => IsArrayBufferView a
               => c
               -> GLenum
               -> GLint
@@ -874,30 +746,18 @@ texSubImage3D :: forall a c
               -> GLenum
               -> GLenum
               -> Maybe a
-              -> GLuint
+              -> Maybe GLuint
               -> Effect Unit
 texSubImage3D gl target level xoffset yoffset zoffset width height depth format type0 srcData srcOffset
   = let
       gl0 = toWebGL2RenderingContext gl
       srcData0 = map toArrayBufferView srcData
       srcData1 = toNullable srcData0
+      srcOffset0 = toNullable srcOffset
     in
-      js_texSubImage3D gl0 target level xoffset yoffset zoffset width height depth format type0 srcData1 srcOffset
+      runEffectFn10 (runFn3 js_texSubImage3D gl0 target level) xoffset yoffset zoffset width height depth format type0 srcData1 srcOffset0
 
-foreign import js_texSubImage3D :: WebGL2RenderingContext
-                                -> GLenum
-                                -> GLint
-                                -> GLint
-                                -> GLint
-                                -> GLint
-                                -> GLsizei
-                                -> GLsizei
-                                -> GLsizei
-                                -> GLenum
-                                -> GLenum
-                                -> Nullable ArrayBufferView
-                                -> GLuint
-                                -> Effect Unit
+foreign import js_texSubImage3D :: Fn3 WebGL2RenderingContext GLenum GLint (EffectFn10 GLint GLint GLint GLsizei GLsizei GLsizei GLenum GLenum (Nullable ArrayBufferView) (Nullable GLuint) Unit)
 
 
 
@@ -937,19 +797,9 @@ copyTexSubImage3D gl target level xoffset yoffset zoffset x y width height
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_copyTexSubImage3D gl0 target level xoffset yoffset zoffset x y width height
+      runEffectFn10 js_copyTexSubImage3D gl0 target level xoffset yoffset zoffset x y width height
 
-foreign import js_copyTexSubImage3D :: WebGL2RenderingContext
-                                    -> GLenum
-                                    -> GLint
-                                    -> GLint
-                                    -> GLint
-                                    -> GLint
-                                    -> GLint
-                                    -> GLint
-                                    -> GLsizei
-                                    -> GLsizei
-                                    -> Effect Unit
+foreign import js_copyTexSubImage3D :: EffectFn10 WebGL2RenderingContext GLenum GLint GLint GLint GLint GLint GLint GLsizei GLsizei Unit
 
 
 
@@ -987,23 +837,14 @@ compressedTexImage2DUnpackBuffer gl target level internalformat width height bor
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_compressedTexImage2DUnpackBuffer gl0 target level internalformat width height border imageSize offset
+      runEffectFn9 js_compressedTexImage2DUnpackBuffer gl0 target level internalformat width height border imageSize offset
 
-foreign import js_compressedTexImage2DUnpackBuffer :: WebGL2RenderingContext
-                                                   -> GLenum
-                                                   -> GLint
-                                                   -> GLenum
-                                                   -> GLsizei
-                                                   -> GLsizei
-                                                   -> GLint
-                                                   -> GLsizei
-                                                   -> GLintptr
-                                                   -> Effect Unit
+foreign import js_compressedTexImage2DUnpackBuffer :: EffectFn9 WebGL2RenderingContext GLenum GLint GLenum GLsizei GLsizei GLint GLsizei GLintptr Unit
 
 
 
 -- |
--- | Usage: `compressedTexImage2DOffset gl target level internalformat width height border srcData srcOffset srcLengthOverride`
+-- | Usage: `compressedTexImage2D gl target level internalformat width height border srcData srcOffset srcLengthOverride`
 -- |
 -- | ``` webidl
 -- | void
@@ -1021,38 +862,30 @@ foreign import js_compressedTexImage2DUnpackBuffer :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
-compressedTexImage2DOffset :: forall a c
-                           .  IsArrayBufferView a
-                           => IsWebGL2RenderingContext c
-                           => c
-                           -> GLenum
-                           -> GLint
-                           -> GLenum
-                           -> GLsizei
-                           -> GLsizei
-                           -> GLint
-                           -> a
-                           -> GLuint
-                           -> GLuint
-                           -> Effect Unit
-compressedTexImage2DOffset gl target level internalformat width height border srcData srcOffset srcLengthOverride
+compressedTexImage2D :: forall a c
+                     .  IsWebGL2RenderingContext c
+                     => IsArrayBufferView a
+                     => c
+                     -> GLenum
+                     -> GLint
+                     -> GLenum
+                     -> GLsizei
+                     -> GLsizei
+                     -> GLint
+                     -> a
+                     -> Maybe GLuint
+                     -> Maybe GLuint
+                     -> Effect Unit
+compressedTexImage2D gl target level internalformat width height border srcData srcOffset srcLengthOverride
   = let
       gl0 = toWebGL2RenderingContext gl
       srcData0 = toArrayBufferView srcData
+      srcOffset0 = toNullable srcOffset
+      srcLengthOverride0 = toNullable srcLengthOverride
     in
-      js_compressedTexImage2DOffset gl0 target level internalformat width height border srcData0 srcOffset srcLengthOverride
+      runEffectFn10 js_compressedTexImage2D gl0 target level internalformat width height border srcData0 srcOffset0 srcLengthOverride0
 
-foreign import js_compressedTexImage2DOffset :: WebGL2RenderingContext
-                                             -> GLenum
-                                             -> GLint
-                                             -> GLenum
-                                             -> GLsizei
-                                             -> GLsizei
-                                             -> GLint
-                                             -> ArrayBufferView
-                                             -> GLuint
-                                             -> GLuint
-                                             -> Effect Unit
+foreign import js_compressedTexImage2D :: EffectFn10 WebGL2RenderingContext GLenum GLint GLenum GLsizei GLsizei GLint ArrayBufferView (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -1092,19 +925,9 @@ compressedTexImage3DUnpackBuffer gl target level internalformat width height dep
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_compressedTexImage3DUnpackBuffer gl0 target level internalformat width height depth border imageSize offset
+      runEffectFn10 js_compressedTexImage3DUnpackBuffer gl0 target level internalformat width height depth border imageSize offset
 
-foreign import js_compressedTexImage3DUnpackBuffer :: WebGL2RenderingContext
-                                                   -> GLenum
-                                                   -> GLint
-                                                   -> GLenum
-                                                   -> GLsizei
-                                                   -> GLsizei
-                                                   -> GLsizei
-                                                   -> GLint
-                                                   -> GLsizei
-                                                   -> GLintptr
-                                                   -> Effect Unit
+foreign import js_compressedTexImage3DUnpackBuffer :: EffectFn10 WebGL2RenderingContext GLenum GLint GLenum GLsizei GLsizei GLsizei GLint GLsizei GLintptr Unit
 
 
 
@@ -1129,8 +952,8 @@ foreign import js_compressedTexImage3DUnpackBuffer :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
 compressedTexImage3D :: forall a c
-                     .  IsArrayBufferView a
-                     => IsWebGL2RenderingContext c
+                     .  IsWebGL2RenderingContext c
+                     => IsArrayBufferView a
                      => c
                      -> GLenum
                      -> GLint
@@ -1140,28 +963,19 @@ compressedTexImage3D :: forall a c
                      -> GLsizei
                      -> GLint
                      -> a
-                     -> GLuint
-                     -> GLuint
+                     -> Maybe GLuint
+                     -> Maybe GLuint
                      -> Effect Unit
 compressedTexImage3D gl target level internalformat width height depth border srcData srcOffset srcLengthOverride
   = let
       gl0 = toWebGL2RenderingContext gl
       srcData0 = toArrayBufferView srcData
+      srcOffset0 = toNullable srcOffset
+      srcLengthOverride0 = toNullable srcLengthOverride
     in
-      js_compressedTexImage3D gl0 target level internalformat width height depth border srcData0 srcOffset srcLengthOverride
+      runEffectFn10 (runFn1 js_compressedTexImage3D gl0) target level internalformat width height depth border srcData0 srcOffset0 srcLengthOverride0
 
-foreign import js_compressedTexImage3D :: WebGL2RenderingContext
-                                       -> GLenum
-                                       -> GLint
-                                       -> GLenum
-                                       -> GLsizei
-                                       -> GLsizei
-                                       -> GLsizei
-                                       -> GLint
-                                       -> ArrayBufferView
-                                       -> GLuint
-                                       -> GLuint
-                                       -> Effect Unit
+foreign import js_compressedTexImage3D :: Fn1 WebGL2RenderingContext (EffectFn10 GLenum GLint GLenum GLsizei GLsizei GLsizei GLint ArrayBufferView (Nullable GLuint) (Nullable GLuint) Unit)
 
 
 
@@ -1201,24 +1015,14 @@ compressedTexSubImage2DUnpackBuffer gl target level xoffset yoffset width height
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_compressedTexSubImage2DUnpackBuffer gl0 target level xoffset yoffset width height format imageSize offset
+      runEffectFn10 js_compressedTexSubImage2DUnpackBuffer gl0 target level xoffset yoffset width height format imageSize offset
 
-foreign import js_compressedTexSubImage2DUnpackBuffer :: WebGL2RenderingContext
-                                                      -> GLenum
-                                                      -> GLint
-                                                      -> GLint
-                                                      -> GLint
-                                                      -> GLsizei
-                                                      -> GLsizei
-                                                      -> GLenum
-                                                      -> GLsizei
-                                                      -> GLintptr
-                                                      -> Effect Unit
+foreign import js_compressedTexSubImage2DUnpackBuffer :: EffectFn10 WebGL2RenderingContext GLenum GLint GLint GLint GLsizei GLsizei GLenum GLsizei GLintptr Unit
 
 
 
 -- |
--- | Usage: `compressedTexSubImage2DOffset gl target level xoffset yoffset width height format srcData srcOffset srcLengthOverride`
+-- | Usage: `compressedTexSubImage2D gl target level xoffset yoffset width height format srcData srcOffset srcLengthOverride`
 -- |
 -- | ``` webidl
 -- | void
@@ -1237,40 +1041,31 @@ foreign import js_compressedTexSubImage2DUnpackBuffer :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
-compressedTexSubImage2DOffset :: forall a c
-                              .  IsArrayBufferView a
-                              => IsWebGL2RenderingContext c
-                              => c
-                              -> GLenum
-                              -> GLint
-                              -> GLint
-                              -> GLint
-                              -> GLsizei
-                              -> GLsizei
-                              -> GLenum
-                              -> a
-                              -> GLuint
-                              -> GLuint
-                              -> Effect Unit
-compressedTexSubImage2DOffset gl target level xoffset yoffset width height format srcData srcOffset srcLengthOverride
+compressedTexSubImage2D :: forall a c
+                        .  IsWebGL2RenderingContext c
+                        => IsArrayBufferView a
+                        => c
+                        -> GLenum
+                        -> GLint
+                        -> GLint
+                        -> GLint
+                        -> GLsizei
+                        -> GLsizei
+                        -> GLenum
+                        -> a
+                        -> Maybe GLuint
+                        -> Maybe GLuint
+                        -> Effect Unit
+compressedTexSubImage2D gl target level xoffset yoffset width height format srcData srcOffset srcLengthOverride
   = let
       gl0 = toWebGL2RenderingContext gl
       srcData0 = toArrayBufferView srcData
+      srcOffset0 = toNullable srcOffset
+      srcLengthOverride0 = toNullable srcLengthOverride
     in
-      js_compressedTexSubImage2DOffset gl0 target level xoffset yoffset width height format srcData0 srcOffset srcLengthOverride
+      runEffectFn10 (runFn1 js_compressedTexSubImage2D gl0) target level xoffset yoffset width height format srcData0 srcOffset0 srcLengthOverride0
 
-foreign import js_compressedTexSubImage2DOffset :: WebGL2RenderingContext
-                                                -> GLenum
-                                                -> GLint
-                                                -> GLint
-                                                -> GLint
-                                                -> GLsizei
-                                                -> GLsizei
-                                                -> GLenum
-                                                -> ArrayBufferView
-                                                -> GLuint
-                                                -> GLuint
-                                                -> Effect Unit
+foreign import js_compressedTexSubImage2D :: Fn1 WebGL2RenderingContext (EffectFn10 GLenum GLint GLint GLint GLsizei GLsizei GLenum ArrayBufferView (Nullable GLuint) (Nullable GLuint) Unit)
 
 
 
@@ -1314,26 +1109,14 @@ compressedTexSubImage3DUnpackBuffer gl target level xoffset yoffset zoffset widt
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_compressedTexSubImage3DUnpackBuffer gl0 target level xoffset yoffset zoffset width height depth format imageSize offset
+      runEffectFn10 (runFn2 js_compressedTexSubImage3DUnpackBuffer gl0 target) level xoffset yoffset zoffset width height depth format imageSize offset
 
-foreign import js_compressedTexSubImage3DUnpackBuffer :: WebGL2RenderingContext
-                                                      -> GLenum
-                                                      -> GLint
-                                                      -> GLint
-                                                      -> GLint
-                                                      -> GLint
-                                                      -> GLsizei
-                                                      -> GLsizei
-                                                      -> GLsizei
-                                                      -> GLenum
-                                                      -> GLsizei
-                                                      -> GLintptr
-                                                      -> Effect Unit
+foreign import js_compressedTexSubImage3DUnpackBuffer :: Fn2 WebGL2RenderingContext GLenum (EffectFn10 GLint GLint GLint GLint GLsizei GLsizei GLsizei GLenum GLsizei GLintptr Unit)
 
 
 
 -- |
--- | Usage: `compressedTexSubImage3DOffset gl target level xoffset yoffset zoffset width height depth format srcData srcOffset srcLengthOverride`
+-- | Usage: `compressedTexSubImage3D gl target level xoffset yoffset zoffset width height depth format srcData srcOffset srcLengthOverride`
 -- |
 -- | ``` webidl
 -- | void
@@ -1354,44 +1137,33 @@ foreign import js_compressedTexSubImage3DUnpackBuffer :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
-compressedTexSubImage3DOffset :: forall a c
-                              .  IsArrayBufferView a
-                              => IsWebGL2RenderingContext c
-                              => c
-                              -> GLenum
-                              -> GLint
-                              -> GLint
-                              -> GLint
-                              -> GLint
-                              -> GLsizei
-                              -> GLsizei
-                              -> GLsizei
-                              -> GLenum
-                              -> a
-                              -> GLuint
-                              -> GLuint
-                              -> Effect Unit
-compressedTexSubImage3DOffset gl target level xoffset yoffset zoffset width height depth format srcData srcOffset srcLengthOverride
+compressedTexSubImage3D :: forall a c
+                        .  IsWebGL2RenderingContext c
+                        => IsArrayBufferView a
+                        => c
+                        -> GLenum
+                        -> GLint
+                        -> GLint
+                        -> GLint
+                        -> GLint
+                        -> GLsizei
+                        -> GLsizei
+                        -> GLsizei
+                        -> GLenum
+                        -> a
+                        -> Maybe GLuint
+                        -> Maybe GLuint
+                        -> Effect Unit
+compressedTexSubImage3D gl target level xoffset yoffset zoffset width height depth format srcData srcOffset srcLengthOverride
   = let
       gl0 = toWebGL2RenderingContext gl
       srcData0 = toArrayBufferView srcData
+      srcOffset0 = toNullable srcOffset
+      srcLengthOverride0 = toNullable srcLengthOverride
     in
-      js_compressedTexSubImage3DOffset gl0 target level xoffset yoffset zoffset width height depth format srcData0 srcOffset srcLengthOverride
+      runEffectFn10 (runFn3 js_compressedTexSubImage3D gl0 target level) xoffset yoffset zoffset width height depth format srcData0 srcOffset0 srcLengthOverride0
 
-foreign import js_compressedTexSubImage3DOffset :: WebGL2RenderingContext
-                                                -> GLenum
-                                                -> GLint
-                                                -> GLint
-                                                -> GLint
-                                                -> GLint
-                                                -> GLsizei
-                                                -> GLsizei
-                                                -> GLsizei
-                                                -> GLenum
-                                                -> ArrayBufferView
-                                                -> GLuint
-                                                -> GLuint
-                                                -> Effect Unit
+foreign import js_compressedTexSubImage3D :: Fn3 WebGL2RenderingContext GLenum GLint (EffectFn10 GLint GLint GLint GLsizei GLsizei GLsizei GLenum ArrayBufferView (Nullable GLuint) (Nullable GLuint) Unit)
 
 
 
@@ -1407,6 +1179,10 @@ foreign import js_compressedTexSubImage3DOffset :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getTexParameterGLboolean :: forall c
                          .  IsWebGL2RenderingContext c
                          => c
@@ -1418,13 +1194,10 @@ getTexParameterGLboolean gl target pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getTexParameterGLboolean gl0 target pname
+        res <- runEffectFn3 js_getTexParameterGLboolean gl0 target pname
         pure (toMaybe res)
 
-foreign import js_getTexParameterGLboolean :: WebGL2RenderingContext
-                                           -> GLenum
-                                           -> GLenum
-                                           -> Effect (Nullable GLboolean)
+foreign import js_getTexParameterGLboolean :: EffectFn3 WebGL2RenderingContext GLenum GLenum (Nullable GLboolean)
 
 
 
@@ -1441,6 +1214,10 @@ foreign import js_getTexParameterGLboolean :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getTexParameterGLfloat :: forall c
                        .  IsWebGL2RenderingContext c
                        => c
@@ -1452,13 +1229,10 @@ getTexParameterGLfloat gl target pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getTexParameterGLfloat gl0 target pname
+        res <- runEffectFn3 js_getTexParameterGLfloat gl0 target pname
         pure (toMaybe res)
 
-foreign import js_getTexParameterGLfloat :: WebGL2RenderingContext
-                                         -> GLenum
-                                         -> GLenum
-                                         -> Effect (Nullable GLfloat)
+foreign import js_getTexParameterGLfloat :: EffectFn3 WebGL2RenderingContext GLenum GLenum (Nullable GLfloat)
 
 
 
@@ -1475,6 +1249,10 @@ foreign import js_getTexParameterGLfloat :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getTexParameterGLint :: forall c
                      .  IsWebGL2RenderingContext c
                      => c
@@ -1486,13 +1264,10 @@ getTexParameterGLint gl target pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getTexParameterGLint gl0 target pname
+        res <- runEffectFn3 js_getTexParameterGLint gl0 target pname
         pure (toMaybe res)
 
-foreign import js_getTexParameterGLint :: WebGL2RenderingContext
-                                       -> GLenum
-                                       -> GLenum
-                                       -> Effect (Nullable GLint)
+foreign import js_getTexParameterGLint :: EffectFn3 WebGL2RenderingContext GLenum GLenum (Nullable GLint)
 
 
 
@@ -1508,6 +1283,10 @@ foreign import js_getTexParameterGLint :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.6](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.6)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getTexParameterGLuint :: forall c
                       .  IsWebGL2RenderingContext c
                       => c
@@ -1519,11 +1298,8 @@ getTexParameterGLuint gl target pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getTexParameterGLuint gl0 target pname
+        res <- runEffectFn3 js_getTexParameterGLuint gl0 target pname
         pure (toMaybe res)
 
-foreign import js_getTexParameterGLuint :: WebGL2RenderingContext
-                                        -> GLenum
-                                        -> GLenum
-                                        -> Effect (Nullable GLuint)
+foreign import js_getTexParameterGLuint :: EffectFn3 WebGL2RenderingContext GLenum GLenum (Nullable GLuint)
 

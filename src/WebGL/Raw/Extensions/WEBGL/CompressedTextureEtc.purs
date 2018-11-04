@@ -19,6 +19,9 @@ import Data.Nullable ( Nullable
                      , toMaybe
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , runEffectFn1
+                        )
 import Prelude ( bind
                , pure
                )
@@ -29,37 +32,40 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
                        )
 
 
+-- |
+-- | Documentation: [WEBGL_compressed_texture_etc extension](https://www.khronos.org/registry/webgl/extensions/WEBGL_compressed_texture_etc/)
+-- |
 foreign import data WEBGL_compressed_texture_etc :: Type
 
 gl_COMPRESSED_R11_EAC :: GLenum
-gl_COMPRESSED_R11_EAC = 37488
+gl_COMPRESSED_R11_EAC = 37488.0
 
 gl_COMPRESSED_SIGNED_R11_EAC :: GLenum
-gl_COMPRESSED_SIGNED_R11_EAC = 37489
+gl_COMPRESSED_SIGNED_R11_EAC = 37489.0
 
 gl_COMPRESSED_RG11_EAC :: GLenum
-gl_COMPRESSED_RG11_EAC = 37490
+gl_COMPRESSED_RG11_EAC = 37490.0
 
 gl_COMPRESSED_SIGNED_RG11_EAC :: GLenum
-gl_COMPRESSED_SIGNED_RG11_EAC = 37491
+gl_COMPRESSED_SIGNED_RG11_EAC = 37491.0
 
 gl_COMPRESSED_RGB8_ETC2 :: GLenum
-gl_COMPRESSED_RGB8_ETC2 = 37492
+gl_COMPRESSED_RGB8_ETC2 = 37492.0
 
 gl_COMPRESSED_SRGB8_ETC2 :: GLenum
-gl_COMPRESSED_SRGB8_ETC2 = 37493
+gl_COMPRESSED_SRGB8_ETC2 = 37493.0
 
 gl_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2 :: GLenum
-gl_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2 = 37494
+gl_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2 = 37494.0
 
 gl_COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2 :: GLenum
-gl_COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2 = 37495
+gl_COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2 = 37495.0
 
 gl_COMPRESSED_RGBA8_ETC2_EAC :: GLenum
-gl_COMPRESSED_RGBA8_ETC2_EAC = 37496
+gl_COMPRESSED_RGBA8_ETC2_EAC = 37496.0
 
 gl_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC :: GLenum
-gl_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC = 37497
+gl_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC = 37497.0
 
 -- |
 -- | Usage: `getExtensionWEBGL_compressed_texture_etc gl`
@@ -73,9 +79,8 @@ getExtensionWEBGL_compressed_texture_etc gl
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getExtensionWEBGL_compressed_texture_etc gl0
+        res <- runEffectFn1 js_getExtensionWEBGL_compressed_texture_etc gl0
         pure (toMaybe res)
 
-foreign import js_getExtensionWEBGL_compressed_texture_etc :: WebGLRenderingContext
-                                                           -> Effect (Nullable WEBGL_compressed_texture_etc)
+foreign import js_getExtensionWEBGL_compressed_texture_etc :: EffectFn1 WebGLRenderingContext (Nullable WEBGL_compressed_texture_etc)
 

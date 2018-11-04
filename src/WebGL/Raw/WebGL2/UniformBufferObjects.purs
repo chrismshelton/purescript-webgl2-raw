@@ -24,6 +24,13 @@ import Data.Nullable ( Nullable
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn3
+                        , EffectFn4
+                        , EffectFn6
+                        , runEffectFn3
+                        , runEffectFn4
+                        , runEffectFn6
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -64,13 +71,9 @@ bindBufferBase gl target index buffer
       gl0 = toWebGL2RenderingContext gl
       buffer0 = toNullable buffer
     in
-      js_bindBufferBase gl0 target index buffer0
+      runEffectFn4 js_bindBufferBase gl0 target index buffer0
 
-foreign import js_bindBufferBase :: WebGL2RenderingContext
-                                 -> GLenum
-                                 -> GLuint
-                                 -> Nullable WebGLBuffer
-                                 -> Effect Unit
+foreign import js_bindBufferBase :: EffectFn4 WebGL2RenderingContext GLenum GLuint (Nullable WebGLBuffer) Unit
 
 
 
@@ -103,15 +106,9 @@ bindBufferRange gl target index buffer offset size
       gl0 = toWebGL2RenderingContext gl
       buffer0 = toNullable buffer
     in
-      js_bindBufferRange gl0 target index buffer0 offset size
+      runEffectFn6 js_bindBufferRange gl0 target index buffer0 offset size
 
-foreign import js_bindBufferRange :: WebGL2RenderingContext
-                                  -> GLenum
-                                  -> GLuint
-                                  -> Nullable WebGLBuffer
-                                  -> GLintptr
-                                  -> GLsizeiptr
-                                  -> Effect Unit
+foreign import js_bindBufferRange :: EffectFn6 WebGL2RenderingContext GLenum GLuint (Nullable WebGLBuffer) GLintptr GLsizeiptr Unit
 
 
 
@@ -138,13 +135,10 @@ getUniformIndices gl program uniformNames
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getUniformIndices gl0 program uniformNames
+        res <- runEffectFn3 js_getUniformIndices gl0 program uniformNames
         pure (toMaybe res)
 
-foreign import js_getUniformIndices :: WebGL2RenderingContext
-                                    -> WebGLProgram
-                                    -> Array String
-                                    -> Effect (Nullable (Array GLuint))
+foreign import js_getUniformIndices :: EffectFn3 WebGL2RenderingContext WebGLProgram (Array String) (Nullable (Array GLuint))
 
 
 
@@ -164,6 +158,10 @@ foreign import js_getUniformIndices :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.16](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.16)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getActiveUniformsGLbooleanArray :: forall c
                                 .  IsWebGL2RenderingContext c
                                 => c
@@ -176,14 +174,10 @@ getActiveUniformsGLbooleanArray gl program uniformIndices pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getActiveUniformsGLbooleanArray gl0 program uniformIndices pname
+        res <- runEffectFn4 js_getActiveUniformsGLbooleanArray gl0 program uniformIndices pname
         pure (toMaybe res)
 
-foreign import js_getActiveUniformsGLbooleanArray :: WebGL2RenderingContext
-                                                  -> WebGLProgram
-                                                  -> Array GLuint
-                                                  -> GLenum
-                                                  -> Effect (Nullable (Array GLboolean))
+foreign import js_getActiveUniformsGLbooleanArray :: EffectFn4 WebGL2RenderingContext WebGLProgram (Array GLuint) GLenum (Nullable (Array GLboolean))
 
 
 
@@ -203,6 +197,10 @@ foreign import js_getActiveUniformsGLbooleanArray :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.16](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.16)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getActiveUniformsGLenumArray :: forall c
                              .  IsWebGL2RenderingContext c
                              => c
@@ -215,14 +213,10 @@ getActiveUniformsGLenumArray gl program uniformIndices pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getActiveUniformsGLenumArray gl0 program uniformIndices pname
+        res <- runEffectFn4 js_getActiveUniformsGLenumArray gl0 program uniformIndices pname
         pure (toMaybe res)
 
-foreign import js_getActiveUniformsGLenumArray :: WebGL2RenderingContext
-                                               -> WebGLProgram
-                                               -> Array GLuint
-                                               -> GLenum
-                                               -> Effect (Nullable (Array GLenum))
+foreign import js_getActiveUniformsGLenumArray :: EffectFn4 WebGL2RenderingContext WebGLProgram (Array GLuint) GLenum (Nullable (Array GLenum))
 
 
 
@@ -245,6 +239,10 @@ foreign import js_getActiveUniformsGLenumArray :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.16](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.16)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getActiveUniformsGLintArray :: forall c
                             .  IsWebGL2RenderingContext c
                             => c
@@ -257,14 +255,10 @@ getActiveUniformsGLintArray gl program uniformIndices pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getActiveUniformsGLintArray gl0 program uniformIndices pname
+        res <- runEffectFn4 js_getActiveUniformsGLintArray gl0 program uniformIndices pname
         pure (toMaybe res)
 
-foreign import js_getActiveUniformsGLintArray :: WebGL2RenderingContext
-                                              -> WebGLProgram
-                                              -> Array GLuint
-                                              -> GLenum
-                                              -> Effect (Nullable (Array GLint))
+foreign import js_getActiveUniformsGLintArray :: EffectFn4 WebGL2RenderingContext WebGLProgram (Array GLuint) GLenum (Nullable (Array GLint))
 
 
 
@@ -284,6 +278,10 @@ foreign import js_getActiveUniformsGLintArray :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.16](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.16)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getActiveUniformsGLuintArray :: forall c
                              .  IsWebGL2RenderingContext c
                              => c
@@ -296,14 +294,10 @@ getActiveUniformsGLuintArray gl program uniformIndices pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getActiveUniformsGLuintArray gl0 program uniformIndices pname
+        res <- runEffectFn4 js_getActiveUniformsGLuintArray gl0 program uniformIndices pname
         pure (toMaybe res)
 
-foreign import js_getActiveUniformsGLuintArray :: WebGL2RenderingContext
-                                               -> WebGLProgram
-                                               -> Array GLuint
-                                               -> GLenum
-                                               -> Effect (Nullable (Array GLuint))
+foreign import js_getActiveUniformsGLuintArray :: EffectFn4 WebGL2RenderingContext WebGLProgram (Array GLuint) GLenum (Nullable (Array GLuint))
 
 
 
@@ -329,12 +323,9 @@ getUniformBlockIndex gl program uniformBlockName
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_getUniformBlockIndex gl0 program uniformBlockName
+      runEffectFn3 js_getUniformBlockIndex gl0 program uniformBlockName
 
-foreign import js_getUniformBlockIndex :: WebGL2RenderingContext
-                                       -> WebGLProgram
-                                       -> String
-                                       -> Effect GLuint
+foreign import js_getUniformBlockIndex :: EffectFn3 WebGL2RenderingContext WebGLProgram String GLuint
 
 
 
@@ -355,6 +346,10 @@ foreign import js_getUniformBlockIndex :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.16](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.16)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getActiveUniformBlockParameterGLboolean :: forall c
                                         .  IsWebGL2RenderingContext c
                                         => c
@@ -367,14 +362,10 @@ getActiveUniformBlockParameterGLboolean gl program uniformBlockIndex pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getActiveUniformBlockParameterGLboolean gl0 program uniformBlockIndex pname
+        res <- runEffectFn4 js_getActiveUniformBlockParameterGLboolean gl0 program uniformBlockIndex pname
         pure (toMaybe res)
 
-foreign import js_getActiveUniformBlockParameterGLboolean :: WebGL2RenderingContext
-                                                          -> WebGLProgram
-                                                          -> GLuint
-                                                          -> GLenum
-                                                          -> Effect (Nullable GLboolean)
+foreign import js_getActiveUniformBlockParameterGLboolean :: EffectFn4 WebGL2RenderingContext WebGLProgram GLuint GLenum (Nullable GLboolean)
 
 
 
@@ -396,6 +387,10 @@ foreign import js_getActiveUniformBlockParameterGLboolean :: WebGL2RenderingCont
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.16](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.16)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getActiveUniformBlockParameterGLuint :: forall c
                                      .  IsWebGL2RenderingContext c
                                      => c
@@ -408,14 +403,10 @@ getActiveUniformBlockParameterGLuint gl program uniformBlockIndex pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getActiveUniformBlockParameterGLuint gl0 program uniformBlockIndex pname
+        res <- runEffectFn4 js_getActiveUniformBlockParameterGLuint gl0 program uniformBlockIndex pname
         pure (toMaybe res)
 
-foreign import js_getActiveUniformBlockParameterGLuint :: WebGL2RenderingContext
-                                                       -> WebGLProgram
-                                                       -> GLuint
-                                                       -> GLenum
-                                                       -> Effect (Nullable GLuint)
+foreign import js_getActiveUniformBlockParameterGLuint :: EffectFn4 WebGL2RenderingContext WebGLProgram GLuint GLenum (Nullable GLuint)
 
 
 
@@ -435,6 +426,10 @@ foreign import js_getActiveUniformBlockParameterGLuint :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.16](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.16)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getActiveUniformBlockParameterUint32Array :: forall c
                                           .  IsWebGL2RenderingContext c
                                           => c
@@ -447,14 +442,10 @@ getActiveUniformBlockParameterUint32Array gl program uniformBlockIndex pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getActiveUniformBlockParameterUint32Array gl0 program uniformBlockIndex pname
+        res <- runEffectFn4 js_getActiveUniformBlockParameterUint32Array gl0 program uniformBlockIndex pname
         pure (toMaybe res)
 
-foreign import js_getActiveUniformBlockParameterUint32Array :: WebGL2RenderingContext
-                                                            -> WebGLProgram
-                                                            -> GLuint
-                                                            -> GLenum
-                                                            -> Effect (Nullable (ArrayView Uint32))
+foreign import js_getActiveUniformBlockParameterUint32Array :: EffectFn4 WebGL2RenderingContext WebGLProgram GLuint GLenum (Nullable (ArrayView Uint32))
 
 
 
@@ -481,13 +472,10 @@ getActiveUniformBlockName gl program uniformBlockIndex
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getActiveUniformBlockName gl0 program uniformBlockIndex
+        res <- runEffectFn3 js_getActiveUniformBlockName gl0 program uniformBlockIndex
         pure (toMaybe res)
 
-foreign import js_getActiveUniformBlockName :: WebGL2RenderingContext
-                                            -> WebGLProgram
-                                            -> GLuint
-                                            -> Effect (Nullable String)
+foreign import js_getActiveUniformBlockName :: EffectFn3 WebGL2RenderingContext WebGLProgram GLuint (Nullable String)
 
 
 
@@ -515,11 +503,7 @@ uniformBlockBinding gl program uniformBlockIndex uniformBlockBinding0
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_uniformBlockBinding gl0 program uniformBlockIndex uniformBlockBinding0
+      runEffectFn4 js_uniformBlockBinding gl0 program uniformBlockIndex uniformBlockBinding0
 
-foreign import js_uniformBlockBinding :: WebGL2RenderingContext
-                                      -> WebGLProgram
-                                      -> GLuint
-                                      -> GLuint
-                                      -> Effect Unit
+foreign import js_uniformBlockBinding :: EffectFn4 WebGL2RenderingContext WebGLProgram GLuint GLuint Unit
 

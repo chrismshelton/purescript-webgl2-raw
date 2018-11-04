@@ -17,6 +17,13 @@ import Data.Nullable ( Nullable
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , EffectFn2
+                        , EffectFn3
+                        , runEffectFn1
+                        , runEffectFn2
+                        , runEffectFn3
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -50,11 +57,10 @@ createQuery gl
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_createQuery gl0
+        res <- runEffectFn1 js_createQuery gl0
         pure (toMaybe res)
 
-foreign import js_createQuery :: WebGL2RenderingContext
-                              -> Effect (Nullable WebGLQuery)
+foreign import js_createQuery :: EffectFn1 WebGL2RenderingContext (Nullable WebGLQuery)
 
 
 
@@ -77,11 +83,9 @@ deleteQuery gl query
       gl0 = toWebGL2RenderingContext gl
       query0 = toNullable query
     in
-      js_deleteQuery gl0 query0
+      runEffectFn2 js_deleteQuery gl0 query0
 
-foreign import js_deleteQuery :: WebGL2RenderingContext
-                              -> Nullable WebGLQuery
-                              -> Effect Unit
+foreign import js_deleteQuery :: EffectFn2 WebGL2RenderingContext (Nullable WebGLQuery) Unit
 
 
 
@@ -104,11 +108,9 @@ isQuery gl query
       gl0 = toWebGL2RenderingContext gl
       query0 = toNullable query
     in
-      js_isQuery gl0 query0
+      runEffectFn2 js_isQuery gl0 query0
 
-foreign import js_isQuery :: WebGL2RenderingContext
-                          -> Nullable WebGLQuery
-                          -> Effect GLboolean
+foreign import js_isQuery :: EffectFn2 WebGL2RenderingContext (Nullable WebGLQuery) GLboolean
 
 
 
@@ -131,12 +133,9 @@ beginQuery gl target query
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_beginQuery gl0 target query
+      runEffectFn3 js_beginQuery gl0 target query
 
-foreign import js_beginQuery :: WebGL2RenderingContext
-                             -> GLenum
-                             -> WebGLQuery
-                             -> Effect Unit
+foreign import js_beginQuery :: EffectFn3 WebGL2RenderingContext GLenum WebGLQuery Unit
 
 
 
@@ -154,9 +153,9 @@ endQuery gl target
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_endQuery gl0 target
+      runEffectFn2 js_endQuery gl0 target
 
-foreign import js_endQuery :: WebGL2RenderingContext -> GLenum -> Effect Unit
+foreign import js_endQuery :: EffectFn2 WebGL2RenderingContext GLenum Unit
 
 
 
@@ -180,13 +179,10 @@ getQuery gl target pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getQuery gl0 target pname
+        res <- runEffectFn3 js_getQuery gl0 target pname
         pure (toMaybe res)
 
-foreign import js_getQuery :: WebGL2RenderingContext
-                           -> GLenum
-                           -> GLenum
-                           -> Effect (Nullable WebGLQuery)
+foreign import js_getQuery :: EffectFn3 WebGL2RenderingContext GLenum GLenum (Nullable WebGLQuery)
 
 
 
@@ -202,6 +198,10 @@ foreign import js_getQuery :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.12](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.12)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getQueryParameterGLboolean :: forall c
                            .  IsWebGL2RenderingContext c
                            => c
@@ -213,13 +213,10 @@ getQueryParameterGLboolean gl query pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getQueryParameterGLboolean gl0 query pname
+        res <- runEffectFn3 js_getQueryParameterGLboolean gl0 query pname
         pure (toMaybe res)
 
-foreign import js_getQueryParameterGLboolean :: WebGL2RenderingContext
-                                             -> WebGLQuery
-                                             -> GLenum
-                                             -> Effect (Nullable GLboolean)
+foreign import js_getQueryParameterGLboolean :: EffectFn3 WebGL2RenderingContext WebGLQuery GLenum (Nullable GLboolean)
 
 
 
@@ -235,6 +232,10 @@ foreign import js_getQueryParameterGLboolean :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.12](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.12)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getQueryParameterGLuint :: forall c
                         .  IsWebGL2RenderingContext c
                         => c
@@ -246,11 +247,8 @@ getQueryParameterGLuint gl query pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getQueryParameterGLuint gl0 query pname
+        res <- runEffectFn3 js_getQueryParameterGLuint gl0 query pname
         pure (toMaybe res)
 
-foreign import js_getQueryParameterGLuint :: WebGL2RenderingContext
-                                          -> WebGLQuery
-                                          -> GLenum
-                                          -> Effect (Nullable GLuint)
+foreign import js_getQueryParameterGLuint :: EffectFn3 WebGL2RenderingContext WebGLQuery GLenum (Nullable GLuint)
 

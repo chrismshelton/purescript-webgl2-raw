@@ -13,6 +13,9 @@ import Data.Nullable ( Nullable
                      , toMaybe
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , runEffectFn1
+                        )
 import Prelude ( bind
                , pure
                )
@@ -23,19 +26,22 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
                        )
 
 
+-- |
+-- | Documentation: [WEBGL_compressed_texture_s3tc extension](https://www.khronos.org/registry/webgl/extensions/WEBGL_compressed_texture_s3tc/)
+-- |
 foreign import data WEBGL_compressed_texture_s3tc :: Type
 
 gl_COMPRESSED_RGB_S3TC_DXT1_EXT :: GLenum
-gl_COMPRESSED_RGB_S3TC_DXT1_EXT = 33776
+gl_COMPRESSED_RGB_S3TC_DXT1_EXT = 33776.0
 
 gl_COMPRESSED_RGBA_S3TC_DXT1_EXT :: GLenum
-gl_COMPRESSED_RGBA_S3TC_DXT1_EXT = 33777
+gl_COMPRESSED_RGBA_S3TC_DXT1_EXT = 33777.0
 
 gl_COMPRESSED_RGBA_S3TC_DXT3_EXT :: GLenum
-gl_COMPRESSED_RGBA_S3TC_DXT3_EXT = 33778
+gl_COMPRESSED_RGBA_S3TC_DXT3_EXT = 33778.0
 
 gl_COMPRESSED_RGBA_S3TC_DXT5_EXT :: GLenum
-gl_COMPRESSED_RGBA_S3TC_DXT5_EXT = 33779
+gl_COMPRESSED_RGBA_S3TC_DXT5_EXT = 33779.0
 
 -- |
 -- | Usage: `getExtensionWEBGL_compressed_texture_s3tc gl`
@@ -49,9 +55,8 @@ getExtensionWEBGL_compressed_texture_s3tc gl
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getExtensionWEBGL_compressed_texture_s3tc gl0
+        res <- runEffectFn1 js_getExtensionWEBGL_compressed_texture_s3tc gl0
         pure (toMaybe res)
 
-foreign import js_getExtensionWEBGL_compressed_texture_s3tc :: WebGLRenderingContext
-                                                            -> Effect (Nullable WEBGL_compressed_texture_s3tc)
+foreign import js_getExtensionWEBGL_compressed_texture_s3tc :: EffectFn1 WebGLRenderingContext (Nullable WEBGL_compressed_texture_s3tc)
 

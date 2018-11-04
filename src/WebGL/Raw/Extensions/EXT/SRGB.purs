@@ -13,6 +13,9 @@ import Data.Nullable ( Nullable
                      , toMaybe
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , runEffectFn1
+                        )
 import Prelude ( bind
                , pure
                )
@@ -23,19 +26,22 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
                        )
 
 
+-- |
+-- | Documentation: [EXT_sRGB extension](https://www.khronos.org/registry/webgl/extensions/EXT_sRGB/)
+-- |
 foreign import data EXT_sRGB :: Type
 
 gl_SRGB_EXT :: GLenum
-gl_SRGB_EXT = 35904
+gl_SRGB_EXT = 35904.0
 
 gl_SRGB_ALPHA_EXT :: GLenum
-gl_SRGB_ALPHA_EXT = 35906
+gl_SRGB_ALPHA_EXT = 35906.0
 
 gl_SRGB8_ALPHA8_EXT :: GLenum
-gl_SRGB8_ALPHA8_EXT = 35907
+gl_SRGB8_ALPHA8_EXT = 35907.0
 
 gl_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING_EXT :: GLenum
-gl_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING_EXT = 33296
+gl_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING_EXT = 33296.0
 
 -- |
 -- | Usage: `getExtensionEXT_sRGB gl`
@@ -49,9 +55,8 @@ getExtensionEXT_sRGB gl
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getExtensionEXT_sRGB gl0
+        res <- runEffectFn1 js_getExtensionEXT_sRGB gl0
         pure (toMaybe res)
 
-foreign import js_getExtensionEXT_sRGB :: WebGLRenderingContext
-                                       -> Effect (Nullable EXT_sRGB)
+foreign import js_getExtensionEXT_sRGB :: EffectFn1 WebGLRenderingContext (Nullable EXT_sRGB)
 

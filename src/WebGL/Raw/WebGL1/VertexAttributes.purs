@@ -29,6 +29,19 @@ import Data.Nullable ( Nullable
                      , toMaybe
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn2
+                        , EffectFn3
+                        , EffectFn4
+                        , EffectFn5
+                        , EffectFn6
+                        , EffectFn7
+                        , runEffectFn2
+                        , runEffectFn3
+                        , runEffectFn4
+                        , runEffectFn5
+                        , runEffectFn6
+                        , runEffectFn7
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -70,11 +83,9 @@ disableVertexAttribArray gl index
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_disableVertexAttribArray gl0 index
+      runEffectFn2 js_disableVertexAttribArray gl0 index
 
-foreign import js_disableVertexAttribArray :: WebGLRenderingContext
-                                           -> GLuint
-                                           -> Effect Unit
+foreign import js_disableVertexAttribArray :: EffectFn2 WebGLRenderingContext GLuint Unit
 
 
 
@@ -96,11 +107,9 @@ enableVertexAttribArray gl index
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_enableVertexAttribArray gl0 index
+      runEffectFn2 js_enableVertexAttribArray gl0 index
 
-foreign import js_enableVertexAttribArray :: WebGLRenderingContext
-                                          -> GLuint
-                                          -> Effect Unit
+foreign import js_enableVertexAttribArray :: EffectFn2 WebGLRenderingContext GLuint Unit
 
 
 
@@ -124,13 +133,10 @@ getActiveAttrib gl program index
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getActiveAttrib gl0 program index
+        res <- runEffectFn3 js_getActiveAttrib gl0 program index
         pure (toMaybe res)
 
-foreign import js_getActiveAttrib :: WebGLRenderingContext
-                                  -> WebGLProgram
-                                  -> GLuint
-                                  -> Effect (Nullable WebGLActiveInfo)
+foreign import js_getActiveAttrib :: EffectFn3 WebGLRenderingContext WebGLProgram GLuint (Nullable WebGLActiveInfo)
 
 
 
@@ -154,12 +160,9 @@ getAttribLocation gl program name
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_getAttribLocation gl0 program name
+      runEffectFn3 js_getAttribLocation gl0 program name
 
-foreign import js_getAttribLocation :: WebGLRenderingContext
-                                    -> WebGLProgram
-                                    -> String
-                                    -> Effect GLint
+foreign import js_getAttribLocation :: EffectFn3 WebGLRenderingContext WebGLProgram String GLint
 
 
 
@@ -177,6 +180,10 @@ foreign import js_getAttribLocation :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getVertexAttribGLboolean :: forall c
                          .  IsWebGLRenderingContext c
                          => c
@@ -188,13 +195,10 @@ getVertexAttribGLboolean gl index pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getVertexAttribGLboolean gl0 index pname
+        res <- runEffectFn3 js_getVertexAttribGLboolean gl0 index pname
         pure (toMaybe res)
 
-foreign import js_getVertexAttribGLboolean :: WebGLRenderingContext
-                                           -> GLuint
-                                           -> GLenum
-                                           -> Effect (Nullable GLboolean)
+foreign import js_getVertexAttribGLboolean :: EffectFn3 WebGLRenderingContext GLuint GLenum (Nullable GLboolean)
 
 
 
@@ -210,6 +214,10 @@ foreign import js_getVertexAttribGLboolean :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getVertexAttribGLenum :: forall c
                       .  IsWebGLRenderingContext c
                       => c
@@ -221,13 +229,10 @@ getVertexAttribGLenum gl index pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getVertexAttribGLenum gl0 index pname
+        res <- runEffectFn3 js_getVertexAttribGLenum gl0 index pname
         pure (toMaybe res)
 
-foreign import js_getVertexAttribGLenum :: WebGLRenderingContext
-                                        -> GLuint
-                                        -> GLenum
-                                        -> Effect (Nullable GLenum)
+foreign import js_getVertexAttribGLenum :: EffectFn3 WebGLRenderingContext GLuint GLenum (Nullable GLenum)
 
 
 
@@ -245,6 +250,10 @@ foreign import js_getVertexAttribGLenum :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getVertexAttribGLint :: forall c
                      .  IsWebGLRenderingContext c
                      => c
@@ -256,13 +265,10 @@ getVertexAttribGLint gl index pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getVertexAttribGLint gl0 index pname
+        res <- runEffectFn3 js_getVertexAttribGLint gl0 index pname
         pure (toMaybe res)
 
-foreign import js_getVertexAttribGLint :: WebGLRenderingContext
-                                       -> GLuint
-                                       -> GLenum
-                                       -> Effect (Nullable GLint)
+foreign import js_getVertexAttribGLint :: EffectFn3 WebGLRenderingContext GLuint GLenum (Nullable GLint)
 
 
 
@@ -278,6 +284,10 @@ foreign import js_getVertexAttribGLint :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getVertexAttribWebGLBuffer :: forall c
                            .  IsWebGLRenderingContext c
                            => c
@@ -289,13 +299,10 @@ getVertexAttribWebGLBuffer gl index pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getVertexAttribWebGLBuffer gl0 index pname
+        res <- runEffectFn3 js_getVertexAttribWebGLBuffer gl0 index pname
         pure (toMaybe res)
 
-foreign import js_getVertexAttribWebGLBuffer :: WebGLRenderingContext
-                                             -> GLuint
-                                             -> GLenum
-                                             -> Effect (Nullable WebGLBuffer)
+foreign import js_getVertexAttribWebGLBuffer :: EffectFn3 WebGLRenderingContext GLuint GLenum (Nullable WebGLBuffer)
 
 
 
@@ -311,6 +318,10 @@ foreign import js_getVertexAttribWebGLBuffer :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getVertexAttribFloat32Array :: forall c
                             .  IsWebGLRenderingContext c
                             => c
@@ -322,13 +333,10 @@ getVertexAttribFloat32Array gl index pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getVertexAttribFloat32Array gl0 index pname
+        res <- runEffectFn3 js_getVertexAttribFloat32Array gl0 index pname
         pure (toMaybe res)
 
-foreign import js_getVertexAttribFloat32Array :: WebGLRenderingContext
-                                              -> GLuint
-                                              -> GLenum
-                                              -> Effect (Nullable (ArrayView Float32))
+foreign import js_getVertexAttribFloat32Array :: EffectFn3 WebGLRenderingContext GLuint GLenum (Nullable (ArrayView Float32))
 
 
 
@@ -352,12 +360,9 @@ getVertexAttribOffset gl index pname
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_getVertexAttribOffset gl0 index pname
+      runEffectFn3 js_getVertexAttribOffset gl0 index pname
 
-foreign import js_getVertexAttribOffset :: WebGLRenderingContext
-                                        -> GLuint
-                                        -> GLenum
-                                        -> Effect GLintptr
+foreign import js_getVertexAttribOffset :: EffectFn3 WebGLRenderingContext GLuint GLenum GLintptr
 
 
 
@@ -380,12 +385,9 @@ vertexAttrib1f gl index x
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_vertexAttrib1f gl0 index x
+      runEffectFn3 js_vertexAttrib1f gl0 index x
 
-foreign import js_vertexAttrib1f :: WebGLRenderingContext
-                                 -> GLuint
-                                 -> GLfloat
-                                 -> Effect Unit
+foreign import js_vertexAttrib1f :: EffectFn3 WebGLRenderingContext GLuint GLfloat Unit
 
 
 
@@ -409,13 +411,9 @@ vertexAttrib2f gl index x y
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_vertexAttrib2f gl0 index x y
+      runEffectFn4 js_vertexAttrib2f gl0 index x y
 
-foreign import js_vertexAttrib2f :: WebGLRenderingContext
-                                 -> GLuint
-                                 -> GLfloat
-                                 -> GLfloat
-                                 -> Effect Unit
+foreign import js_vertexAttrib2f :: EffectFn4 WebGLRenderingContext GLuint GLfloat GLfloat Unit
 
 
 
@@ -440,14 +438,9 @@ vertexAttrib3f gl index x y z
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_vertexAttrib3f gl0 index x y z
+      runEffectFn5 js_vertexAttrib3f gl0 index x y z
 
-foreign import js_vertexAttrib3f :: WebGLRenderingContext
-                                 -> GLuint
-                                 -> GLfloat
-                                 -> GLfloat
-                                 -> GLfloat
-                                 -> Effect Unit
+foreign import js_vertexAttrib3f :: EffectFn5 WebGLRenderingContext GLuint GLfloat GLfloat GLfloat Unit
 
 
 
@@ -479,15 +472,9 @@ vertexAttrib4f gl index x y z w
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_vertexAttrib4f gl0 index x y z w
+      runEffectFn6 js_vertexAttrib4f gl0 index x y z w
 
-foreign import js_vertexAttrib4f :: WebGLRenderingContext
-                                 -> GLuint
-                                 -> GLfloat
-                                 -> GLfloat
-                                 -> GLfloat
-                                 -> GLfloat
-                                 -> Effect Unit
+foreign import js_vertexAttrib4f :: EffectFn6 WebGLRenderingContext GLuint GLfloat GLfloat GLfloat GLfloat Unit
 
 
 
@@ -501,8 +488,8 @@ foreign import js_vertexAttrib4f :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
 vertexAttrib1fv :: forall c f
-                .  IsFloat32List f
-                => IsWebGLRenderingContext c
+                .  IsWebGLRenderingContext c
+                => IsFloat32List f
                 => c
                 -> GLuint
                 -> f
@@ -512,12 +499,9 @@ vertexAttrib1fv gl index values
       gl0 = toWebGLRenderingContext gl
       values0 = toFloat32List values
     in
-      js_vertexAttrib1fv gl0 index values0
+      runEffectFn3 js_vertexAttrib1fv gl0 index values0
 
-foreign import js_vertexAttrib1fv :: WebGLRenderingContext
-                                  -> GLuint
-                                  -> Float32List
-                                  -> Effect Unit
+foreign import js_vertexAttrib1fv :: EffectFn3 WebGLRenderingContext GLuint Float32List Unit
 
 
 
@@ -531,8 +515,8 @@ foreign import js_vertexAttrib1fv :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
 vertexAttrib2fv :: forall c f
-                .  IsFloat32List f
-                => IsWebGLRenderingContext c
+                .  IsWebGLRenderingContext c
+                => IsFloat32List f
                 => c
                 -> GLuint
                 -> f
@@ -542,12 +526,9 @@ vertexAttrib2fv gl index values
       gl0 = toWebGLRenderingContext gl
       values0 = toFloat32List values
     in
-      js_vertexAttrib2fv gl0 index values0
+      runEffectFn3 js_vertexAttrib2fv gl0 index values0
 
-foreign import js_vertexAttrib2fv :: WebGLRenderingContext
-                                  -> GLuint
-                                  -> Float32List
-                                  -> Effect Unit
+foreign import js_vertexAttrib2fv :: EffectFn3 WebGLRenderingContext GLuint Float32List Unit
 
 
 
@@ -561,8 +542,8 @@ foreign import js_vertexAttrib2fv :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
 vertexAttrib3fv :: forall c f
-                .  IsFloat32List f
-                => IsWebGLRenderingContext c
+                .  IsWebGLRenderingContext c
+                => IsFloat32List f
                 => c
                 -> GLuint
                 -> f
@@ -572,12 +553,9 @@ vertexAttrib3fv gl index values
       gl0 = toWebGLRenderingContext gl
       values0 = toFloat32List values
     in
-      js_vertexAttrib3fv gl0 index values0
+      runEffectFn3 js_vertexAttrib3fv gl0 index values0
 
-foreign import js_vertexAttrib3fv :: WebGLRenderingContext
-                                  -> GLuint
-                                  -> Float32List
-                                  -> Effect Unit
+foreign import js_vertexAttrib3fv :: EffectFn3 WebGLRenderingContext GLuint Float32List Unit
 
 
 
@@ -591,8 +569,8 @@ foreign import js_vertexAttrib3fv :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.10](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.10)
 -- |
 vertexAttrib4fv :: forall c f
-                .  IsFloat32List f
-                => IsWebGLRenderingContext c
+                .  IsWebGLRenderingContext c
+                => IsFloat32List f
                 => c
                 -> GLuint
                 -> f
@@ -602,12 +580,9 @@ vertexAttrib4fv gl index values
       gl0 = toWebGLRenderingContext gl
       values0 = toFloat32List values
     in
-      js_vertexAttrib4fv gl0 index values0
+      runEffectFn3 js_vertexAttrib4fv gl0 index values0
 
-foreign import js_vertexAttrib4fv :: WebGLRenderingContext
-                                  -> GLuint
-                                  -> Float32List
-                                  -> Effect Unit
+foreign import js_vertexAttrib4fv :: EffectFn3 WebGLRenderingContext GLuint Float32List Unit
 
 
 
@@ -641,14 +616,7 @@ vertexAttribPointer gl index size type0 normalized stride offset
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_vertexAttribPointer gl0 index size type0 normalized stride offset
+      runEffectFn7 js_vertexAttribPointer gl0 index size type0 normalized stride offset
 
-foreign import js_vertexAttribPointer :: WebGLRenderingContext
-                                      -> GLuint
-                                      -> GLint
-                                      -> GLenum
-                                      -> GLboolean
-                                      -> GLsizei
-                                      -> GLintptr
-                                      -> Effect Unit
+foreign import js_vertexAttribPointer :: EffectFn7 WebGLRenderingContext GLuint GLint GLenum GLboolean GLsizei GLintptr Unit
 

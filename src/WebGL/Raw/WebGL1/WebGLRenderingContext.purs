@@ -78,6 +78,19 @@ import Data.Nullable ( Nullable
 import Data.String (joinWith)
 import Effect (Effect)
 import Effect.Exception.Unsafe (unsafeThrow)
+import Effect.Uncurried ( EffectFn1
+                        , EffectFn2
+                        , EffectFn3
+                        , EffectFn4
+                        , EffectFn5
+                        , EffectFn8
+                        , runEffectFn1
+                        , runEffectFn2
+                        , runEffectFn3
+                        , runEffectFn4
+                        , runEffectFn5
+                        , runEffectFn8
+                        )
 import Prelude ( bind
                , map
                , pure
@@ -129,9 +142,9 @@ getCanvas gl
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_getCanvas gl0
+      runEffectFn1 js_getCanvas gl0
 
-foreign import js_getCanvas :: WebGLRenderingContext -> Effect HTMLCanvasElement
+foreign import js_getCanvas :: EffectFn1 WebGLRenderingContext HTMLCanvasElement
 
 
 
@@ -148,10 +161,9 @@ getDrawingBufferWidth gl
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_getDrawingBufferWidth gl0
+      runEffectFn1 js_getDrawingBufferWidth gl0
 
-foreign import js_getDrawingBufferWidth :: WebGLRenderingContext
-                                        -> Effect GLsizei
+foreign import js_getDrawingBufferWidth :: EffectFn1 WebGLRenderingContext GLsizei
 
 
 
@@ -168,10 +180,9 @@ getDrawingBufferHeight gl
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_getDrawingBufferHeight gl0
+      runEffectFn1 js_getDrawingBufferHeight gl0
 
-foreign import js_getDrawingBufferHeight :: WebGLRenderingContext
-                                         -> Effect GLsizei
+foreign import js_getDrawingBufferHeight :: EffectFn1 WebGLRenderingContext GLsizei
 
 
 
@@ -232,11 +243,10 @@ getContextAttributes gl
             res1
     in
       do
-        res <- js_getContextAttributes gl0
+        res <- runEffectFn1 js_getContextAttributes gl0
         pure (rconvert res)
 
-foreign import js_getContextAttributes :: WebGLRenderingContext
-                                       -> Effect (Nullable JSWebGLContextAttributes)
+foreign import js_getContextAttributes :: EffectFn1 WebGLRenderingContext (Nullable JSWebGLContextAttributes)
 
 
 
@@ -254,9 +264,9 @@ isContextLost gl
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_isContextLost gl0
+      runEffectFn1 js_isContextLost gl0
 
-foreign import js_isContextLost :: WebGLRenderingContext -> Effect Boolean
+foreign import js_isContextLost :: EffectFn1 WebGLRenderingContext Boolean
 
 
 
@@ -278,11 +288,10 @@ getSupportedExtensions gl
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getSupportedExtensions gl0
+        res <- runEffectFn1 js_getSupportedExtensions gl0
         pure (toMaybe res)
 
-foreign import js_getSupportedExtensions :: WebGLRenderingContext
-                                         -> Effect (Nullable (Array String))
+foreign import js_getSupportedExtensions :: EffectFn1 WebGLRenderingContext (Nullable (Array String))
 
 
 
@@ -304,11 +313,9 @@ activeTexture gl texture
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_activeTexture gl0 texture
+      runEffectFn2 js_activeTexture gl0 texture
 
-foreign import js_activeTexture :: WebGLRenderingContext
-                                -> GLenum
-                                -> Effect Unit
+foreign import js_activeTexture :: EffectFn2 WebGLRenderingContext GLenum Unit
 
 
 
@@ -338,14 +345,9 @@ blendColor gl red green blue alpha
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_blendColor gl0 red green blue alpha
+      runEffectFn5 js_blendColor gl0 red green blue alpha
 
-foreign import js_blendColor :: WebGLRenderingContext
-                             -> GLclampf
-                             -> GLclampf
-                             -> GLclampf
-                             -> GLclampf
-                             -> Effect Unit
+foreign import js_blendColor :: EffectFn5 WebGLRenderingContext GLclampf GLclampf GLclampf GLclampf Unit
 
 
 
@@ -367,11 +369,9 @@ blendEquation gl mode
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_blendEquation gl0 mode
+      runEffectFn2 js_blendEquation gl0 mode
 
-foreign import js_blendEquation :: WebGLRenderingContext
-                                -> GLenum
-                                -> Effect Unit
+foreign import js_blendEquation :: EffectFn2 WebGLRenderingContext GLenum Unit
 
 
 
@@ -394,12 +394,9 @@ blendEquationSeparate gl modeRGB modeAlpha
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_blendEquationSeparate gl0 modeRGB modeAlpha
+      runEffectFn3 js_blendEquationSeparate gl0 modeRGB modeAlpha
 
-foreign import js_blendEquationSeparate :: WebGLRenderingContext
-                                        -> GLenum
-                                        -> GLenum
-                                        -> Effect Unit
+foreign import js_blendEquationSeparate :: EffectFn3 WebGLRenderingContext GLenum GLenum Unit
 
 
 
@@ -422,12 +419,9 @@ blendFunc gl sfactor dfactor
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_blendFunc gl0 sfactor dfactor
+      runEffectFn3 js_blendFunc gl0 sfactor dfactor
 
-foreign import js_blendFunc :: WebGLRenderingContext
-                            -> GLenum
-                            -> GLenum
-                            -> Effect Unit
+foreign import js_blendFunc :: EffectFn3 WebGLRenderingContext GLenum GLenum Unit
 
 
 
@@ -457,14 +451,9 @@ blendFuncSeparate gl srcRGB dstRGB srcAlpha dstAlpha
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_blendFuncSeparate gl0 srcRGB dstRGB srcAlpha dstAlpha
+      runEffectFn5 js_blendFuncSeparate gl0 srcRGB dstRGB srcAlpha dstAlpha
 
-foreign import js_blendFuncSeparate :: WebGLRenderingContext
-                                    -> GLenum
-                                    -> GLenum
-                                    -> GLenum
-                                    -> GLenum
-                                    -> Effect Unit
+foreign import js_blendFuncSeparate :: EffectFn5 WebGLRenderingContext GLenum GLenum GLenum GLenum Unit
 
 
 
@@ -482,9 +471,9 @@ clear gl mask
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_clear gl0 mask
+      runEffectFn2 js_clear gl0 mask
 
-foreign import js_clear :: WebGLRenderingContext -> GLbitfield -> Effect Unit
+foreign import js_clear :: EffectFn2 WebGLRenderingContext GLbitfield Unit
 
 
 
@@ -514,14 +503,9 @@ clearColor gl red green blue alpha
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_clearColor gl0 red green blue alpha
+      runEffectFn5 js_clearColor gl0 red green blue alpha
 
-foreign import js_clearColor :: WebGLRenderingContext
-                             -> GLclampf
-                             -> GLclampf
-                             -> GLclampf
-                             -> GLclampf
-                             -> Effect Unit
+foreign import js_clearColor :: EffectFn5 WebGLRenderingContext GLclampf GLclampf GLclampf GLclampf Unit
 
 
 
@@ -543,9 +527,9 @@ clearDepth gl depth
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_clearDepth gl0 depth
+      runEffectFn2 js_clearDepth gl0 depth
 
-foreign import js_clearDepth :: WebGLRenderingContext -> GLclampf -> Effect Unit
+foreign import js_clearDepth :: EffectFn2 WebGLRenderingContext GLclampf Unit
 
 
 
@@ -567,9 +551,9 @@ clearStencil gl s
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_clearStencil gl0 s
+      runEffectFn2 js_clearStencil gl0 s
 
-foreign import js_clearStencil :: WebGLRenderingContext -> GLint -> Effect Unit
+foreign import js_clearStencil :: EffectFn2 WebGLRenderingContext GLint Unit
 
 
 
@@ -599,14 +583,9 @@ colorMask gl red green blue alpha
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_colorMask gl0 red green blue alpha
+      runEffectFn5 js_colorMask gl0 red green blue alpha
 
-foreign import js_colorMask :: WebGLRenderingContext
-                            -> GLboolean
-                            -> GLboolean
-                            -> GLboolean
-                            -> GLboolean
-                            -> Effect Unit
+foreign import js_colorMask :: EffectFn5 WebGLRenderingContext GLboolean GLboolean GLboolean GLboolean Unit
 
 
 
@@ -624,9 +603,9 @@ cullFace gl mode
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_cullFace gl0 mode
+      runEffectFn2 js_cullFace gl0 mode
 
-foreign import js_cullFace :: WebGLRenderingContext -> GLenum -> Effect Unit
+foreign import js_cullFace :: EffectFn2 WebGLRenderingContext GLenum Unit
 
 
 
@@ -644,9 +623,9 @@ depthFunc gl func
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_depthFunc gl0 func
+      runEffectFn2 js_depthFunc gl0 func
 
-foreign import js_depthFunc :: WebGLRenderingContext -> GLenum -> Effect Unit
+foreign import js_depthFunc :: EffectFn2 WebGLRenderingContext GLenum Unit
 
 
 
@@ -668,9 +647,9 @@ depthMask gl flag
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_depthMask gl0 flag
+      runEffectFn2 js_depthMask gl0 flag
 
-foreign import js_depthMask :: WebGLRenderingContext -> GLboolean -> Effect Unit
+foreign import js_depthMask :: EffectFn2 WebGLRenderingContext GLboolean Unit
 
 
 
@@ -693,12 +672,9 @@ depthRange gl zNear zFar
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_depthRange gl0 zNear zFar
+      runEffectFn3 js_depthRange gl0 zNear zFar
 
-foreign import js_depthRange :: WebGLRenderingContext
-                             -> GLclampf
-                             -> GLclampf
-                             -> Effect Unit
+foreign import js_depthRange :: EffectFn3 WebGLRenderingContext GLclampf GLclampf Unit
 
 
 
@@ -716,9 +692,9 @@ disable gl cap
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_disable gl0 cap
+      runEffectFn2 js_disable gl0 cap
 
-foreign import js_disable :: WebGLRenderingContext -> GLenum -> Effect Unit
+foreign import js_disable :: EffectFn2 WebGLRenderingContext GLenum Unit
 
 
 
@@ -742,13 +718,9 @@ drawArrays gl mode first count
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_drawArrays gl0 mode first count
+      runEffectFn4 js_drawArrays gl0 mode first count
 
-foreign import js_drawArrays :: WebGLRenderingContext
-                             -> GLenum
-                             -> GLint
-                             -> GLsizei
-                             -> Effect Unit
+foreign import js_drawArrays :: EffectFn4 WebGLRenderingContext GLenum GLint GLsizei Unit
 
 
 
@@ -778,14 +750,9 @@ drawElements gl mode count type0 offset
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_drawElements gl0 mode count type0 offset
+      runEffectFn5 js_drawElements gl0 mode count type0 offset
 
-foreign import js_drawElements :: WebGLRenderingContext
-                               -> GLenum
-                               -> GLsizei
-                               -> GLenum
-                               -> GLintptr
-                               -> Effect Unit
+foreign import js_drawElements :: EffectFn5 WebGLRenderingContext GLenum GLsizei GLenum GLintptr Unit
 
 
 
@@ -803,9 +770,9 @@ enable gl cap
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_enable gl0 cap
+      runEffectFn2 js_enable gl0 cap
 
-foreign import js_enable :: WebGLRenderingContext -> GLenum -> Effect Unit
+foreign import js_enable :: EffectFn2 WebGLRenderingContext GLenum Unit
 
 
 
@@ -823,9 +790,9 @@ finish gl
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_finish gl0
+      runEffectFn1 js_finish gl0
 
-foreign import js_finish :: WebGLRenderingContext -> Effect Unit
+foreign import js_finish :: EffectFn1 WebGLRenderingContext Unit
 
 
 
@@ -843,9 +810,9 @@ flush gl
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_flush gl0
+      runEffectFn1 js_flush gl0
 
-foreign import js_flush :: WebGLRenderingContext -> Effect Unit
+foreign import js_flush :: EffectFn1 WebGLRenderingContext Unit
 
 
 
@@ -863,9 +830,9 @@ frontFace gl mode
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_frontFace gl0 mode
+      runEffectFn2 js_frontFace gl0 mode
 
-foreign import js_frontFace :: WebGLRenderingContext -> GLenum -> Effect Unit
+foreign import js_frontFace :: EffectFn2 WebGLRenderingContext GLenum Unit
 
 
 
@@ -881,6 +848,10 @@ foreign import js_frontFace :: WebGLRenderingContext -> GLenum -> Effect Unit
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterBoolean :: forall c
                     .  IsWebGLRenderingContext c
                     => c
@@ -891,12 +862,10 @@ getParameterBoolean gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterBoolean gl0 pname
+        res <- runEffectFn2 js_getParameterBoolean gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterBoolean :: WebGLRenderingContext
-                                      -> GLenum
-                                      -> Effect (Nullable Boolean)
+foreign import js_getParameterBoolean :: EffectFn2 WebGLRenderingContext GLenum (Nullable Boolean)
 
 
 
@@ -917,6 +886,10 @@ foreign import js_getParameterBoolean :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterString :: forall c
                    .  IsWebGLRenderingContext c
                    => c
@@ -927,12 +900,10 @@ getParameterString gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterString gl0 pname
+        res <- runEffectFn2 js_getParameterString gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterString :: WebGLRenderingContext
-                                     -> GLenum
-                                     -> Effect (Nullable String)
+foreign import js_getParameterString :: EffectFn2 WebGLRenderingContext GLenum (Nullable String)
 
 
 
@@ -963,6 +934,10 @@ foreign import js_getParameterString :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterGLboolean :: forall c
                       .  IsWebGLRenderingContext c
                       => c
@@ -973,12 +948,10 @@ getParameterGLboolean gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterGLboolean gl0 pname
+        res <- runEffectFn2 js_getParameterGLboolean gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterGLboolean :: WebGLRenderingContext
-                                        -> GLenum
-                                        -> Effect (Nullable GLboolean)
+foreign import js_getParameterGLboolean :: EffectFn2 WebGLRenderingContext GLenum (Nullable GLboolean)
 
 
 
@@ -1018,6 +991,10 @@ foreign import js_getParameterGLboolean :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterGLenum :: forall c
                    .  IsWebGLRenderingContext c
                    => c
@@ -1028,12 +1005,10 @@ getParameterGLenum gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterGLenum gl0 pname
+        res <- runEffectFn2 js_getParameterGLenum gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterGLenum :: WebGLRenderingContext
-                                     -> GLenum
-                                     -> Effect (Nullable GLenum)
+foreign import js_getParameterGLenum :: EffectFn2 WebGLRenderingContext GLenum (Nullable GLenum)
 
 
 
@@ -1054,6 +1029,10 @@ foreign import js_getParameterGLenum :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterGLfloat :: forall c
                     .  IsWebGLRenderingContext c
                     => c
@@ -1064,12 +1043,10 @@ getParameterGLfloat gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterGLfloat gl0 pname
+        res <- runEffectFn2 js_getParameterGLfloat gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterGLfloat :: WebGLRenderingContext
-                                      -> GLenum
-                                      -> Effect (Nullable GLfloat)
+foreign import js_getParameterGLfloat :: EffectFn2 WebGLRenderingContext GLenum (Nullable GLfloat)
 
 
 
@@ -1138,6 +1115,10 @@ foreign import js_getParameterGLfloat :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterGLint :: forall c
                   .  IsWebGLRenderingContext c
                   => c
@@ -1148,12 +1129,10 @@ getParameterGLint gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterGLint gl0 pname
+        res <- runEffectFn2 js_getParameterGLint gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterGLint :: WebGLRenderingContext
-                                    -> GLenum
-                                    -> Effect (Nullable GLint)
+foreign import js_getParameterGLint :: EffectFn2 WebGLRenderingContext GLenum (Nullable GLint)
 
 
 
@@ -1172,6 +1151,10 @@ foreign import js_getParameterGLint :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterGLuint :: forall c
                    .  IsWebGLRenderingContext c
                    => c
@@ -1182,12 +1165,10 @@ getParameterGLuint gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterGLuint gl0 pname
+        res <- runEffectFn2 js_getParameterGLuint gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterGLuint :: WebGLRenderingContext
-                                     -> GLenum
-                                     -> Effect (Nullable GLuint)
+foreign import js_getParameterGLuint :: EffectFn2 WebGLRenderingContext GLenum (Nullable GLuint)
 
 
 
@@ -1203,6 +1184,10 @@ foreign import js_getParameterGLuint :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterGLuint64EXT :: forall c
                         .  IsWebGLRenderingContext c
                         => c
@@ -1213,12 +1198,10 @@ getParameterGLuint64EXT gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterGLuint64EXT gl0 pname
+        res <- runEffectFn2 js_getParameterGLuint64EXT gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterGLuint64EXT :: WebGLRenderingContext
-                                          -> GLenum
-                                          -> Effect (Nullable GLuint64EXT)
+foreign import js_getParameterGLuint64EXT :: EffectFn2 WebGLRenderingContext GLenum (Nullable GLuint64EXT)
 
 
 
@@ -1241,6 +1224,10 @@ foreign import js_getParameterGLuint64EXT :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterWebGLBuffer :: forall c
                         .  IsWebGLRenderingContext c
                         => c
@@ -1251,12 +1238,10 @@ getParameterWebGLBuffer gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterWebGLBuffer gl0 pname
+        res <- runEffectFn2 js_getParameterWebGLBuffer gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterWebGLBuffer :: WebGLRenderingContext
-                                          -> GLenum
-                                          -> Effect (Nullable WebGLBuffer)
+foreign import js_getParameterWebGLBuffer :: EffectFn2 WebGLRenderingContext GLenum (Nullable WebGLBuffer)
 
 
 
@@ -1274,6 +1259,10 @@ foreign import js_getParameterWebGLBuffer :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterWebGLFramebuffer :: forall c
                              .  IsWebGLRenderingContext c
                              => c
@@ -1284,12 +1273,10 @@ getParameterWebGLFramebuffer gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterWebGLFramebuffer gl0 pname
+        res <- runEffectFn2 js_getParameterWebGLFramebuffer gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterWebGLFramebuffer :: WebGLRenderingContext
-                                               -> GLenum
-                                               -> Effect (Nullable WebGLFramebuffer)
+foreign import js_getParameterWebGLFramebuffer :: EffectFn2 WebGLRenderingContext GLenum (Nullable WebGLFramebuffer)
 
 
 
@@ -1305,6 +1292,10 @@ foreign import js_getParameterWebGLFramebuffer :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterWebGLProgram :: forall c
                          .  IsWebGLRenderingContext c
                          => c
@@ -1315,12 +1306,10 @@ getParameterWebGLProgram gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterWebGLProgram gl0 pname
+        res <- runEffectFn2 js_getParameterWebGLProgram gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterWebGLProgram :: WebGLRenderingContext
-                                           -> GLenum
-                                           -> Effect (Nullable WebGLProgram)
+foreign import js_getParameterWebGLProgram :: EffectFn2 WebGLRenderingContext GLenum (Nullable WebGLProgram)
 
 
 
@@ -1336,6 +1325,10 @@ foreign import js_getParameterWebGLProgram :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterWebGLRenderbuffer :: forall c
                               .  IsWebGLRenderingContext c
                               => c
@@ -1346,12 +1339,10 @@ getParameterWebGLRenderbuffer gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterWebGLRenderbuffer gl0 pname
+        res <- runEffectFn2 js_getParameterWebGLRenderbuffer gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterWebGLRenderbuffer :: WebGLRenderingContext
-                                                -> GLenum
-                                                -> Effect (Nullable WebGLRenderbuffer)
+foreign import js_getParameterWebGLRenderbuffer :: EffectFn2 WebGLRenderingContext GLenum (Nullable WebGLRenderbuffer)
 
 
 
@@ -1370,6 +1361,10 @@ foreign import js_getParameterWebGLRenderbuffer :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterWebGLTexture :: forall c
                          .  IsWebGLRenderingContext c
                          => c
@@ -1380,12 +1375,10 @@ getParameterWebGLTexture gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterWebGLTexture gl0 pname
+        res <- runEffectFn2 js_getParameterWebGLTexture gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterWebGLTexture :: WebGLRenderingContext
-                                           -> GLenum
-                                           -> Effect (Nullable WebGLTexture)
+foreign import js_getParameterWebGLTexture :: EffectFn2 WebGLRenderingContext GLenum (Nullable WebGLTexture)
 
 
 
@@ -1401,6 +1394,10 @@ foreign import js_getParameterWebGLTexture :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterGLbooleanArray :: forall c
                            .  IsWebGLRenderingContext c
                            => c
@@ -1411,12 +1408,10 @@ getParameterGLbooleanArray gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterGLbooleanArray gl0 pname
+        res <- runEffectFn2 js_getParameterGLbooleanArray gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterGLbooleanArray :: WebGLRenderingContext
-                                             -> GLenum
-                                             -> Effect (Nullable (Array GLboolean))
+foreign import js_getParameterGLbooleanArray :: EffectFn2 WebGLRenderingContext GLenum (Nullable (Array GLboolean))
 
 
 
@@ -1434,6 +1429,10 @@ foreign import js_getParameterGLbooleanArray :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterInt32Array :: forall c
                        .  IsWebGLRenderingContext c
                        => c
@@ -1444,12 +1443,10 @@ getParameterInt32Array gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterInt32Array gl0 pname
+        res <- runEffectFn2 js_getParameterInt32Array gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterInt32Array :: WebGLRenderingContext
-                                         -> GLenum
-                                         -> Effect (Nullable (ArrayView Int32))
+foreign import js_getParameterInt32Array :: EffectFn2 WebGLRenderingContext GLenum (Nullable (ArrayView Int32))
 
 
 
@@ -1465,6 +1462,10 @@ foreign import js_getParameterInt32Array :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterUint32Array :: forall c
                         .  IsWebGLRenderingContext c
                         => c
@@ -1475,12 +1476,10 @@ getParameterUint32Array gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterUint32Array gl0 pname
+        res <- runEffectFn2 js_getParameterUint32Array gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterUint32Array :: WebGLRenderingContext
-                                          -> GLenum
-                                          -> Effect (Nullable (ArrayView Uint32))
+foreign import js_getParameterUint32Array :: EffectFn2 WebGLRenderingContext GLenum (Nullable (ArrayView Uint32))
 
 
 
@@ -1500,6 +1499,10 @@ foreign import js_getParameterUint32Array :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.3](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.3)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterFloat32Array :: forall c
                          .  IsWebGLRenderingContext c
                          => c
@@ -1510,12 +1513,10 @@ getParameterFloat32Array gl pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getParameterFloat32Array gl0 pname
+        res <- runEffectFn2 js_getParameterFloat32Array gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterFloat32Array :: WebGLRenderingContext
-                                           -> GLenum
-                                           -> Effect (Nullable (ArrayView Float32))
+foreign import js_getParameterFloat32Array :: EffectFn2 WebGLRenderingContext GLenum (Nullable (ArrayView Float32))
 
 
 
@@ -1533,9 +1534,9 @@ getError gl
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_getError gl0
+      runEffectFn1 js_getError gl0
 
-foreign import js_getError :: WebGLRenderingContext -> Effect GLenum
+foreign import js_getError :: EffectFn1 WebGLRenderingContext GLenum
 
 
 
@@ -1558,12 +1559,9 @@ hint gl target mode
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_hint gl0 target mode
+      runEffectFn3 js_hint gl0 target mode
 
-foreign import js_hint :: WebGLRenderingContext
-                       -> GLenum
-                       -> GLenum
-                       -> Effect Unit
+foreign import js_hint :: EffectFn3 WebGLRenderingContext GLenum GLenum Unit
 
 
 
@@ -1585,11 +1583,9 @@ isEnabled gl cap
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_isEnabled gl0 cap
+      runEffectFn2 js_isEnabled gl0 cap
 
-foreign import js_isEnabled :: WebGLRenderingContext
-                            -> GLenum
-                            -> Effect GLboolean
+foreign import js_isEnabled :: EffectFn2 WebGLRenderingContext GLenum GLboolean
 
 
 
@@ -1607,9 +1603,9 @@ lineWidth gl width
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_lineWidth gl0 width
+      runEffectFn2 js_lineWidth gl0 width
 
-foreign import js_lineWidth :: WebGLRenderingContext -> GLfloat -> Effect Unit
+foreign import js_lineWidth :: EffectFn2 WebGLRenderingContext GLfloat Unit
 
 
 
@@ -1632,12 +1628,9 @@ pixelStorei gl pname param
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_pixelStorei gl0 pname param
+      runEffectFn3 js_pixelStorei gl0 pname param
 
-foreign import js_pixelStorei :: WebGLRenderingContext
-                              -> GLenum
-                              -> GLint
-                              -> Effect Unit
+foreign import js_pixelStorei :: EffectFn3 WebGLRenderingContext GLenum GLint Unit
 
 
 
@@ -1660,12 +1653,9 @@ polygonOffset gl factor units
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_polygonOffset gl0 factor units
+      runEffectFn3 js_polygonOffset gl0 factor units
 
-foreign import js_polygonOffset :: WebGLRenderingContext
-                                -> GLfloat
-                                -> GLfloat
-                                -> Effect Unit
+foreign import js_polygonOffset :: EffectFn3 WebGLRenderingContext GLfloat GLfloat Unit
 
 
 
@@ -1687,8 +1677,8 @@ foreign import js_polygonOffset :: WebGLRenderingContext
 -- | Documentation: [WebGL 1.0 spec, section 5.14.12](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.12)
 -- |
 readPixels :: forall a c
-           .  IsArrayBufferView a
-           => IsWebGLRenderingContext c
+           .  IsWebGLRenderingContext c
+           => IsArrayBufferView a
            => c
            -> GLint
            -> GLint
@@ -1704,17 +1694,9 @@ readPixels gl x y width height format type0 pixels
       pixels0 = map toArrayBufferView pixels
       pixels1 = toNullable pixels0
     in
-      js_readPixels gl0 x y width height format type0 pixels1
+      runEffectFn8 js_readPixels gl0 x y width height format type0 pixels1
 
-foreign import js_readPixels :: WebGLRenderingContext
-                             -> GLint
-                             -> GLint
-                             -> GLsizei
-                             -> GLsizei
-                             -> GLenum
-                             -> GLenum
-                             -> Nullable ArrayBufferView
-                             -> Effect Unit
+foreign import js_readPixels :: EffectFn8 WebGLRenderingContext GLint GLint GLsizei GLsizei GLenum GLenum (Nullable ArrayBufferView) Unit
 
 
 
@@ -1737,12 +1719,9 @@ sampleCoverage gl value invert
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_sampleCoverage gl0 value invert
+      runEffectFn3 js_sampleCoverage gl0 value invert
 
-foreign import js_sampleCoverage :: WebGLRenderingContext
-                                 -> GLclampf
-                                 -> GLboolean
-                                 -> Effect Unit
+foreign import js_sampleCoverage :: EffectFn3 WebGLRenderingContext GLclampf GLboolean Unit
 
 
 
@@ -1767,14 +1746,9 @@ scissor gl x y width height
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_scissor gl0 x y width height
+      runEffectFn5 js_scissor gl0 x y width height
 
-foreign import js_scissor :: WebGLRenderingContext
-                          -> GLint
-                          -> GLint
-                          -> GLsizei
-                          -> GLsizei
-                          -> Effect Unit
+foreign import js_scissor :: EffectFn5 WebGLRenderingContext GLint GLint GLsizei GLsizei Unit
 
 
 
@@ -1798,13 +1772,9 @@ stencilFunc gl func ref mask
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_stencilFunc gl0 func ref mask
+      runEffectFn4 js_stencilFunc gl0 func ref mask
 
-foreign import js_stencilFunc :: WebGLRenderingContext
-                              -> GLenum
-                              -> GLint
-                              -> GLuint
-                              -> Effect Unit
+foreign import js_stencilFunc :: EffectFn4 WebGLRenderingContext GLenum GLint GLuint Unit
 
 
 
@@ -1834,14 +1804,9 @@ stencilFuncSeparate gl face func ref mask
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_stencilFuncSeparate gl0 face func ref mask
+      runEffectFn5 js_stencilFuncSeparate gl0 face func ref mask
 
-foreign import js_stencilFuncSeparate :: WebGLRenderingContext
-                                      -> GLenum
-                                      -> GLenum
-                                      -> GLint
-                                      -> GLuint
-                                      -> Effect Unit
+foreign import js_stencilFuncSeparate :: EffectFn5 WebGLRenderingContext GLenum GLenum GLint GLuint Unit
 
 
 
@@ -1863,9 +1828,9 @@ stencilMask gl mask
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_stencilMask gl0 mask
+      runEffectFn2 js_stencilMask gl0 mask
 
-foreign import js_stencilMask :: WebGLRenderingContext -> GLuint -> Effect Unit
+foreign import js_stencilMask :: EffectFn2 WebGLRenderingContext GLuint Unit
 
 
 
@@ -1888,12 +1853,9 @@ stencilMaskSeparate gl face mask
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_stencilMaskSeparate gl0 face mask
+      runEffectFn3 js_stencilMaskSeparate gl0 face mask
 
-foreign import js_stencilMaskSeparate :: WebGLRenderingContext
-                                      -> GLenum
-                                      -> GLuint
-                                      -> Effect Unit
+foreign import js_stencilMaskSeparate :: EffectFn3 WebGLRenderingContext GLenum GLuint Unit
 
 
 
@@ -1917,13 +1879,9 @@ stencilOp gl fail zfail zpass
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_stencilOp gl0 fail zfail zpass
+      runEffectFn4 js_stencilOp gl0 fail zfail zpass
 
-foreign import js_stencilOp :: WebGLRenderingContext
-                            -> GLenum
-                            -> GLenum
-                            -> GLenum
-                            -> Effect Unit
+foreign import js_stencilOp :: EffectFn4 WebGLRenderingContext GLenum GLenum GLenum Unit
 
 
 
@@ -1953,14 +1911,9 @@ stencilOpSeparate gl face fail zfail zpass
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_stencilOpSeparate gl0 face fail zfail zpass
+      runEffectFn5 js_stencilOpSeparate gl0 face fail zfail zpass
 
-foreign import js_stencilOpSeparate :: WebGLRenderingContext
-                                    -> GLenum
-                                    -> GLenum
-                                    -> GLenum
-                                    -> GLenum
-                                    -> Effect Unit
+foreign import js_stencilOpSeparate :: EffectFn5 WebGLRenderingContext GLenum GLenum GLenum GLenum Unit
 
 
 
@@ -1985,14 +1938,9 @@ viewport gl x y width height
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_viewport gl0 x y width height
+      runEffectFn5 js_viewport gl0 x y width height
 
-foreign import js_viewport :: WebGLRenderingContext
-                           -> GLint
-                           -> GLint
-                           -> GLsizei
-                           -> GLsizei
-                           -> Effect Unit
+foreign import js_viewport :: EffectFn5 WebGLRenderingContext GLint GLint GLsizei GLsizei Unit
 
 
 
@@ -2030,10 +1978,8 @@ getWebGLRenderingContext canvas attributes
       attributes1 = toNullable attributes0
     in
       do
-        res <- js_getWebGLRenderingContext canvas attributes1
+        res <- runEffectFn2 js_getWebGLRenderingContext canvas attributes1
         pure (toMaybe res)
 
-foreign import js_getWebGLRenderingContext :: HTMLCanvasElement
-                                           -> Nullable JSWebGLContextAttributes
-                                           -> Effect (Nullable WebGLRenderingContext)
+foreign import js_getWebGLRenderingContext :: EffectFn2 HTMLCanvasElement (Nullable JSWebGLContextAttributes) (Nullable WebGLRenderingContext)
 

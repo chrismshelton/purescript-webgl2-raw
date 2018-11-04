@@ -11,6 +11,9 @@ import Data.Nullable ( Nullable
                      , toMaybe
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn3
+                        , runEffectFn3
+                        )
 import Prelude ( bind
                , pure
                )
@@ -57,12 +60,9 @@ getFragDataLocation gl program name
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_getFragDataLocation gl0 program name
+      runEffectFn3 js_getFragDataLocation gl0 program name
 
-foreign import js_getFragDataLocation :: WebGL2RenderingContext
-                                      -> WebGLProgram
-                                      -> String
-                                      -> Effect GLint
+foreign import js_getFragDataLocation :: EffectFn3 WebGL2RenderingContext WebGLProgram String GLint
 
 
 
@@ -78,6 +78,10 @@ foreign import js_getFragDataLocation :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.7](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.7)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getProgramParameterGLenum :: forall c
                           .  IsWebGL2RenderingContext c
                           => c
@@ -89,11 +93,8 @@ getProgramParameterGLenum gl program pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getProgramParameterGLenum gl0 program pname
+        res <- runEffectFn3 js_getProgramParameterGLenum gl0 program pname
         pure (toMaybe res)
 
-foreign import js_getProgramParameterGLenum :: WebGL2RenderingContext
-                                            -> WebGLProgram
-                                            -> GLenum
-                                            -> Effect (Nullable GLenum)
+foreign import js_getProgramParameterGLenum :: EffectFn3 WebGL2RenderingContext WebGLProgram GLenum (Nullable GLenum)
 

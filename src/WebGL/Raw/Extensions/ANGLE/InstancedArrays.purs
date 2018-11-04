@@ -13,6 +13,15 @@ import Data.Nullable ( Nullable
                      , toMaybe
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , EffectFn3
+                        , EffectFn5
+                        , EffectFn6
+                        , runEffectFn1
+                        , runEffectFn3
+                        , runEffectFn5
+                        , runEffectFn6
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -28,10 +37,13 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
                        )
 
 
+-- |
+-- | Documentation: [ANGLE_instanced_arrays extension](https://www.khronos.org/registry/webgl/extensions/ANGLE_instanced_arrays/)
+-- |
 foreign import data ANGLE_instanced_arrays :: Type
 
 gl_VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE :: GLenum
-gl_VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE = 35070
+gl_VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE = 35070.0
 
 -- |
 -- | Usage: `drawArraysInstancedANGLE angle_instanced_arrays mode first count primcount`
@@ -45,6 +57,8 @@ gl_VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE = 35070
 -- |                          );
 -- | ```
 -- |
+-- | Documentation: [ANGLE_instanced_arrays extension](https://www.khronos.org/registry/webgl/extensions/ANGLE_instanced_arrays/)
+-- |
 drawArraysInstancedANGLE :: ANGLE_instanced_arrays
                          -> GLenum
                          -> GLint
@@ -52,14 +66,9 @@ drawArraysInstancedANGLE :: ANGLE_instanced_arrays
                          -> GLsizei
                          -> Effect Unit
 drawArraysInstancedANGLE angle_instanced_arrays mode first count primcount
-  = js_drawArraysInstancedANGLE angle_instanced_arrays mode first count primcount
+  = runEffectFn5 js_drawArraysInstancedANGLE angle_instanced_arrays mode first count primcount
 
-foreign import js_drawArraysInstancedANGLE :: ANGLE_instanced_arrays
-                                           -> GLenum
-                                           -> GLint
-                                           -> GLsizei
-                                           -> GLsizei
-                                           -> Effect Unit
+foreign import js_drawArraysInstancedANGLE :: EffectFn5 ANGLE_instanced_arrays GLenum GLint GLsizei GLsizei Unit
 
 
 
@@ -76,6 +85,8 @@ foreign import js_drawArraysInstancedANGLE :: ANGLE_instanced_arrays
 -- |                            );
 -- | ```
 -- |
+-- | Documentation: [ANGLE_instanced_arrays extension](https://www.khronos.org/registry/webgl/extensions/ANGLE_instanced_arrays/)
+-- |
 drawElementsInstancedANGLE :: ANGLE_instanced_arrays
                            -> GLenum
                            -> GLsizei
@@ -84,15 +95,9 @@ drawElementsInstancedANGLE :: ANGLE_instanced_arrays
                            -> GLsizei
                            -> Effect Unit
 drawElementsInstancedANGLE angle_instanced_arrays mode count type0 offset primcount
-  = js_drawElementsInstancedANGLE angle_instanced_arrays mode count type0 offset primcount
+  = runEffectFn6 js_drawElementsInstancedANGLE angle_instanced_arrays mode count type0 offset primcount
 
-foreign import js_drawElementsInstancedANGLE :: ANGLE_instanced_arrays
-                                             -> GLenum
-                                             -> GLsizei
-                                             -> GLenum
-                                             -> GLintptr
-                                             -> GLsizei
-                                             -> Effect Unit
+foreign import js_drawElementsInstancedANGLE :: EffectFn6 ANGLE_instanced_arrays GLenum GLsizei GLenum GLintptr GLsizei Unit
 
 
 
@@ -103,17 +108,16 @@ foreign import js_drawElementsInstancedANGLE :: ANGLE_instanced_arrays
 -- | void vertexAttribDivisorANGLE (GLuint index, GLuint divisor);
 -- | ```
 -- |
+-- | Documentation: [ANGLE_instanced_arrays extension](https://www.khronos.org/registry/webgl/extensions/ANGLE_instanced_arrays/)
+-- |
 vertexAttribDivisorANGLE :: ANGLE_instanced_arrays
                          -> GLuint
                          -> GLuint
                          -> Effect Unit
 vertexAttribDivisorANGLE angle_instanced_arrays index divisor
-  = js_vertexAttribDivisorANGLE angle_instanced_arrays index divisor
+  = runEffectFn3 js_vertexAttribDivisorANGLE angle_instanced_arrays index divisor
 
-foreign import js_vertexAttribDivisorANGLE :: ANGLE_instanced_arrays
-                                           -> GLuint
-                                           -> GLuint
-                                           -> Effect Unit
+foreign import js_vertexAttribDivisorANGLE :: EffectFn3 ANGLE_instanced_arrays GLuint GLuint Unit
 
 
 
@@ -129,9 +133,8 @@ getExtensionANGLE_instanced_arrays gl
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getExtensionANGLE_instanced_arrays gl0
+        res <- runEffectFn1 js_getExtensionANGLE_instanced_arrays gl0
         pure (toMaybe res)
 
-foreign import js_getExtensionANGLE_instanced_arrays :: WebGLRenderingContext
-                                                     -> Effect (Nullable ANGLE_instanced_arrays)
+foreign import js_getExtensionANGLE_instanced_arrays :: EffectFn1 WebGLRenderingContext (Nullable ANGLE_instanced_arrays)
 

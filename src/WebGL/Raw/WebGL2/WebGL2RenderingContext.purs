@@ -4,7 +4,7 @@ module WebGL.Raw.WebGL2.WebGL2RenderingContext
   , drawElementsInstanced
   , drawRangeElements
   , readPixelsPackBuffer
-  , readPixelsOffset
+  , readPixels
   , drawBuffers
   , clearBufferfv
   , clearBufferiv
@@ -29,6 +29,21 @@ import Data.Nullable ( Nullable
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn2
+                        , EffectFn3
+                        , EffectFn5
+                        , EffectFn6
+                        , EffectFn7
+                        , EffectFn8
+                        , EffectFn9
+                        , runEffectFn2
+                        , runEffectFn3
+                        , runEffectFn5
+                        , runEffectFn6
+                        , runEffectFn7
+                        , runEffectFn8
+                        , runEffectFn9
+                        )
 import Prelude ( bind
                , map
                , pure
@@ -121,7 +136,6 @@ import WebGL.Raw.WebGL1.WebGLRenderingContext ( getCanvas
                                               , lineWidth
                                               , pixelStorei
                                               , polygonOffset
-                                              , readPixels
                                               , sampleCoverage
                                               , scissor
                                               , stencilFunc
@@ -153,12 +167,9 @@ vertexAttribDivisor gl index divisor
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_vertexAttribDivisor gl0 index divisor
+      runEffectFn3 js_vertexAttribDivisor gl0 index divisor
 
-foreign import js_vertexAttribDivisor :: WebGL2RenderingContext
-                                      -> GLuint
-                                      -> GLuint
-                                      -> Effect Unit
+foreign import js_vertexAttribDivisor :: EffectFn3 WebGL2RenderingContext GLuint GLuint Unit
 
 
 
@@ -188,14 +199,9 @@ drawArraysInstanced gl mode first count instanceCount
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_drawArraysInstanced gl0 mode first count instanceCount
+      runEffectFn5 js_drawArraysInstanced gl0 mode first count instanceCount
 
-foreign import js_drawArraysInstanced :: WebGL2RenderingContext
-                                      -> GLenum
-                                      -> GLint
-                                      -> GLsizei
-                                      -> GLsizei
-                                      -> Effect Unit
+foreign import js_drawArraysInstanced :: EffectFn5 WebGL2RenderingContext GLenum GLint GLsizei GLsizei Unit
 
 
 
@@ -227,15 +233,9 @@ drawElementsInstanced gl mode count type0 offset instanceCount
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_drawElementsInstanced gl0 mode count type0 offset instanceCount
+      runEffectFn6 js_drawElementsInstanced gl0 mode count type0 offset instanceCount
 
-foreign import js_drawElementsInstanced :: WebGL2RenderingContext
-                                        -> GLenum
-                                        -> GLsizei
-                                        -> GLenum
-                                        -> GLintptr
-                                        -> GLsizei
-                                        -> Effect Unit
+foreign import js_drawElementsInstanced :: EffectFn6 WebGL2RenderingContext GLenum GLsizei GLenum GLintptr GLsizei Unit
 
 
 
@@ -269,16 +269,9 @@ drawRangeElements gl mode start end count type0 offset
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_drawRangeElements gl0 mode start end count type0 offset
+      runEffectFn7 js_drawRangeElements gl0 mode start end count type0 offset
 
-foreign import js_drawRangeElements :: WebGL2RenderingContext
-                                    -> GLenum
-                                    -> GLuint
-                                    -> GLuint
-                                    -> GLsizei
-                                    -> GLenum
-                                    -> GLintptr
-                                    -> Effect Unit
+foreign import js_drawRangeElements :: EffectFn7 WebGL2RenderingContext GLenum GLuint GLuint GLsizei GLenum GLintptr Unit
 
 
 
@@ -314,22 +307,14 @@ readPixelsPackBuffer gl x y width height format type0 offset
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_readPixelsPackBuffer gl0 x y width height format type0 offset
+      runEffectFn8 js_readPixelsPackBuffer gl0 x y width height format type0 offset
 
-foreign import js_readPixelsPackBuffer :: WebGL2RenderingContext
-                                       -> GLint
-                                       -> GLint
-                                       -> GLsizei
-                                       -> GLsizei
-                                       -> GLenum
-                                       -> GLenum
-                                       -> GLintptr
-                                       -> Effect Unit
+foreign import js_readPixelsPackBuffer :: EffectFn8 WebGL2RenderingContext GLint GLint GLsizei GLsizei GLenum GLenum GLintptr Unit
 
 
 
 -- |
--- | Usage: `readPixelsOffset gl x y width height format type dstData dstOffset`
+-- | Usage: `readPixels gl x y width height format type dstData dstOffset`
 -- |
 -- | ``` webidl
 -- | void
@@ -346,36 +331,27 @@ foreign import js_readPixelsPackBuffer :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.10](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.10)
 -- |
-readPixelsOffset :: forall a c
-                 .  IsArrayBufferView a
-                 => IsWebGL2RenderingContext c
-                 => c
-                 -> GLint
-                 -> GLint
-                 -> GLsizei
-                 -> GLsizei
-                 -> GLenum
-                 -> GLenum
-                 -> a
-                 -> GLuint
-                 -> Effect Unit
-readPixelsOffset gl x y width height format type0 dstData dstOffset
+readPixels :: forall a c
+           .  IsWebGL2RenderingContext c
+           => IsArrayBufferView a
+           => c
+           -> GLint
+           -> GLint
+           -> GLsizei
+           -> GLsizei
+           -> GLenum
+           -> GLenum
+           -> a
+           -> GLuint
+           -> Effect Unit
+readPixels gl x y width height format type0 dstData dstOffset
   = let
       gl0 = toWebGL2RenderingContext gl
       dstData0 = toArrayBufferView dstData
     in
-      js_readPixelsOffset gl0 x y width height format type0 dstData0 dstOffset
+      runEffectFn9 js_readPixels gl0 x y width height format type0 dstData0 dstOffset
 
-foreign import js_readPixelsOffset :: WebGL2RenderingContext
-                                   -> GLint
-                                   -> GLint
-                                   -> GLsizei
-                                   -> GLsizei
-                                   -> GLenum
-                                   -> GLenum
-                                   -> ArrayBufferView
-                                   -> GLuint
-                                   -> Effect Unit
+foreign import js_readPixels :: EffectFn9 WebGL2RenderingContext GLint GLint GLsizei GLsizei GLenum GLenum ArrayBufferView GLuint Unit
 
 
 
@@ -397,11 +373,9 @@ drawBuffers gl buffers
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_drawBuffers gl0 buffers
+      runEffectFn2 js_drawBuffers gl0 buffers
 
-foreign import js_drawBuffers :: WebGL2RenderingContext
-                              -> Array GLenum
-                              -> Effect Unit
+foreign import js_drawBuffers :: EffectFn2 WebGL2RenderingContext (Array GLenum) Unit
 
 
 
@@ -418,27 +392,23 @@ foreign import js_drawBuffers :: WebGL2RenderingContext
 -- | ```
 -- |
 clearBufferfv :: forall c f
-              .  IsFloat32List f
-              => IsWebGL2RenderingContext c
+              .  IsWebGL2RenderingContext c
+              => IsFloat32List f
               => c
               -> GLenum
               -> GLint
               -> f
-              -> GLuint
+              -> Maybe GLuint
               -> Effect Unit
 clearBufferfv gl buffer drawbuffer values srcOffset
   = let
       gl0 = toWebGL2RenderingContext gl
       values0 = toFloat32List values
+      srcOffset0 = toNullable srcOffset
     in
-      js_clearBufferfv gl0 buffer drawbuffer values0 srcOffset
+      runEffectFn5 js_clearBufferfv gl0 buffer drawbuffer values0 srcOffset0
 
-foreign import js_clearBufferfv :: WebGL2RenderingContext
-                                -> GLenum
-                                -> GLint
-                                -> Float32List
-                                -> GLuint
-                                -> Effect Unit
+foreign import js_clearBufferfv :: EffectFn5 WebGL2RenderingContext GLenum GLint Float32List (Nullable GLuint) Unit
 
 
 
@@ -455,27 +425,23 @@ foreign import js_clearBufferfv :: WebGL2RenderingContext
 -- | ```
 -- |
 clearBufferiv :: forall c i
-              .  IsInt32List i
-              => IsWebGL2RenderingContext c
+              .  IsWebGL2RenderingContext c
+              => IsInt32List i
               => c
               -> GLenum
               -> GLint
               -> i
-              -> GLuint
+              -> Maybe GLuint
               -> Effect Unit
 clearBufferiv gl buffer drawbuffer values srcOffset
   = let
       gl0 = toWebGL2RenderingContext gl
       values0 = toInt32List values
+      srcOffset0 = toNullable srcOffset
     in
-      js_clearBufferiv gl0 buffer drawbuffer values0 srcOffset
+      runEffectFn5 js_clearBufferiv gl0 buffer drawbuffer values0 srcOffset0
 
-foreign import js_clearBufferiv :: WebGL2RenderingContext
-                                -> GLenum
-                                -> GLint
-                                -> Int32List
-                                -> GLuint
-                                -> Effect Unit
+foreign import js_clearBufferiv :: EffectFn5 WebGL2RenderingContext GLenum GLint Int32List (Nullable GLuint) Unit
 
 
 
@@ -492,27 +458,23 @@ foreign import js_clearBufferiv :: WebGL2RenderingContext
 -- | ```
 -- |
 clearBufferuiv :: forall c u
-               .  IsUint32List u
-               => IsWebGL2RenderingContext c
+               .  IsWebGL2RenderingContext c
+               => IsUint32List u
                => c
                -> GLenum
                -> GLint
                -> u
-               -> GLuint
+               -> Maybe GLuint
                -> Effect Unit
 clearBufferuiv gl buffer drawbuffer values srcOffset
   = let
       gl0 = toWebGL2RenderingContext gl
       values0 = toUint32List values
+      srcOffset0 = toNullable srcOffset
     in
-      js_clearBufferuiv gl0 buffer drawbuffer values0 srcOffset
+      runEffectFn5 js_clearBufferuiv gl0 buffer drawbuffer values0 srcOffset0
 
-foreign import js_clearBufferuiv :: WebGL2RenderingContext
-                                 -> GLenum
-                                 -> GLint
-                                 -> Uint32List
-                                 -> GLuint
-                                 -> Effect Unit
+foreign import js_clearBufferuiv :: EffectFn5 WebGL2RenderingContext GLenum GLint Uint32List (Nullable GLuint) Unit
 
 
 
@@ -540,14 +502,9 @@ clearBufferfi gl buffer drawbuffer depth stencil
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_clearBufferfi gl0 buffer drawbuffer depth stencil
+      runEffectFn5 js_clearBufferfi gl0 buffer drawbuffer depth stencil
 
-foreign import js_clearBufferfi :: WebGL2RenderingContext
-                                -> GLenum
-                                -> GLint
-                                -> GLfloat
-                                -> GLint
-                                -> Effect Unit
+foreign import js_clearBufferfi :: EffectFn5 WebGL2RenderingContext GLenum GLint GLfloat GLint Unit
 
 
 
@@ -564,6 +521,10 @@ foreign import js_clearBufferfi :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.2](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.2)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getIndexedParameterGLintptr :: forall c
                             .  IsWebGL2RenderingContext c
                             => c
@@ -575,13 +536,10 @@ getIndexedParameterGLintptr gl target index
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getIndexedParameterGLintptr gl0 target index
+        res <- runEffectFn3 js_getIndexedParameterGLintptr gl0 target index
         pure (toMaybe res)
 
-foreign import js_getIndexedParameterGLintptr :: WebGL2RenderingContext
-                                              -> GLenum
-                                              -> GLuint
-                                              -> Effect (Nullable GLintptr)
+foreign import js_getIndexedParameterGLintptr :: EffectFn3 WebGL2RenderingContext GLenum GLuint (Nullable GLintptr)
 
 
 
@@ -598,6 +556,10 @@ foreign import js_getIndexedParameterGLintptr :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.2](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.2)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getIndexedParameterGLsizeiptr :: forall c
                               .  IsWebGL2RenderingContext c
                               => c
@@ -609,13 +571,10 @@ getIndexedParameterGLsizeiptr gl target index
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getIndexedParameterGLsizeiptr gl0 target index
+        res <- runEffectFn3 js_getIndexedParameterGLsizeiptr gl0 target index
         pure (toMaybe res)
 
-foreign import js_getIndexedParameterGLsizeiptr :: WebGL2RenderingContext
-                                                -> GLenum
-                                                -> GLuint
-                                                -> Effect (Nullable GLsizeiptr)
+foreign import js_getIndexedParameterGLsizeiptr :: EffectFn3 WebGL2RenderingContext GLenum GLuint (Nullable GLsizeiptr)
 
 
 
@@ -632,6 +591,10 @@ foreign import js_getIndexedParameterGLsizeiptr :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.2](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.2)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getIndexedParameterWebGLBuffer :: forall c
                                .  IsWebGL2RenderingContext c
                                => c
@@ -643,13 +606,10 @@ getIndexedParameterWebGLBuffer gl target index
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getIndexedParameterWebGLBuffer gl0 target index
+        res <- runEffectFn3 js_getIndexedParameterWebGLBuffer gl0 target index
         pure (toMaybe res)
 
-foreign import js_getIndexedParameterWebGLBuffer :: WebGL2RenderingContext
-                                                 -> GLenum
-                                                 -> GLuint
-                                                 -> Effect (Nullable WebGLBuffer)
+foreign import js_getIndexedParameterWebGLBuffer :: EffectFn3 WebGL2RenderingContext GLenum GLuint (Nullable WebGLBuffer)
 
 
 
@@ -670,6 +630,10 @@ foreign import js_getIndexedParameterWebGLBuffer :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.2](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.2)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterGLint64 :: forall c
                     .  IsWebGL2RenderingContext c
                     => c
@@ -680,12 +644,10 @@ getParameterGLint64 gl pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getParameterGLint64 gl0 pname
+        res <- runEffectFn2 js_getParameterGLint64 gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterGLint64 :: WebGL2RenderingContext
-                                      -> GLenum
-                                      -> Effect (Nullable GLint64)
+foreign import js_getParameterGLint64 :: EffectFn2 WebGL2RenderingContext GLenum (Nullable GLint64)
 
 
 
@@ -701,6 +663,10 @@ foreign import js_getParameterGLint64 :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.2](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.2)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterWebGLSampler :: forall c
                          .  IsWebGL2RenderingContext c
                          => c
@@ -711,12 +677,10 @@ getParameterWebGLSampler gl pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getParameterWebGLSampler gl0 pname
+        res <- runEffectFn2 js_getParameterWebGLSampler gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterWebGLSampler :: WebGL2RenderingContext
-                                           -> GLenum
-                                           -> Effect (Nullable WebGLSampler)
+foreign import js_getParameterWebGLSampler :: EffectFn2 WebGL2RenderingContext GLenum (Nullable WebGLSampler)
 
 
 
@@ -732,6 +696,10 @@ foreign import js_getParameterWebGLSampler :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.2](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.2)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterWebGLTransformFeedback :: forall c
                                    .  IsWebGL2RenderingContext c
                                    => c
@@ -742,12 +710,10 @@ getParameterWebGLTransformFeedback gl pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getParameterWebGLTransformFeedback gl0 pname
+        res <- runEffectFn2 js_getParameterWebGLTransformFeedback gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterWebGLTransformFeedback :: WebGL2RenderingContext
-                                                     -> GLenum
-                                                     -> Effect (Nullable WebGLTransformFeedback)
+foreign import js_getParameterWebGLTransformFeedback :: EffectFn2 WebGL2RenderingContext GLenum (Nullable WebGLTransformFeedback)
 
 
 
@@ -763,6 +729,10 @@ foreign import js_getParameterWebGLTransformFeedback :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.2](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.2)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getParameterWebGLVertexArrayObject :: forall c
                                    .  IsWebGL2RenderingContext c
                                    => c
@@ -773,12 +743,10 @@ getParameterWebGLVertexArrayObject gl pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getParameterWebGLVertexArrayObject gl0 pname
+        res <- runEffectFn2 js_getParameterWebGLVertexArrayObject gl0 pname
         pure (toMaybe res)
 
-foreign import js_getParameterWebGLVertexArrayObject :: WebGL2RenderingContext
-                                                     -> GLenum
-                                                     -> Effect (Nullable WebGLVertexArrayObject)
+foreign import js_getParameterWebGLVertexArrayObject :: EffectFn2 WebGL2RenderingContext GLenum (Nullable WebGLVertexArrayObject)
 
 
 
@@ -816,10 +784,8 @@ getWebGL2RenderingContext canvas attributes
       attributes1 = toNullable attributes0
     in
       do
-        res <- js_getWebGL2RenderingContext canvas attributes1
+        res <- runEffectFn2 js_getWebGL2RenderingContext canvas attributes1
         pure (toMaybe res)
 
-foreign import js_getWebGL2RenderingContext :: HTMLCanvasElement
-                                            -> Nullable JSWebGLContextAttributes
-                                            -> Effect (Nullable WebGL2RenderingContext)
+foreign import js_getWebGL2RenderingContext :: EffectFn2 HTMLCanvasElement (Nullable JSWebGLContextAttributes) (Nullable WebGL2RenderingContext)
 

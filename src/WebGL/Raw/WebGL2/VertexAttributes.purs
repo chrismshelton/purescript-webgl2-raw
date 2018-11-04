@@ -19,6 +19,11 @@ import Data.Nullable ( Nullable
                      , toMaybe
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn3
+                        , EffectFn6
+                        , runEffectFn3
+                        , runEffectFn6
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -83,15 +88,9 @@ vertexAttribI4i gl index x y z w
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_vertexAttribI4i gl0 index x y z w
+      runEffectFn6 js_vertexAttribI4i gl0 index x y z w
 
-foreign import js_vertexAttribI4i :: WebGL2RenderingContext
-                                  -> GLuint
-                                  -> GLint
-                                  -> GLint
-                                  -> GLint
-                                  -> GLint
-                                  -> Effect Unit
+foreign import js_vertexAttribI4i :: EffectFn6 WebGL2RenderingContext GLuint GLint GLint GLint GLint Unit
 
 
 
@@ -105,8 +104,8 @@ foreign import js_vertexAttribI4i :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 vertexAttribI4iv :: forall c i
-                 .  IsInt32List i
-                 => IsWebGL2RenderingContext c
+                 .  IsWebGL2RenderingContext c
+                 => IsInt32List i
                  => c
                  -> GLuint
                  -> i
@@ -116,12 +115,9 @@ vertexAttribI4iv gl index values
       gl0 = toWebGL2RenderingContext gl
       values0 = toInt32List values
     in
-      js_vertexAttribI4iv gl0 index values0
+      runEffectFn3 js_vertexAttribI4iv gl0 index values0
 
-foreign import js_vertexAttribI4iv :: WebGL2RenderingContext
-                                   -> GLuint
-                                   -> Int32List
-                                   -> Effect Unit
+foreign import js_vertexAttribI4iv :: EffectFn3 WebGL2RenderingContext GLuint Int32List Unit
 
 
 
@@ -153,15 +149,9 @@ vertexAttribI4ui gl index x y z w
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_vertexAttribI4ui gl0 index x y z w
+      runEffectFn6 js_vertexAttribI4ui gl0 index x y z w
 
-foreign import js_vertexAttribI4ui :: WebGL2RenderingContext
-                                   -> GLuint
-                                   -> GLuint
-                                   -> GLuint
-                                   -> GLuint
-                                   -> GLuint
-                                   -> Effect Unit
+foreign import js_vertexAttribI4ui :: EffectFn6 WebGL2RenderingContext GLuint GLuint GLuint GLuint GLuint Unit
 
 
 
@@ -175,8 +165,8 @@ foreign import js_vertexAttribI4ui :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 vertexAttribI4uiv :: forall c u
-                  .  IsUint32List u
-                  => IsWebGL2RenderingContext c
+                  .  IsWebGL2RenderingContext c
+                  => IsUint32List u
                   => c
                   -> GLuint
                   -> u
@@ -186,12 +176,9 @@ vertexAttribI4uiv gl index values
       gl0 = toWebGL2RenderingContext gl
       values0 = toUint32List values
     in
-      js_vertexAttribI4uiv gl0 index values0
+      runEffectFn3 js_vertexAttribI4uiv gl0 index values0
 
-foreign import js_vertexAttribI4uiv :: WebGL2RenderingContext
-                                    -> GLuint
-                                    -> Uint32List
-                                    -> Effect Unit
+foreign import js_vertexAttribI4uiv :: EffectFn3 WebGL2RenderingContext GLuint Uint32List Unit
 
 
 
@@ -223,15 +210,9 @@ vertexAttribIPointer gl index size type0 stride offset
   = let
       gl0 = toWebGL2RenderingContext gl
     in
-      js_vertexAttribIPointer gl0 index size type0 stride offset
+      runEffectFn6 js_vertexAttribIPointer gl0 index size type0 stride offset
 
-foreign import js_vertexAttribIPointer :: WebGL2RenderingContext
-                                       -> GLuint
-                                       -> GLint
-                                       -> GLenum
-                                       -> GLsizei
-                                       -> GLintptr
-                                       -> Effect Unit
+foreign import js_vertexAttribIPointer :: EffectFn6 WebGL2RenderingContext GLuint GLint GLenum GLsizei GLintptr Unit
 
 
 
@@ -247,6 +228,10 @@ foreign import js_vertexAttribIPointer :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getVertexAttribInt32Array :: forall c
                           .  IsWebGL2RenderingContext c
                           => c
@@ -258,13 +243,10 @@ getVertexAttribInt32Array gl index pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getVertexAttribInt32Array gl0 index pname
+        res <- runEffectFn3 js_getVertexAttribInt32Array gl0 index pname
         pure (toMaybe res)
 
-foreign import js_getVertexAttribInt32Array :: WebGL2RenderingContext
-                                            -> GLuint
-                                            -> GLenum
-                                            -> Effect (Nullable (ArrayView Int32))
+foreign import js_getVertexAttribInt32Array :: EffectFn3 WebGL2RenderingContext GLuint GLenum (Nullable (ArrayView Int32))
 
 
 
@@ -280,6 +262,10 @@ foreign import js_getVertexAttribInt32Array :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getVertexAttribUint32Array :: forall c
                            .  IsWebGL2RenderingContext c
                            => c
@@ -291,11 +277,8 @@ getVertexAttribUint32Array gl index pname
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getVertexAttribUint32Array gl0 index pname
+        res <- runEffectFn3 js_getVertexAttribUint32Array gl0 index pname
         pure (toMaybe res)
 
-foreign import js_getVertexAttribUint32Array :: WebGL2RenderingContext
-                                             -> GLuint
-                                             -> GLenum
-                                             -> Effect (Nullable (ArrayView Uint32))
+foreign import js_getVertexAttribUint32Array :: EffectFn3 WebGL2RenderingContext GLuint GLenum (Nullable (ArrayView Uint32))
 

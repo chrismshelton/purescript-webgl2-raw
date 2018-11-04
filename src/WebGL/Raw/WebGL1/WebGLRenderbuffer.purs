@@ -16,6 +16,15 @@ import Data.Nullable ( Nullable
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , EffectFn2
+                        , EffectFn3
+                        , EffectFn5
+                        , runEffectFn1
+                        , runEffectFn2
+                        , runEffectFn3
+                        , runEffectFn5
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -53,12 +62,9 @@ bindRenderbuffer gl target renderbuffer
       gl0 = toWebGLRenderingContext gl
       renderbuffer0 = toNullable renderbuffer
     in
-      js_bindRenderbuffer gl0 target renderbuffer0
+      runEffectFn3 js_bindRenderbuffer gl0 target renderbuffer0
 
-foreign import js_bindRenderbuffer :: WebGLRenderingContext
-                                   -> GLenum
-                                   -> Nullable WebGLRenderbuffer
-                                   -> Effect Unit
+foreign import js_bindRenderbuffer :: EffectFn3 WebGLRenderingContext GLenum (Nullable WebGLRenderbuffer) Unit
 
 
 
@@ -80,11 +86,10 @@ createRenderbuffer gl
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_createRenderbuffer gl0
+        res <- runEffectFn1 js_createRenderbuffer gl0
         pure (toMaybe res)
 
-foreign import js_createRenderbuffer :: WebGLRenderingContext
-                                     -> Effect (Nullable WebGLRenderbuffer)
+foreign import js_createRenderbuffer :: EffectFn1 WebGLRenderingContext (Nullable WebGLRenderbuffer)
 
 
 
@@ -107,11 +112,9 @@ deleteRenderbuffer gl renderbuffer
       gl0 = toWebGLRenderingContext gl
       renderbuffer0 = toNullable renderbuffer
     in
-      js_deleteRenderbuffer gl0 renderbuffer0
+      runEffectFn2 js_deleteRenderbuffer gl0 renderbuffer0
 
-foreign import js_deleteRenderbuffer :: WebGLRenderingContext
-                                     -> Nullable WebGLRenderbuffer
-                                     -> Effect Unit
+foreign import js_deleteRenderbuffer :: EffectFn2 WebGLRenderingContext (Nullable WebGLRenderbuffer) Unit
 
 
 
@@ -127,6 +130,10 @@ foreign import js_deleteRenderbuffer :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.7](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.7)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getRenderbufferParameterGLenum :: forall c
                                .  IsWebGLRenderingContext c
                                => c
@@ -138,13 +145,10 @@ getRenderbufferParameterGLenum gl target pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getRenderbufferParameterGLenum gl0 target pname
+        res <- runEffectFn3 js_getRenderbufferParameterGLenum gl0 target pname
         pure (toMaybe res)
 
-foreign import js_getRenderbufferParameterGLenum :: WebGLRenderingContext
-                                                 -> GLenum
-                                                 -> GLenum
-                                                 -> Effect (Nullable GLenum)
+foreign import js_getRenderbufferParameterGLenum :: EffectFn3 WebGLRenderingContext GLenum GLenum (Nullable GLenum)
 
 
 
@@ -168,6 +172,10 @@ foreign import js_getRenderbufferParameterGLenum :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.7](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.7)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getRenderbufferParameterGLint :: forall c
                               .  IsWebGLRenderingContext c
                               => c
@@ -179,13 +187,10 @@ getRenderbufferParameterGLint gl target pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getRenderbufferParameterGLint gl0 target pname
+        res <- runEffectFn3 js_getRenderbufferParameterGLint gl0 target pname
         pure (toMaybe res)
 
-foreign import js_getRenderbufferParameterGLint :: WebGLRenderingContext
-                                                -> GLenum
-                                                -> GLenum
-                                                -> Effect (Nullable GLint)
+foreign import js_getRenderbufferParameterGLint :: EffectFn3 WebGLRenderingContext GLenum GLenum (Nullable GLint)
 
 
 
@@ -209,11 +214,9 @@ isRenderbuffer gl renderbuffer
       gl0 = toWebGLRenderingContext gl
       renderbuffer0 = toNullable renderbuffer
     in
-      js_isRenderbuffer gl0 renderbuffer0
+      runEffectFn2 js_isRenderbuffer gl0 renderbuffer0
 
-foreign import js_isRenderbuffer :: WebGLRenderingContext
-                                 -> Nullable WebGLRenderbuffer
-                                 -> Effect GLboolean
+foreign import js_isRenderbuffer :: EffectFn2 WebGLRenderingContext (Nullable WebGLRenderbuffer) GLboolean
 
 
 
@@ -243,12 +246,7 @@ renderbufferStorage gl target internalformat width height
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_renderbufferStorage gl0 target internalformat width height
+      runEffectFn5 js_renderbufferStorage gl0 target internalformat width height
 
-foreign import js_renderbufferStorage :: WebGLRenderingContext
-                                      -> GLenum
-                                      -> GLenum
-                                      -> GLsizei
-                                      -> GLsizei
-                                      -> Effect Unit
+foreign import js_renderbufferStorage :: EffectFn5 WebGLRenderingContext GLenum GLenum GLsizei GLsizei Unit
 

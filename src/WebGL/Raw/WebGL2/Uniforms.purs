@@ -39,6 +39,15 @@ import Data.Nullable ( Nullable
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn3
+                        , EffectFn4
+                        , EffectFn5
+                        , EffectFn6
+                        , runEffectFn3
+                        , runEffectFn4
+                        , runEffectFn5
+                        , runEffectFn6
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -99,12 +108,9 @@ uniform1ui gl location v0
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
     in
-      js_uniform1ui gl0 location0 v0
+      runEffectFn3 js_uniform1ui gl0 location0 v0
 
-foreign import js_uniform1ui :: WebGL2RenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> GLuint
-                             -> Effect Unit
+foreign import js_uniform1ui :: EffectFn3 WebGL2RenderingContext (Nullable WebGLUniformLocation) GLuint Unit
 
 
 
@@ -130,13 +136,9 @@ uniform2ui gl location v0 v1
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
     in
-      js_uniform2ui gl0 location0 v0 v1
+      runEffectFn4 js_uniform2ui gl0 location0 v0 v1
 
-foreign import js_uniform2ui :: WebGL2RenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> GLuint
-                             -> GLuint
-                             -> Effect Unit
+foreign import js_uniform2ui :: EffectFn4 WebGL2RenderingContext (Nullable WebGLUniformLocation) GLuint GLuint Unit
 
 
 
@@ -167,14 +169,9 @@ uniform3ui gl location v0 v1 v2
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
     in
-      js_uniform3ui gl0 location0 v0 v1 v2
+      runEffectFn5 js_uniform3ui gl0 location0 v0 v1 v2
 
-foreign import js_uniform3ui :: WebGL2RenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> GLuint
-                             -> GLuint
-                             -> GLuint
-                             -> Effect Unit
+foreign import js_uniform3ui :: EffectFn5 WebGL2RenderingContext (Nullable WebGLUniformLocation) GLuint GLuint GLuint Unit
 
 
 
@@ -207,15 +204,9 @@ uniform4ui gl location v0 v1 v2 v3
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
     in
-      js_uniform4ui gl0 location0 v0 v1 v2 v3
+      runEffectFn6 js_uniform4ui gl0 location0 v0 v1 v2 v3
 
-foreign import js_uniform4ui :: WebGL2RenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> GLuint
-                             -> GLuint
-                             -> GLuint
-                             -> GLuint
-                             -> Effect Unit
+foreign import js_uniform4ui :: EffectFn6 WebGL2RenderingContext (Nullable WebGLUniformLocation) GLuint GLuint GLuint GLuint Unit
 
 
 
@@ -234,28 +225,25 @@ foreign import js_uniform4ui :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniform1fv :: forall c f
-           .  IsFloat32List f
-           => IsWebGL2RenderingContext c
+           .  IsWebGL2RenderingContext c
+           => IsFloat32List f
            => c
            -> Maybe WebGLUniformLocation
            -> f
-           -> GLuint
-           -> GLuint
+           -> Maybe GLuint
+           -> Maybe GLuint
            -> Effect Unit
 uniform1fv gl location data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toFloat32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniform1fv gl0 location0 data00 srcOffset srcLength
+      runEffectFn5 js_uniform1fv gl0 location0 data00 srcOffset0 srcLength0
 
-foreign import js_uniform1fv :: WebGL2RenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Float32List
-                             -> GLuint
-                             -> GLuint
-                             -> Effect Unit
+foreign import js_uniform1fv :: EffectFn5 WebGL2RenderingContext (Nullable WebGLUniformLocation) Float32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -274,28 +262,25 @@ foreign import js_uniform1fv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniform2fv :: forall c f
-           .  IsFloat32List f
-           => IsWebGL2RenderingContext c
+           .  IsWebGL2RenderingContext c
+           => IsFloat32List f
            => c
            -> Maybe WebGLUniformLocation
            -> f
-           -> GLuint
-           -> GLuint
+           -> Maybe GLuint
+           -> Maybe GLuint
            -> Effect Unit
 uniform2fv gl location data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toFloat32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniform2fv gl0 location0 data00 srcOffset srcLength
+      runEffectFn5 js_uniform2fv gl0 location0 data00 srcOffset0 srcLength0
 
-foreign import js_uniform2fv :: WebGL2RenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Float32List
-                             -> GLuint
-                             -> GLuint
-                             -> Effect Unit
+foreign import js_uniform2fv :: EffectFn5 WebGL2RenderingContext (Nullable WebGLUniformLocation) Float32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -314,28 +299,25 @@ foreign import js_uniform2fv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniform3fv :: forall c f
-           .  IsFloat32List f
-           => IsWebGL2RenderingContext c
+           .  IsWebGL2RenderingContext c
+           => IsFloat32List f
            => c
            -> Maybe WebGLUniformLocation
            -> f
-           -> GLuint
-           -> GLuint
+           -> Maybe GLuint
+           -> Maybe GLuint
            -> Effect Unit
 uniform3fv gl location data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toFloat32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniform3fv gl0 location0 data00 srcOffset srcLength
+      runEffectFn5 js_uniform3fv gl0 location0 data00 srcOffset0 srcLength0
 
-foreign import js_uniform3fv :: WebGL2RenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Float32List
-                             -> GLuint
-                             -> GLuint
-                             -> Effect Unit
+foreign import js_uniform3fv :: EffectFn5 WebGL2RenderingContext (Nullable WebGLUniformLocation) Float32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -354,28 +336,25 @@ foreign import js_uniform3fv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniform4fv :: forall c f
-           .  IsFloat32List f
-           => IsWebGL2RenderingContext c
+           .  IsWebGL2RenderingContext c
+           => IsFloat32List f
            => c
            -> Maybe WebGLUniformLocation
            -> f
-           -> GLuint
-           -> GLuint
+           -> Maybe GLuint
+           -> Maybe GLuint
            -> Effect Unit
 uniform4fv gl location data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toFloat32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniform4fv gl0 location0 data00 srcOffset srcLength
+      runEffectFn5 js_uniform4fv gl0 location0 data00 srcOffset0 srcLength0
 
-foreign import js_uniform4fv :: WebGL2RenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Float32List
-                             -> GLuint
-                             -> GLuint
-                             -> Effect Unit
+foreign import js_uniform4fv :: EffectFn5 WebGL2RenderingContext (Nullable WebGLUniformLocation) Float32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -394,28 +373,25 @@ foreign import js_uniform4fv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniform1iv :: forall c i
-           .  IsInt32List i
-           => IsWebGL2RenderingContext c
+           .  IsWebGL2RenderingContext c
+           => IsInt32List i
            => c
            -> Maybe WebGLUniformLocation
            -> i
-           -> GLuint
-           -> GLuint
+           -> Maybe GLuint
+           -> Maybe GLuint
            -> Effect Unit
 uniform1iv gl location data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toInt32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniform1iv gl0 location0 data00 srcOffset srcLength
+      runEffectFn5 js_uniform1iv gl0 location0 data00 srcOffset0 srcLength0
 
-foreign import js_uniform1iv :: WebGL2RenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Int32List
-                             -> GLuint
-                             -> GLuint
-                             -> Effect Unit
+foreign import js_uniform1iv :: EffectFn5 WebGL2RenderingContext (Nullable WebGLUniformLocation) Int32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -434,28 +410,25 @@ foreign import js_uniform1iv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniform2iv :: forall c i
-           .  IsInt32List i
-           => IsWebGL2RenderingContext c
+           .  IsWebGL2RenderingContext c
+           => IsInt32List i
            => c
            -> Maybe WebGLUniformLocation
            -> i
-           -> GLuint
-           -> GLuint
+           -> Maybe GLuint
+           -> Maybe GLuint
            -> Effect Unit
 uniform2iv gl location data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toInt32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniform2iv gl0 location0 data00 srcOffset srcLength
+      runEffectFn5 js_uniform2iv gl0 location0 data00 srcOffset0 srcLength0
 
-foreign import js_uniform2iv :: WebGL2RenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Int32List
-                             -> GLuint
-                             -> GLuint
-                             -> Effect Unit
+foreign import js_uniform2iv :: EffectFn5 WebGL2RenderingContext (Nullable WebGLUniformLocation) Int32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -474,28 +447,25 @@ foreign import js_uniform2iv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniform3iv :: forall c i
-           .  IsInt32List i
-           => IsWebGL2RenderingContext c
+           .  IsWebGL2RenderingContext c
+           => IsInt32List i
            => c
            -> Maybe WebGLUniformLocation
            -> i
-           -> GLuint
-           -> GLuint
+           -> Maybe GLuint
+           -> Maybe GLuint
            -> Effect Unit
 uniform3iv gl location data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toInt32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniform3iv gl0 location0 data00 srcOffset srcLength
+      runEffectFn5 js_uniform3iv gl0 location0 data00 srcOffset0 srcLength0
 
-foreign import js_uniform3iv :: WebGL2RenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Int32List
-                             -> GLuint
-                             -> GLuint
-                             -> Effect Unit
+foreign import js_uniform3iv :: EffectFn5 WebGL2RenderingContext (Nullable WebGLUniformLocation) Int32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -514,28 +484,25 @@ foreign import js_uniform3iv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniform4iv :: forall c i
-           .  IsInt32List i
-           => IsWebGL2RenderingContext c
+           .  IsWebGL2RenderingContext c
+           => IsInt32List i
            => c
            -> Maybe WebGLUniformLocation
            -> i
-           -> GLuint
-           -> GLuint
+           -> Maybe GLuint
+           -> Maybe GLuint
            -> Effect Unit
 uniform4iv gl location data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toInt32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniform4iv gl0 location0 data00 srcOffset srcLength
+      runEffectFn5 js_uniform4iv gl0 location0 data00 srcOffset0 srcLength0
 
-foreign import js_uniform4iv :: WebGL2RenderingContext
-                             -> Nullable WebGLUniformLocation
-                             -> Int32List
-                             -> GLuint
-                             -> GLuint
-                             -> Effect Unit
+foreign import js_uniform4iv :: EffectFn5 WebGL2RenderingContext (Nullable WebGLUniformLocation) Int32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -554,28 +521,25 @@ foreign import js_uniform4iv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniform1uiv :: forall c u
-            .  IsUint32List u
-            => IsWebGL2RenderingContext c
+            .  IsWebGL2RenderingContext c
+            => IsUint32List u
             => c
             -> Maybe WebGLUniformLocation
             -> u
-            -> GLuint
-            -> GLuint
+            -> Maybe GLuint
+            -> Maybe GLuint
             -> Effect Unit
 uniform1uiv gl location data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toUint32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniform1uiv gl0 location0 data00 srcOffset srcLength
+      runEffectFn5 js_uniform1uiv gl0 location0 data00 srcOffset0 srcLength0
 
-foreign import js_uniform1uiv :: WebGL2RenderingContext
-                              -> Nullable WebGLUniformLocation
-                              -> Uint32List
-                              -> GLuint
-                              -> GLuint
-                              -> Effect Unit
+foreign import js_uniform1uiv :: EffectFn5 WebGL2RenderingContext (Nullable WebGLUniformLocation) Uint32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -594,28 +558,25 @@ foreign import js_uniform1uiv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniform2uiv :: forall c u
-            .  IsUint32List u
-            => IsWebGL2RenderingContext c
+            .  IsWebGL2RenderingContext c
+            => IsUint32List u
             => c
             -> Maybe WebGLUniformLocation
             -> u
-            -> GLuint
-            -> GLuint
+            -> Maybe GLuint
+            -> Maybe GLuint
             -> Effect Unit
 uniform2uiv gl location data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toUint32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniform2uiv gl0 location0 data00 srcOffset srcLength
+      runEffectFn5 js_uniform2uiv gl0 location0 data00 srcOffset0 srcLength0
 
-foreign import js_uniform2uiv :: WebGL2RenderingContext
-                              -> Nullable WebGLUniformLocation
-                              -> Uint32List
-                              -> GLuint
-                              -> GLuint
-                              -> Effect Unit
+foreign import js_uniform2uiv :: EffectFn5 WebGL2RenderingContext (Nullable WebGLUniformLocation) Uint32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -634,28 +595,25 @@ foreign import js_uniform2uiv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniform3uiv :: forall c u
-            .  IsUint32List u
-            => IsWebGL2RenderingContext c
+            .  IsWebGL2RenderingContext c
+            => IsUint32List u
             => c
             -> Maybe WebGLUniformLocation
             -> u
-            -> GLuint
-            -> GLuint
+            -> Maybe GLuint
+            -> Maybe GLuint
             -> Effect Unit
 uniform3uiv gl location data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toUint32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniform3uiv gl0 location0 data00 srcOffset srcLength
+      runEffectFn5 js_uniform3uiv gl0 location0 data00 srcOffset0 srcLength0
 
-foreign import js_uniform3uiv :: WebGL2RenderingContext
-                              -> Nullable WebGLUniformLocation
-                              -> Uint32List
-                              -> GLuint
-                              -> GLuint
-                              -> Effect Unit
+foreign import js_uniform3uiv :: EffectFn5 WebGL2RenderingContext (Nullable WebGLUniformLocation) Uint32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -674,28 +632,25 @@ foreign import js_uniform3uiv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniform4uiv :: forall c u
-            .  IsUint32List u
-            => IsWebGL2RenderingContext c
+            .  IsWebGL2RenderingContext c
+            => IsUint32List u
             => c
             -> Maybe WebGLUniformLocation
             -> u
-            -> GLuint
-            -> GLuint
+            -> Maybe GLuint
+            -> Maybe GLuint
             -> Effect Unit
 uniform4uiv gl location data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toUint32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniform4uiv gl0 location0 data00 srcOffset srcLength
+      runEffectFn5 js_uniform4uiv gl0 location0 data00 srcOffset0 srcLength0
 
-foreign import js_uniform4uiv :: WebGL2RenderingContext
-                              -> Nullable WebGLUniformLocation
-                              -> Uint32List
-                              -> GLuint
-                              -> GLuint
-                              -> Effect Unit
+foreign import js_uniform4uiv :: EffectFn5 WebGL2RenderingContext (Nullable WebGLUniformLocation) Uint32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -715,30 +670,26 @@ foreign import js_uniform4uiv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniformMatrix2fv :: forall c f
-                 .  IsFloat32List f
-                 => IsWebGL2RenderingContext c
+                 .  IsWebGL2RenderingContext c
+                 => IsFloat32List f
                  => c
                  -> Maybe WebGLUniformLocation
                  -> GLboolean
                  -> f
-                 -> GLuint
-                 -> GLuint
+                 -> Maybe GLuint
+                 -> Maybe GLuint
                  -> Effect Unit
 uniformMatrix2fv gl location transpose data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toFloat32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniformMatrix2fv gl0 location0 transpose data00 srcOffset srcLength
+      runEffectFn6 js_uniformMatrix2fv gl0 location0 transpose data00 srcOffset0 srcLength0
 
-foreign import js_uniformMatrix2fv :: WebGL2RenderingContext
-                                   -> Nullable WebGLUniformLocation
-                                   -> GLboolean
-                                   -> Float32List
-                                   -> GLuint
-                                   -> GLuint
-                                   -> Effect Unit
+foreign import js_uniformMatrix2fv :: EffectFn6 WebGL2RenderingContext (Nullable WebGLUniformLocation) GLboolean Float32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -758,30 +709,26 @@ foreign import js_uniformMatrix2fv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniformMatrix3x2fv :: forall c f
-                   .  IsFloat32List f
-                   => IsWebGL2RenderingContext c
+                   .  IsWebGL2RenderingContext c
+                   => IsFloat32List f
                    => c
                    -> Maybe WebGLUniformLocation
                    -> GLboolean
                    -> f
-                   -> GLuint
-                   -> GLuint
+                   -> Maybe GLuint
+                   -> Maybe GLuint
                    -> Effect Unit
 uniformMatrix3x2fv gl location transpose data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toFloat32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniformMatrix3x2fv gl0 location0 transpose data00 srcOffset srcLength
+      runEffectFn6 js_uniformMatrix3x2fv gl0 location0 transpose data00 srcOffset0 srcLength0
 
-foreign import js_uniformMatrix3x2fv :: WebGL2RenderingContext
-                                     -> Nullable WebGLUniformLocation
-                                     -> GLboolean
-                                     -> Float32List
-                                     -> GLuint
-                                     -> GLuint
-                                     -> Effect Unit
+foreign import js_uniformMatrix3x2fv :: EffectFn6 WebGL2RenderingContext (Nullable WebGLUniformLocation) GLboolean Float32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -801,30 +748,26 @@ foreign import js_uniformMatrix3x2fv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniformMatrix4x2fv :: forall c f
-                   .  IsFloat32List f
-                   => IsWebGL2RenderingContext c
+                   .  IsWebGL2RenderingContext c
+                   => IsFloat32List f
                    => c
                    -> Maybe WebGLUniformLocation
                    -> GLboolean
                    -> f
-                   -> GLuint
-                   -> GLuint
+                   -> Maybe GLuint
+                   -> Maybe GLuint
                    -> Effect Unit
 uniformMatrix4x2fv gl location transpose data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toFloat32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniformMatrix4x2fv gl0 location0 transpose data00 srcOffset srcLength
+      runEffectFn6 js_uniformMatrix4x2fv gl0 location0 transpose data00 srcOffset0 srcLength0
 
-foreign import js_uniformMatrix4x2fv :: WebGL2RenderingContext
-                                     -> Nullable WebGLUniformLocation
-                                     -> GLboolean
-                                     -> Float32List
-                                     -> GLuint
-                                     -> GLuint
-                                     -> Effect Unit
+foreign import js_uniformMatrix4x2fv :: EffectFn6 WebGL2RenderingContext (Nullable WebGLUniformLocation) GLboolean Float32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -844,30 +787,26 @@ foreign import js_uniformMatrix4x2fv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniformMatrix2x3fv :: forall c f
-                   .  IsFloat32List f
-                   => IsWebGL2RenderingContext c
+                   .  IsWebGL2RenderingContext c
+                   => IsFloat32List f
                    => c
                    -> Maybe WebGLUniformLocation
                    -> GLboolean
                    -> f
-                   -> GLuint
-                   -> GLuint
+                   -> Maybe GLuint
+                   -> Maybe GLuint
                    -> Effect Unit
 uniformMatrix2x3fv gl location transpose data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toFloat32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniformMatrix2x3fv gl0 location0 transpose data00 srcOffset srcLength
+      runEffectFn6 js_uniformMatrix2x3fv gl0 location0 transpose data00 srcOffset0 srcLength0
 
-foreign import js_uniformMatrix2x3fv :: WebGL2RenderingContext
-                                     -> Nullable WebGLUniformLocation
-                                     -> GLboolean
-                                     -> Float32List
-                                     -> GLuint
-                                     -> GLuint
-                                     -> Effect Unit
+foreign import js_uniformMatrix2x3fv :: EffectFn6 WebGL2RenderingContext (Nullable WebGLUniformLocation) GLboolean Float32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -887,30 +826,26 @@ foreign import js_uniformMatrix2x3fv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniformMatrix3fv :: forall c f
-                 .  IsFloat32List f
-                 => IsWebGL2RenderingContext c
+                 .  IsWebGL2RenderingContext c
+                 => IsFloat32List f
                  => c
                  -> Maybe WebGLUniformLocation
                  -> GLboolean
                  -> f
-                 -> GLuint
-                 -> GLuint
+                 -> Maybe GLuint
+                 -> Maybe GLuint
                  -> Effect Unit
 uniformMatrix3fv gl location transpose data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toFloat32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniformMatrix3fv gl0 location0 transpose data00 srcOffset srcLength
+      runEffectFn6 js_uniformMatrix3fv gl0 location0 transpose data00 srcOffset0 srcLength0
 
-foreign import js_uniformMatrix3fv :: WebGL2RenderingContext
-                                   -> Nullable WebGLUniformLocation
-                                   -> GLboolean
-                                   -> Float32List
-                                   -> GLuint
-                                   -> GLuint
-                                   -> Effect Unit
+foreign import js_uniformMatrix3fv :: EffectFn6 WebGL2RenderingContext (Nullable WebGLUniformLocation) GLboolean Float32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -930,30 +865,26 @@ foreign import js_uniformMatrix3fv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniformMatrix4x3fv :: forall c f
-                   .  IsFloat32List f
-                   => IsWebGL2RenderingContext c
+                   .  IsWebGL2RenderingContext c
+                   => IsFloat32List f
                    => c
                    -> Maybe WebGLUniformLocation
                    -> GLboolean
                    -> f
-                   -> GLuint
-                   -> GLuint
+                   -> Maybe GLuint
+                   -> Maybe GLuint
                    -> Effect Unit
 uniformMatrix4x3fv gl location transpose data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toFloat32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniformMatrix4x3fv gl0 location0 transpose data00 srcOffset srcLength
+      runEffectFn6 js_uniformMatrix4x3fv gl0 location0 transpose data00 srcOffset0 srcLength0
 
-foreign import js_uniformMatrix4x3fv :: WebGL2RenderingContext
-                                     -> Nullable WebGLUniformLocation
-                                     -> GLboolean
-                                     -> Float32List
-                                     -> GLuint
-                                     -> GLuint
-                                     -> Effect Unit
+foreign import js_uniformMatrix4x3fv :: EffectFn6 WebGL2RenderingContext (Nullable WebGLUniformLocation) GLboolean Float32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -973,30 +904,26 @@ foreign import js_uniformMatrix4x3fv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniformMatrix2x4fv :: forall c f
-                   .  IsFloat32List f
-                   => IsWebGL2RenderingContext c
+                   .  IsWebGL2RenderingContext c
+                   => IsFloat32List f
                    => c
                    -> Maybe WebGLUniformLocation
                    -> GLboolean
                    -> f
-                   -> GLuint
-                   -> GLuint
+                   -> Maybe GLuint
+                   -> Maybe GLuint
                    -> Effect Unit
 uniformMatrix2x4fv gl location transpose data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toFloat32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniformMatrix2x4fv gl0 location0 transpose data00 srcOffset srcLength
+      runEffectFn6 js_uniformMatrix2x4fv gl0 location0 transpose data00 srcOffset0 srcLength0
 
-foreign import js_uniformMatrix2x4fv :: WebGL2RenderingContext
-                                     -> Nullable WebGLUniformLocation
-                                     -> GLboolean
-                                     -> Float32List
-                                     -> GLuint
-                                     -> GLuint
-                                     -> Effect Unit
+foreign import js_uniformMatrix2x4fv :: EffectFn6 WebGL2RenderingContext (Nullable WebGLUniformLocation) GLboolean Float32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -1016,30 +943,26 @@ foreign import js_uniformMatrix2x4fv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniformMatrix3x4fv :: forall c f
-                   .  IsFloat32List f
-                   => IsWebGL2RenderingContext c
+                   .  IsWebGL2RenderingContext c
+                   => IsFloat32List f
                    => c
                    -> Maybe WebGLUniformLocation
                    -> GLboolean
                    -> f
-                   -> GLuint
-                   -> GLuint
+                   -> Maybe GLuint
+                   -> Maybe GLuint
                    -> Effect Unit
 uniformMatrix3x4fv gl location transpose data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toFloat32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniformMatrix3x4fv gl0 location0 transpose data00 srcOffset srcLength
+      runEffectFn6 js_uniformMatrix3x4fv gl0 location0 transpose data00 srcOffset0 srcLength0
 
-foreign import js_uniformMatrix3x4fv :: WebGL2RenderingContext
-                                     -> Nullable WebGLUniformLocation
-                                     -> GLboolean
-                                     -> Float32List
-                                     -> GLuint
-                                     -> GLuint
-                                     -> Effect Unit
+foreign import js_uniformMatrix3x4fv :: EffectFn6 WebGL2RenderingContext (Nullable WebGLUniformLocation) GLboolean Float32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -1059,30 +982,26 @@ foreign import js_uniformMatrix3x4fv :: WebGL2RenderingContext
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
 uniformMatrix4fv :: forall c f
-                 .  IsFloat32List f
-                 => IsWebGL2RenderingContext c
+                 .  IsWebGL2RenderingContext c
+                 => IsFloat32List f
                  => c
                  -> Maybe WebGLUniformLocation
                  -> GLboolean
                  -> f
-                 -> GLuint
-                 -> GLuint
+                 -> Maybe GLuint
+                 -> Maybe GLuint
                  -> Effect Unit
 uniformMatrix4fv gl location transpose data0 srcOffset srcLength
   = let
       gl0 = toWebGL2RenderingContext gl
       location0 = toNullable location
       data00 = toFloat32List data0
+      srcOffset0 = toNullable srcOffset
+      srcLength0 = toNullable srcLength
     in
-      js_uniformMatrix4fv gl0 location0 transpose data00 srcOffset srcLength
+      runEffectFn6 js_uniformMatrix4fv gl0 location0 transpose data00 srcOffset0 srcLength0
 
-foreign import js_uniformMatrix4fv :: WebGL2RenderingContext
-                                   -> Nullable WebGLUniformLocation
-                                   -> GLboolean
-                                   -> Float32List
-                                   -> GLuint
-                                   -> GLuint
-                                   -> Effect Unit
+foreign import js_uniformMatrix4fv :: EffectFn6 WebGL2RenderingContext (Nullable WebGLUniformLocation) GLboolean Float32List (Nullable GLuint) (Nullable GLuint) Unit
 
 
 
@@ -1098,6 +1017,10 @@ foreign import js_uniformMatrix4fv :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getUniformGLuint :: forall c
                  .  IsWebGL2RenderingContext c
                  => c
@@ -1109,13 +1032,10 @@ getUniformGLuint gl program location
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getUniformGLuint gl0 program location
+        res <- runEffectFn3 js_getUniformGLuint gl0 program location
         pure (toMaybe res)
 
-foreign import js_getUniformGLuint :: WebGL2RenderingContext
-                                   -> WebGLProgram
-                                   -> WebGLUniformLocation
-                                   -> Effect (Nullable GLuint)
+foreign import js_getUniformGLuint :: EffectFn3 WebGL2RenderingContext WebGLProgram WebGLUniformLocation (Nullable GLuint)
 
 
 
@@ -1133,6 +1053,10 @@ foreign import js_getUniformGLuint :: WebGL2RenderingContext
 -- |
 -- | Documentation: [WebGL 2.0 spec, section 3.7.8](https://www.khronos.org/registry/webgl/specs/latest/2.0/#3.7.8)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getUniformUint32Array :: forall c
                       .  IsWebGL2RenderingContext c
                       => c
@@ -1144,11 +1068,8 @@ getUniformUint32Array gl program location
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_getUniformUint32Array gl0 program location
+        res <- runEffectFn3 js_getUniformUint32Array gl0 program location
         pure (toMaybe res)
 
-foreign import js_getUniformUint32Array :: WebGL2RenderingContext
-                                        -> WebGLProgram
-                                        -> WebGLUniformLocation
-                                        -> Effect (Nullable (ArrayView Uint32))
+foreign import js_getUniformUint32Array :: EffectFn3 WebGL2RenderingContext WebGLProgram WebGLUniformLocation (Nullable (ArrayView Uint32))
 

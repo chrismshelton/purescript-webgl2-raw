@@ -20,6 +20,19 @@ import Data.Nullable ( Nullable
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , EffectFn2
+                        , EffectFn3
+                        , EffectFn4
+                        , EffectFn5
+                        , EffectFn6
+                        , runEffectFn1
+                        , runEffectFn2
+                        , runEffectFn3
+                        , runEffectFn4
+                        , runEffectFn5
+                        , runEffectFn6
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -57,12 +70,9 @@ bindFramebuffer gl target framebuffer
       gl0 = toWebGLRenderingContext gl
       framebuffer0 = toNullable framebuffer
     in
-      js_bindFramebuffer gl0 target framebuffer0
+      runEffectFn3 js_bindFramebuffer gl0 target framebuffer0
 
-foreign import js_bindFramebuffer :: WebGLRenderingContext
-                                  -> GLenum
-                                  -> Nullable WebGLFramebuffer
-                                  -> Effect Unit
+foreign import js_bindFramebuffer :: EffectFn3 WebGLRenderingContext GLenum (Nullable WebGLFramebuffer) Unit
 
 
 
@@ -85,11 +95,9 @@ checkFramebufferStatus gl target
   = let
       gl0 = toWebGLRenderingContext gl
     in
-      js_checkFramebufferStatus gl0 target
+      runEffectFn2 js_checkFramebufferStatus gl0 target
 
-foreign import js_checkFramebufferStatus :: WebGLRenderingContext
-                                         -> GLenum
-                                         -> Effect GLenum
+foreign import js_checkFramebufferStatus :: EffectFn2 WebGLRenderingContext GLenum GLenum
 
 
 
@@ -111,11 +119,10 @@ createFramebuffer gl
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_createFramebuffer gl0
+        res <- runEffectFn1 js_createFramebuffer gl0
         pure (toMaybe res)
 
-foreign import js_createFramebuffer :: WebGLRenderingContext
-                                    -> Effect (Nullable WebGLFramebuffer)
+foreign import js_createFramebuffer :: EffectFn1 WebGLRenderingContext (Nullable WebGLFramebuffer)
 
 
 
@@ -138,11 +145,9 @@ deleteFramebuffer gl framebuffer
       gl0 = toWebGLRenderingContext gl
       framebuffer0 = toNullable framebuffer
     in
-      js_deleteFramebuffer gl0 framebuffer0
+      runEffectFn2 js_deleteFramebuffer gl0 framebuffer0
 
-foreign import js_deleteFramebuffer :: WebGLRenderingContext
-                                    -> Nullable WebGLFramebuffer
-                                    -> Effect Unit
+foreign import js_deleteFramebuffer :: EffectFn2 WebGLRenderingContext (Nullable WebGLFramebuffer) Unit
 
 
 
@@ -173,14 +178,9 @@ framebufferRenderbuffer gl target attachment renderbuffertarget renderbuffer
       gl0 = toWebGLRenderingContext gl
       renderbuffer0 = toNullable renderbuffer
     in
-      js_framebufferRenderbuffer gl0 target attachment renderbuffertarget renderbuffer0
+      runEffectFn5 js_framebufferRenderbuffer gl0 target attachment renderbuffertarget renderbuffer0
 
-foreign import js_framebufferRenderbuffer :: WebGLRenderingContext
-                                          -> GLenum
-                                          -> GLenum
-                                          -> GLenum
-                                          -> Nullable WebGLRenderbuffer
-                                          -> Effect Unit
+foreign import js_framebufferRenderbuffer :: EffectFn5 WebGLRenderingContext GLenum GLenum GLenum (Nullable WebGLRenderbuffer) Unit
 
 
 
@@ -213,15 +213,9 @@ framebufferTexture2D gl target attachment textarget texture level
       gl0 = toWebGLRenderingContext gl
       texture0 = toNullable texture
     in
-      js_framebufferTexture2D gl0 target attachment textarget texture0 level
+      runEffectFn6 js_framebufferTexture2D gl0 target attachment textarget texture0 level
 
-foreign import js_framebufferTexture2D :: WebGLRenderingContext
-                                       -> GLenum
-                                       -> GLenum
-                                       -> GLenum
-                                       -> Nullable WebGLTexture
-                                       -> GLint
-                                       -> Effect Unit
+foreign import js_framebufferTexture2D :: EffectFn6 WebGLRenderingContext GLenum GLenum GLenum (Nullable WebGLTexture) GLint Unit
 
 
 
@@ -243,6 +237,10 @@ foreign import js_framebufferTexture2D :: WebGLRenderingContext
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.6](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.6)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getFramebufferAttachmentParameterGLenum :: forall c
                                         .  IsWebGLRenderingContext c
                                         => c
@@ -255,14 +253,10 @@ getFramebufferAttachmentParameterGLenum gl target attachment pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getFramebufferAttachmentParameterGLenum gl0 target attachment pname
+        res <- runEffectFn4 js_getFramebufferAttachmentParameterGLenum gl0 target attachment pname
         pure (toMaybe res)
 
-foreign import js_getFramebufferAttachmentParameterGLenum :: WebGLRenderingContext
-                                                          -> GLenum
-                                                          -> GLenum
-                                                          -> GLenum
-                                                          -> Effect (Nullable GLenum)
+foreign import js_getFramebufferAttachmentParameterGLenum :: EffectFn4 WebGLRenderingContext GLenum GLenum GLenum (Nullable GLenum)
 
 
 
@@ -290,6 +284,10 @@ foreign import js_getFramebufferAttachmentParameterGLenum :: WebGLRenderingConte
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.6](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.6)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getFramebufferAttachmentParameterGLint :: forall c
                                        .  IsWebGLRenderingContext c
                                        => c
@@ -302,14 +300,10 @@ getFramebufferAttachmentParameterGLint gl target attachment pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getFramebufferAttachmentParameterGLint gl0 target attachment pname
+        res <- runEffectFn4 js_getFramebufferAttachmentParameterGLint gl0 target attachment pname
         pure (toMaybe res)
 
-foreign import js_getFramebufferAttachmentParameterGLint :: WebGLRenderingContext
-                                                         -> GLenum
-                                                         -> GLenum
-                                                         -> GLenum
-                                                         -> Effect (Nullable GLint)
+foreign import js_getFramebufferAttachmentParameterGLint :: EffectFn4 WebGLRenderingContext GLenum GLenum GLenum (Nullable GLint)
 
 
 
@@ -329,6 +323,10 @@ foreign import js_getFramebufferAttachmentParameterGLint :: WebGLRenderingContex
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.6](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.6)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getFramebufferAttachmentParameterWebGLRenderbuffer :: forall c
                                                    .  IsWebGLRenderingContext c
                                                    => c
@@ -341,14 +339,10 @@ getFramebufferAttachmentParameterWebGLRenderbuffer gl target attachment pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getFramebufferAttachmentParameterWebGLRenderbuffer gl0 target attachment pname
+        res <- runEffectFn4 js_getFramebufferAttachmentParameterWebGLRenderbuffer gl0 target attachment pname
         pure (toMaybe res)
 
-foreign import js_getFramebufferAttachmentParameterWebGLRenderbuffer :: WebGLRenderingContext
-                                                                     -> GLenum
-                                                                     -> GLenum
-                                                                     -> GLenum
-                                                                     -> Effect (Nullable WebGLRenderbuffer)
+foreign import js_getFramebufferAttachmentParameterWebGLRenderbuffer :: EffectFn4 WebGLRenderingContext GLenum GLenum GLenum (Nullable WebGLRenderbuffer)
 
 
 
@@ -368,6 +362,10 @@ foreign import js_getFramebufferAttachmentParameterWebGLRenderbuffer :: WebGLRen
 -- |
 -- | Documentation: [WebGL 1.0 spec, section 5.14.6](https://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14.6)
 -- |
+-- | *Warning: the javascript version of this function returns different
+-- | types depending on the arguments provided. This function will throw an
+-- | exception if the returned value is not of the expected type.*
+-- |
 getFramebufferAttachmentParameterWebGLTexture :: forall c
                                               .  IsWebGLRenderingContext c
                                               => c
@@ -380,14 +378,10 @@ getFramebufferAttachmentParameterWebGLTexture gl target attachment pname
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getFramebufferAttachmentParameterWebGLTexture gl0 target attachment pname
+        res <- runEffectFn4 js_getFramebufferAttachmentParameterWebGLTexture gl0 target attachment pname
         pure (toMaybe res)
 
-foreign import js_getFramebufferAttachmentParameterWebGLTexture :: WebGLRenderingContext
-                                                                -> GLenum
-                                                                -> GLenum
-                                                                -> GLenum
-                                                                -> Effect (Nullable WebGLTexture)
+foreign import js_getFramebufferAttachmentParameterWebGLTexture :: EffectFn4 WebGLRenderingContext GLenum GLenum GLenum (Nullable WebGLTexture)
 
 
 
@@ -411,9 +405,7 @@ isFramebuffer gl framebuffer
       gl0 = toWebGLRenderingContext gl
       framebuffer0 = toNullable framebuffer
     in
-      js_isFramebuffer gl0 framebuffer0
+      runEffectFn2 js_isFramebuffer gl0 framebuffer0
 
-foreign import js_isFramebuffer :: WebGLRenderingContext
-                                -> Nullable WebGLFramebuffer
-                                -> Effect GLboolean
+foreign import js_isFramebuffer :: EffectFn2 WebGLRenderingContext (Nullable WebGLFramebuffer) GLboolean
 

@@ -9,6 +9,9 @@ import Data.Nullable ( Nullable
                      , toMaybe
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , runEffectFn1
+                        )
 import Prelude ( bind
                , pure
                )
@@ -18,6 +21,9 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
                        )
 
 
+-- |
+-- | Documentation: [EXT_shader_texture_lod extension](https://www.khronos.org/registry/webgl/extensions/EXT_shader_texture_lod/)
+-- |
 foreign import data EXT_shader_texture_lod :: Type
 
 -- |
@@ -32,9 +38,8 @@ getExtensionEXT_shader_texture_lod gl
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getExtensionEXT_shader_texture_lod gl0
+        res <- runEffectFn1 js_getExtensionEXT_shader_texture_lod gl0
         pure (toMaybe res)
 
-foreign import js_getExtensionEXT_shader_texture_lod :: WebGLRenderingContext
-                                                     -> Effect (Nullable EXT_shader_texture_lod)
+foreign import js_getExtensionEXT_shader_texture_lod :: EffectFn1 WebGLRenderingContext (Nullable EXT_shader_texture_lod)
 

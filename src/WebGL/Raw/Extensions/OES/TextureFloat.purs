@@ -9,6 +9,9 @@ import Data.Nullable ( Nullable
                      , toMaybe
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , runEffectFn1
+                        )
 import Prelude ( bind
                , pure
                )
@@ -18,6 +21,9 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
                        )
 
 
+-- |
+-- | Documentation: [OES_texture_float extension](https://www.khronos.org/registry/webgl/extensions/OES_texture_float/)
+-- |
 foreign import data OES_texture_float :: Type
 
 -- |
@@ -32,9 +38,8 @@ getExtensionOES_texture_float gl
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getExtensionOES_texture_float gl0
+        res <- runEffectFn1 js_getExtensionOES_texture_float gl0
         pure (toMaybe res)
 
-foreign import js_getExtensionOES_texture_float :: WebGLRenderingContext
-                                                -> Effect (Nullable OES_texture_float)
+foreign import js_getExtensionOES_texture_float :: EffectFn1 WebGLRenderingContext (Nullable OES_texture_float)
 

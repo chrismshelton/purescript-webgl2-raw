@@ -10,6 +10,11 @@ import Data.Nullable ( Nullable
                      , toMaybe
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , EffectFn2
+                        , runEffectFn1
+                        , runEffectFn2
+                        )
 import Prelude ( bind
                , pure
                )
@@ -20,6 +25,9 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
                        )
 
 
+-- |
+-- | Documentation: [WEBGL_debug_shaders extension](https://www.khronos.org/registry/webgl/extensions/WEBGL_debug_shaders/)
+-- |
 foreign import data WEBGL_debug_shaders :: Type
 
 -- |
@@ -29,13 +37,13 @@ foreign import data WEBGL_debug_shaders :: Type
 -- | DOMString getTranslatedShaderSource (WebGLShader shader);
 -- | ```
 -- |
+-- | Documentation: [WEBGL_debug_shaders extension](https://www.khronos.org/registry/webgl/extensions/WEBGL_debug_shaders/)
+-- |
 getTranslatedShaderSource :: WEBGL_debug_shaders -> WebGLShader -> Effect String
 getTranslatedShaderSource webgl_debug_shaders shader
-  = js_getTranslatedShaderSource webgl_debug_shaders shader
+  = runEffectFn2 js_getTranslatedShaderSource webgl_debug_shaders shader
 
-foreign import js_getTranslatedShaderSource :: WEBGL_debug_shaders
-                                            -> WebGLShader
-                                            -> Effect String
+foreign import js_getTranslatedShaderSource :: EffectFn2 WEBGL_debug_shaders WebGLShader String
 
 
 
@@ -51,9 +59,8 @@ getExtensionWEBGL_debug_shaders gl
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getExtensionWEBGL_debug_shaders gl0
+        res <- runEffectFn1 js_getExtensionWEBGL_debug_shaders gl0
         pure (toMaybe res)
 
-foreign import js_getExtensionWEBGL_debug_shaders :: WebGLRenderingContext
-                                                  -> Effect (Nullable WEBGL_debug_shaders)
+foreign import js_getExtensionWEBGL_debug_shaders :: EffectFn1 WebGLRenderingContext (Nullable WEBGL_debug_shaders)
 

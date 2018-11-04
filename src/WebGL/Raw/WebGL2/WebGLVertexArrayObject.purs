@@ -13,6 +13,11 @@ import Data.Nullable ( Nullable
                      , toNullable
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , EffectFn2
+                        , runEffectFn1
+                        , runEffectFn2
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -44,11 +49,10 @@ createVertexArray gl
       gl0 = toWebGL2RenderingContext gl
     in
       do
-        res <- js_createVertexArray gl0
+        res <- runEffectFn1 js_createVertexArray gl0
         pure (toMaybe res)
 
-foreign import js_createVertexArray :: WebGL2RenderingContext
-                                    -> Effect (Nullable WebGLVertexArrayObject)
+foreign import js_createVertexArray :: EffectFn1 WebGL2RenderingContext (Nullable WebGLVertexArrayObject)
 
 
 
@@ -71,11 +75,9 @@ deleteVertexArray gl vertexArray
       gl0 = toWebGL2RenderingContext gl
       vertexArray0 = toNullable vertexArray
     in
-      js_deleteVertexArray gl0 vertexArray0
+      runEffectFn2 js_deleteVertexArray gl0 vertexArray0
 
-foreign import js_deleteVertexArray :: WebGL2RenderingContext
-                                    -> Nullable WebGLVertexArrayObject
-                                    -> Effect Unit
+foreign import js_deleteVertexArray :: EffectFn2 WebGL2RenderingContext (Nullable WebGLVertexArrayObject) Unit
 
 
 
@@ -99,11 +101,9 @@ isVertexArray gl vertexArray
       gl0 = toWebGL2RenderingContext gl
       vertexArray0 = toNullable vertexArray
     in
-      js_isVertexArray gl0 vertexArray0
+      runEffectFn2 js_isVertexArray gl0 vertexArray0
 
-foreign import js_isVertexArray :: WebGL2RenderingContext
-                                -> Nullable WebGLVertexArrayObject
-                                -> Effect GLboolean
+foreign import js_isVertexArray :: EffectFn2 WebGL2RenderingContext (Nullable WebGLVertexArrayObject) GLboolean
 
 
 
@@ -126,9 +126,7 @@ bindVertexArray gl array
       gl0 = toWebGL2RenderingContext gl
       array0 = toNullable array
     in
-      js_bindVertexArray gl0 array0
+      runEffectFn2 js_bindVertexArray gl0 array0
 
-foreign import js_bindVertexArray :: WebGL2RenderingContext
-                                  -> Nullable WebGLVertexArrayObject
-                                  -> Effect Unit
+foreign import js_bindVertexArray :: EffectFn2 WebGL2RenderingContext (Nullable WebGLVertexArrayObject) Unit
 

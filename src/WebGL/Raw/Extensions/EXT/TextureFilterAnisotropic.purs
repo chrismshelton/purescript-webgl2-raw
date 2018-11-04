@@ -11,6 +11,9 @@ import Data.Nullable ( Nullable
                      , toMaybe
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , runEffectFn1
+                        )
 import Prelude ( bind
                , pure
                )
@@ -21,13 +24,16 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
                        )
 
 
+-- |
+-- | Documentation: [EXT_texture_filter_anisotropic extension](https://www.khronos.org/registry/webgl/extensions/EXT_texture_filter_anisotropic/)
+-- |
 foreign import data EXT_texture_filter_anisotropic :: Type
 
 gl_TEXTURE_MAX_ANISOTROPY_EXT :: GLenum
-gl_TEXTURE_MAX_ANISOTROPY_EXT = 34046
+gl_TEXTURE_MAX_ANISOTROPY_EXT = 34046.0
 
 gl_MAX_TEXTURE_MAX_ANISOTROPY_EXT :: GLenum
-gl_MAX_TEXTURE_MAX_ANISOTROPY_EXT = 34047
+gl_MAX_TEXTURE_MAX_ANISOTROPY_EXT = 34047.0
 
 -- |
 -- | Usage: `getExtensionEXT_texture_filter_anisotropic gl`
@@ -41,9 +47,8 @@ getExtensionEXT_texture_filter_anisotropic gl
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getExtensionEXT_texture_filter_anisotropic gl0
+        res <- runEffectFn1 js_getExtensionEXT_texture_filter_anisotropic gl0
         pure (toMaybe res)
 
-foreign import js_getExtensionEXT_texture_filter_anisotropic :: WebGLRenderingContext
-                                                             -> Effect (Nullable EXT_texture_filter_anisotropic)
+foreign import js_getExtensionEXT_texture_filter_anisotropic :: EffectFn1 WebGLRenderingContext (Nullable EXT_texture_filter_anisotropic)
 

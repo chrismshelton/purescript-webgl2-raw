@@ -11,6 +11,9 @@ import Data.Nullable ( Nullable
                      , toMaybe
                      )
 import Effect (Effect)
+import Effect.Uncurried ( EffectFn1
+                        , runEffectFn1
+                        )
 import Prelude ( bind
                , pure
                , Unit
@@ -21,6 +24,9 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
                        )
 
 
+-- |
+-- | Documentation: [WEBGL_lose_context extension](https://www.khronos.org/registry/webgl/extensions/WEBGL_lose_context/)
+-- |
 foreign import data WEBGL_lose_context :: Type
 
 -- |
@@ -30,10 +36,12 @@ foreign import data WEBGL_lose_context :: Type
 -- | void loseContext();
 -- | ```
 -- |
+-- | Documentation: [WEBGL_lose_context extension](https://www.khronos.org/registry/webgl/extensions/WEBGL_lose_context/)
+-- |
 loseContext :: WEBGL_lose_context -> Effect Unit
-loseContext webgl_lose_context = js_loseContext webgl_lose_context
+loseContext webgl_lose_context = runEffectFn1 js_loseContext webgl_lose_context
 
-foreign import js_loseContext :: WEBGL_lose_context -> Effect Unit
+foreign import js_loseContext :: EffectFn1 WEBGL_lose_context Unit
 
 
 
@@ -44,10 +52,13 @@ foreign import js_loseContext :: WEBGL_lose_context -> Effect Unit
 -- | void restoreContext();
 -- | ```
 -- |
+-- | Documentation: [WEBGL_lose_context extension](https://www.khronos.org/registry/webgl/extensions/WEBGL_lose_context/)
+-- |
 restoreContext :: WEBGL_lose_context -> Effect Unit
-restoreContext webgl_lose_context = js_restoreContext webgl_lose_context
+restoreContext webgl_lose_context
+  = runEffectFn1 js_restoreContext webgl_lose_context
 
-foreign import js_restoreContext :: WEBGL_lose_context -> Effect Unit
+foreign import js_restoreContext :: EffectFn1 WEBGL_lose_context Unit
 
 
 
@@ -63,9 +74,8 @@ getExtensionWEBGL_lose_context gl
       gl0 = toWebGLRenderingContext gl
     in
       do
-        res <- js_getExtensionWEBGL_lose_context gl0
+        res <- runEffectFn1 js_getExtensionWEBGL_lose_context gl0
         pure (toMaybe res)
 
-foreign import js_getExtensionWEBGL_lose_context :: WebGLRenderingContext
-                                                 -> Effect (Nullable WEBGL_lose_context)
+foreign import js_getExtensionWEBGL_lose_context :: EffectFn1 WebGLRenderingContext (Nullable WEBGL_lose_context)
 
