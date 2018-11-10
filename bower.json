@@ -1,5 +1,11 @@
 {
   "name": "purescript-webgl2-raw",
+  "homepage": "https://github.com/chrismshelton/purescript-webgl2-raw",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chrismshelton/purescript-webgl2-raw.git"
+  },
   "ignore": [
     "**/.*",
     "node_modules",
