@@ -58,6 +58,8 @@ foreign import js_goto :: String -> Page -> Effect (Promise Response)
 foreign import js_pageContent :: Page -> Effect (Promise String)
 foreign import js_waitForSelector :: String -> JSWaitForSelectorOptions -> Page -> Effect (Promise Unit)
 
+type PuppeteerFull = Boolean
+
 type BrowserOptions =
   { headless         :: Maybe Boolean
   , executablePath   :: Maybe String
@@ -104,8 +106,8 @@ fromWaitForSelectorOptions opts =
   }
 
 
-newPuppeteer :: Effect Puppeteer
-newPuppeteer = js_puppeteer false
+newPuppeteer :: PuppeteerFull -> Effect Puppeteer
+newPuppeteer = js_puppeteer
 
 defaultBrowserContext :: Browser -> Effect BrowserContext
 defaultBrowserContext = js_defaultBrowserContext

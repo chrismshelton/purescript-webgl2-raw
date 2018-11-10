@@ -11,6 +11,7 @@ import Data.Maybe (Maybe(Just))
 import Data.Newtype (unwrap)
 import Data.Number.Format (fixed, toStringWith)
 import Data.String (Pattern(..), Replacement(..), joinWith, replaceAll)
+import Data.Time.Duration (Milliseconds)
 import Effect.Aff (Aff)
 import Effect.Class (liftEffect)
 import Effect.Console (log)
@@ -36,6 +37,7 @@ type Summary =
   , skipped      :: Int
   , failed       :: Int
   , assertions   :: Int
+  , time_ms      :: Number
   }
 
 emptySummary :: Summary
@@ -43,6 +45,7 @@ emptySummary = { passed: 0
                , skipped: 0
                , failed: 0
                , assertions: 0
+               , time_ms: 0.0
                }
 
 resultSummary :: TestResult -> Summary
@@ -55,10 +58,16 @@ resultSummary tr = case resultStatus tr of
 
   TestRun stats -> case stats.passed of
     true ->
-      emptySummary { passed = 1, assertions = stats.assertions }
+      emptySummary { passed = 1
+                   , assertions = stats.assertions
+                   , time_ms = unwrap tr.time
+                   }
 
     false ->
-      emptySummary { failed = 1, assertions = stats.assertions }
+      emptySummary { failed = 1
+                   , assertions = stats.assertions
+                   , time_ms = unwrap tr.time
+                   }
 
 
 formatResult :: TestResult

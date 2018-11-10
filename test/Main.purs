@@ -85,68 +85,6 @@ getAllTests config browser = do
     get_tests v = getTestInfo v (to_index_url v) browser
     to_index_url v = config.base_url <> v <> "/webgl-conformance-tests.html"
 
-{-
-formatResult :: TestResult
-             -> String
-formatResult tr = result_info
-  where
-    ind x = joinWith "" (replicate x " ")
-
-    color c = withGraphics (foreground c)
-
-    status_mark (TestRun tr)
-      | tr.passed        = color Green "✓ "
-    status_mark (TestSkipped)
-                         = color Yellow "- "
-    status_mark _        = color BrightRed "✗ "
-
-    format_sec t = toStringWith (fixed 3) (unwrap t / 1000.0) <> "sec"
-
-    status_logs = case resultStatus tr of
-      TestFailed err -> "\n" <> color Red (show err)
-      TestSkipped -> color Yellow " (skipped)"
-      TestRun stats -> case stats.passed of
-        true ->
-          " (" <> show stats.assertions <> " assertions, " <> format_sec tr.time <> ")"
-
-        false ->
-          "\n" <> joinWith "\n" (map (\x -> (ind 8) <> color Red (show x)) (filter isFailureTestLog stats.logs))
-
-    result_info = (ind 4) <> status_mark (resultStatus tr) <> " " <> (show (resultId tr)) <> " " <> (resultInfo tr).name <> status_logs
-
-
-type Summary =
-  { passed       :: Int
-  , skipped      :: Int
-  , failed       :: Int
-  , assertions   :: Int
-  }
-
-emptySummary = {passed: 0, skipped: 0, failed: 0, assertions: 0}
-
-resultSummary :: TestResult -> Summary
-resultSummary tr = case resultStatus tr of
-  TestFailed _ ->
-    emptySummary { failed = 1 }
-
-  TestSkipped ->
-    emptySummary { skipped = 1 }
-
-  TestRun stats -> case stats.passed of
-    true ->
-      emptySummary { passed = 1, assertions = stats.assertions }
-
-    false ->
-      emptySummary { failed = 1, assertions = stats.assertions }
-
-displayResults :: ResultList
-               -> Aff Summary
-displayResults rl = foldMResultList' summarize emptySummary rl
-  where
-    summarize s tr = do
-      liftEffect (log $ formatResult tr)
-      pure (s + (resultSummary tr))
--}
 
 makeQueues :: Config
            -> Array TestInfo
@@ -175,7 +113,7 @@ main :: Effect Unit
 main = do
   config <- readConfig
   log (show config)
-  pup <- newPuppeteer
+  pup <- newPuppeteer config.use_puppeteer_full
   fu <- runAff (log <<< show) do
     browser <- launch config.browser_options pup
     infos <- getAllTests config browser
@@ -187,7 +125,6 @@ main = do
                              pup
                              queue
                              results
---    fiber <- traverse (\id -> forkAff $ runTests { id: id, queue: queue, results: results } config.browser_options pup) (range 1 config.num_browsers)
     traverse_ joinFiber fiber
     summary <- joinFiber printer
     liftEffect $ log (show summary)

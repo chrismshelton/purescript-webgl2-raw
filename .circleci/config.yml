@@ -1,0 +1,167 @@
+version: 2
+jobs:
+  build:
+    docker:
+      # We don't actually need php for this, we just something with a web
+      # server AND node
+      - image: circleci/php:7.2-apache-node-browsers
+        environment:
+          CS_DIR: /var/www/html/WebGL/conformance-suites
+
+    steps:
+      - checkout # check out the code in the project directory
+
+      - run:
+          name: Configure PATH
+          command: echo 'export PATH=~/.yarn/bin:$PATH' >> $BASH_ENV
+
+      - run:
+          name: Install yarn
+          command: sudo npm install -g yarn
+
+
+      #
+      # Install bower & purescript
+      #
+      - restore_cache:
+          name: Restore yarn cache
+          keys:
+            - yarn-cache-v1
+
+      - run:
+          name: Install bower/purescript/pulp
+          command: yarn global add bower purescript pulp
+
+      - save_cache:
+          name: Save yarn cache
+          key: yarn-cache-v1
+          paths:
+            - ~/.cache/yarn
+
+
+      #
+      # Install Dependencies
+      #
+      - restore_cache:
+          name: Restore bower cache
+          keys:
+            - bower-cache-v1-{{ checksum "bower.json" }}
+            - bower-cache-v1-
+
+      - run:
+          name: Install purescript dependencies
+          command: bower install
+
+      - save_cache:
+          name: Save bower cache
+          key: bower-cache-v1-{{ checksum "bower.json" }}
+          paths:
+            - bower_components
+            - ~/.cache/bower
+
+      #
+      # Build Test Files
+      #
+      - restore_cache:
+          name: Restore purescript cache
+          key: purescript-cache-v2
+
+      - run:
+          name: Build purescript files
+          command: |
+            cp .circleci/build.sh ./
+            bash build.sh
+
+      - save_cache:
+          name: Save purescript cache
+          key: purescript-cache-v2
+          paths:
+            - output
+
+      #
+      # Clone webgl repository
+      #
+      - run:
+          name: Set group permissions on /var/www/html
+          command: |
+            sudo chgrp circleci /var/www/html
+            sudo chmod g+rw /var/www/html
+
+      - restore_cache:
+          name: Restore webgl cache
+          key: webgl-cache-v1
+
+      - run:
+          name: Clone webgl repository
+          command: |
+            if [ ! -f /var/www/html/WebGL/.git/config ]; then
+              cd /var/www/html && git clone https://github.com/KhronosGroup/WebGL.git
+            else
+              cd /var/www/html/WebGL && git pull origin master
+            fi
+
+      - save_cache:
+          name: Save webgl cache
+          key: webgl-cache-v1
+          paths:
+            - /var/www/html/WebGL
+
+      #
+      # Copy & patch tests
+      #
+      - run:
+          name: Copy test files
+          command: |
+            cp .circleci/conformance-tests.patch .circleci/copy-tests.sh  .circleci/ps-test-info.js .circleci/ps-test-pre-init.js .circleci/ps-test-setup.js output/ps-all.js "$CS_DIR"
+
+      - run:
+          name: Patch webgl code
+          command: |
+            cd "$CS_DIR" && git apply < conformance-tests.patch
+
+      - run:
+          name: Create ps tests
+          command: |
+            cd "$CS_DIR" && bash copy-tests.sh
+
+
+      #
+      # Start apache
+      #
+      - run:
+          name: Start apache
+          command: |
+            sudo service apache2 start
+            curl http://localhost/WebGL/conformance-suites/ps-tests/1.0.3/webgl-conformance-tests.html
+
+      #
+      # Install puppeteer-core
+      #
+      # Despite puppeteer saying it "only works with the exact browser it
+      # ships with", I've yet to be able to get the packaged browser to work
+      # on even a single distro (even after installing all the extra deps, etc)
+      - restore_cache:
+          name: Restore yarn cache
+          keys:
+            - yarn-local-cache-v1-{{ checksum "yarn.lock" }}
+            - yarn-local-cache-v1-
+
+      - run:
+          name: Install puppeteer-core
+          command: yarn install
+
+      - save_cache:
+          name: Save yarn cache
+          key: yarn-local-cache-v1-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules 
+            - ~/.cache/yarn
+
+      #
+      # Run tests
+      #
+      - run:
+          name: Run tests
+          command: |
+            cp .circleci/test-config.json ./
+            pulp test

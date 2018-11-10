@@ -16,15 +16,16 @@ import Test.Puppeteer (BrowserOptions)
 import Test.Test (TestId)
 
 type Config =
-  { base_url          :: String
-  , test_versions     :: Array String
-  , query_string      :: String
-  , browser_options   :: BrowserOptions
-  , num_tests         :: Int
-  , start_at          :: Int
-  , num_browsers      :: Int
-  , run_only          :: Maybe (Array TestId)
-  , usage_data_dir    :: Maybe String
+  { base_url             :: String
+  , test_versions        :: Array String
+  , query_string         :: String
+  , browser_options      :: BrowserOptions
+  , num_tests            :: Int
+  , start_at             :: Int
+  , num_browsers         :: Int
+  , run_only             :: Maybe (Array TestId)
+  , usage_data_dir       :: Maybe String
+  , use_puppeteer_full   :: Boolean
   }
 
 readConfigFile :: String -> Effect Config

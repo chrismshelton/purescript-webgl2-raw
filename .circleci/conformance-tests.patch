@@ -1,0 +1,30 @@
+diff --git a/conformance-suites/1.0.3/conformance/resources/webgl-test-utils.js b/conformance-suites/1.0.3/conformance/resources/webgl-test-utils.js
+index c98cde21..64e22be5 100644
+--- a/conformance-suites/1.0.3/conformance/resources/webgl-test-utils.js
++++ b/conformance-suites/1.0.3/conformance/resources/webgl-test-utils.js
+@@ -986,6 +986,10 @@ var isWebGLContext = function(ctx) {
+   if ('WebGL2RenderingContext' in window && ctx instanceof WebGL2RenderingContext)
+     return true;
+ 
++  if (window._ps_is_webgl_context (ctx)) {
++    return true;
++  }
++
+   return false;
+ };
+ 
+diff --git a/conformance-suites/2.0.0/js/webgl-test-utils.js b/conformance-suites/2.0.0/js/webgl-test-utils.js
+index e465db87..6c265951 100644
+--- a/conformance-suites/2.0.0/js/webgl-test-utils.js
++++ b/conformance-suites/2.0.0/js/webgl-test-utils.js
+@@ -1011,6 +1011,10 @@ var isWebGLContext = function(ctx) {
+   if ('WebGL2RenderingContext' in window && ctx instanceof WebGL2RenderingContext)
+     return true;
+ 
++  if (window._ps_is_webgl_context (ctx)) {
++    return true;
++  }
++
+   return false;
+ };
+ 
