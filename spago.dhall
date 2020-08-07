@@ -15,6 +15,7 @@ You can edit this file as you like.
   , "maybe"
   , "node-fs"
   , "nullable"
+  , "numbers"
   , "prelude"
   , "psci-support"
   , "simple-json"
