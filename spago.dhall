@@ -18,6 +18,7 @@ You can edit this file as you like.
   , "prelude"
   , "psci-support"
   , "unsafe-coerce"
+  , "web-html"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
