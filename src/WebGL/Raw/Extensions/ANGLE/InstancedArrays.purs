@@ -43,7 +43,7 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
 foreign import data ANGLE_instanced_arrays :: Type
 
 gl_VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE :: GLenum
-gl_VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE = 35070.0
+gl_VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE = 35070
 
 -- |
 -- | Usage: `drawArraysInstancedANGLE angle_instanced_arrays mode first count primcount`

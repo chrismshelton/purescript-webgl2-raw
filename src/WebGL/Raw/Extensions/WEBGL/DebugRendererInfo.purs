@@ -30,10 +30,10 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
 foreign import data WEBGL_debug_renderer_info :: Type
 
 gl_UNMASKED_VENDOR_WEBGL :: GLenum
-gl_UNMASKED_VENDOR_WEBGL = 37445.0
+gl_UNMASKED_VENDOR_WEBGL = 37445
 
 gl_UNMASKED_RENDERER_WEBGL :: GLenum
-gl_UNMASKED_RENDERER_WEBGL = 37446.0
+gl_UNMASKED_RENDERER_WEBGL = 37446
 
 -- |
 -- | Usage: `getExtensionWEBGL_debug_renderer_info gl`

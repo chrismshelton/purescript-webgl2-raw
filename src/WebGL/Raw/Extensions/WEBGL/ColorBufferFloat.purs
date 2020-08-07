@@ -31,13 +31,13 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
 foreign import data WEBGL_color_buffer_float :: Type
 
 gl_RGBA32F_EXT :: GLenum
-gl_RGBA32F_EXT = 34836.0
+gl_RGBA32F_EXT = 34836
 
 gl_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT :: GLenum
-gl_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT = 33297.0
+gl_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT = 33297
 
 gl_UNSIGNED_NORMALIZED_EXT :: GLenum
-gl_UNSIGNED_NORMALIZED_EXT = 35863.0
+gl_UNSIGNED_NORMALIZED_EXT = 35863
 
 -- |
 -- | Usage: `getExtensionWEBGL_color_buffer_float gl`

@@ -83,7 +83,7 @@ foreign import js_getParameterWebGLVertexArrayObjectOES :: EffectFn2 WebGLRender
 
 
 gl_VERTEX_ARRAY_BINDING_OES :: GLenum
-gl_VERTEX_ARRAY_BINDING_OES = 34229.0
+gl_VERTEX_ARRAY_BINDING_OES = 34229
 
 -- |
 -- | Usage: `createVertexArrayOES oes_vertex_array_object`

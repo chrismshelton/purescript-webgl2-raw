@@ -29,7 +29,7 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
 foreign import data OES_standard_derivatives :: Type
 
 gl_FRAGMENT_SHADER_DERIVATIVE_HINT_OES :: GLenum
-gl_FRAGMENT_SHADER_DERIVATIVE_HINT_OES = 35723.0
+gl_FRAGMENT_SHADER_DERIVATIVE_HINT_OES = 35723
 
 -- |
 -- | Usage: `getExtensionOES_standard_derivatives gl`

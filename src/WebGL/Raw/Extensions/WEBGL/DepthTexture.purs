@@ -29,7 +29,7 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
 foreign import data WEBGL_depth_texture :: Type
 
 gl_UNSIGNED_INT_24_8_WEBGL :: GLenum
-gl_UNSIGNED_INT_24_8_WEBGL = 34042.0
+gl_UNSIGNED_INT_24_8_WEBGL = 34042
 
 -- |
 -- | Usage: `getExtensionWEBGL_depth_texture gl`

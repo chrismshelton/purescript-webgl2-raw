@@ -30,10 +30,10 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
 foreign import data EXT_texture_filter_anisotropic :: Type
 
 gl_TEXTURE_MAX_ANISOTROPY_EXT :: GLenum
-gl_TEXTURE_MAX_ANISOTROPY_EXT = 34046.0
+gl_TEXTURE_MAX_ANISOTROPY_EXT = 34046
 
 gl_MAX_TEXTURE_MAX_ANISOTROPY_EXT :: GLenum
-gl_MAX_TEXTURE_MAX_ANISOTROPY_EXT = 34047.0
+gl_MAX_TEXTURE_MAX_ANISOTROPY_EXT = 34047
 
 -- |
 -- | Usage: `getExtensionEXT_texture_filter_anisotropic gl`

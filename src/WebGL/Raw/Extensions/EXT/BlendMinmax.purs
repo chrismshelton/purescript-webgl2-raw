@@ -30,10 +30,10 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
 foreign import data EXT_blend_minmax :: Type
 
 gl_MIN_EXT :: GLenum
-gl_MIN_EXT = 32775.0
+gl_MIN_EXT = 32775
 
 gl_MAX_EXT :: GLenum
-gl_MAX_EXT = 32776.0
+gl_MAX_EXT = 32776
 
 -- |
 -- | Usage: `getExtensionEXT_blend_minmax gl`

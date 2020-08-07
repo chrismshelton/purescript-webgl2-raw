@@ -29,7 +29,7 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
 foreign import data WEBGL_compressed_texture_etc1 :: Type
 
 gl_COMPRESSED_RGB_ETC1_WEBGL :: GLenum
-gl_COMPRESSED_RGB_ETC1_WEBGL = 36196.0
+gl_COMPRESSED_RGB_ETC1_WEBGL = 36196
 
 -- |
 -- | Usage: `getExtensionWEBGL_compressed_texture_etc1 gl`

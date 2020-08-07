@@ -37,16 +37,16 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
 foreign import data EXT_disjoint_timer_query_webgl2 :: Type
 
 gl_QUERY_COUNTER_BITS_EXT :: GLenum
-gl_QUERY_COUNTER_BITS_EXT = 34916.0
+gl_QUERY_COUNTER_BITS_EXT = 34916
 
 gl_TIME_ELAPSED_EXT :: GLenum
-gl_TIME_ELAPSED_EXT = 35007.0
+gl_TIME_ELAPSED_EXT = 35007
 
 gl_TIMESTAMP_EXT :: GLenum
-gl_TIMESTAMP_EXT = 36392.0
+gl_TIMESTAMP_EXT = 36392
 
 gl_GPU_DISJOINT_EXT :: GLenum
-gl_GPU_DISJOINT_EXT = 36795.0
+gl_GPU_DISJOINT_EXT = 36795
 
 -- |
 -- | Usage: `queryCounterEXT ext_disjoint_timer_query_webgl2 query target`

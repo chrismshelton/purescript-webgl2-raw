@@ -752,7 +752,7 @@ import WebGL.Raw.WebGL2.Enums ( gl_READ_BUFFER
                               , gl_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES
                               , gl_UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER
                               , gl_UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER
-                              , gl_INVALID_INDEX
+                              --, gl_INVALID_INDEX -- TODO
                               , gl_MAX_VERTEX_OUTPUT_COMPONENTS
                               , gl_MAX_FRAGMENT_INPUT_COMPONENTS
                               , gl_MAX_SERVER_WAIT_TIMEOUT

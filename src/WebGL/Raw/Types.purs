@@ -90,7 +90,7 @@ import Web.HTML.HTMLImageElement (HTMLImageElement)
 import Web.HTML.HTMLVideoElement (HTMLVideoElement)
 
 
-type GLenum = Number
+type GLenum = Int
 
 type GLboolean = Boolean
 

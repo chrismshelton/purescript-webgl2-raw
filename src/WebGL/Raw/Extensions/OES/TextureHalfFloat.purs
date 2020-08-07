@@ -29,7 +29,7 @@ import WebGL.Raw.Types ( class IsWebGLRenderingContext
 foreign import data OES_texture_half_float :: Type
 
 gl_HALF_FLOAT_OES :: GLenum
-gl_HALF_FLOAT_OES = 36193.0
+gl_HALF_FLOAT_OES = 36193
 
 -- |
 -- | Usage: `getExtensionOES_texture_half_float gl`
