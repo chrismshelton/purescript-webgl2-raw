@@ -17,6 +17,7 @@ You can edit this file as you like.
   , "nullable"
   , "prelude"
   , "psci-support"
+  , "simple-json"
   , "unsafe-coerce"
   , "web-html"
   ]
