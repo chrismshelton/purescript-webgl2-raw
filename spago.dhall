@@ -11,6 +11,7 @@ You can edit this file as you like.
   , "avar"
   , "console"
   , "effect"
+  , "foreign-generic"
   , "generics-rep"
   , "maybe"
   , "node-fs"
